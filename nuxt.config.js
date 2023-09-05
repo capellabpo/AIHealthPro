@@ -26,6 +26,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/axios',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -64,7 +65,12 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
   ],
-
+  server: {
+    port: 3300,
+  },
+  env: {
+    OPENAI_API_KEY: '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',
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   }
