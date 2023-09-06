@@ -1,25 +1,34 @@
 <template>
 <div class="chatbox">
     <div class="chat">
+      <div class="chat_scroll" ref="container">
+        
         <div class="messages">
-            <!-- <div class="msg_ai">
+          
+          <div class="message" v-for="(message, id) in messages" :key="id" :id="id">
+            
+            <div class="msg_user" v-if="message.type === 'user'">
+              <div class="msg_box_user">
+                <!-- {{ id+" - "+ message.text}} -->
+                {{ message.text }}
+              </div>
+            </div>
+            <div class="msg_ai" v-else-if="message.type === 'bot'">
+              <div class="ai_img">
                 <div class="ai_icon"></div>
-                <div class="ai_msg_box">
-                    <div class="msg_tail"></div>
-                </div>
+              </div>
+              <div class="msg_box_ai">
+                <!-- {{ id+" - "+ message.text}} -->
+                {{ message.text }}
+              </div>
             </div>
-            <div class="msg_user">
-                <div class="user_msg_box">
-                    
-                </div>
-            </div> -->
-
-
-            <div class="message" v-for="message in messages" :key="message.id">
-                <div class="message-content">{{ message.text }}</div>
-            </div>
-
+                
+          </div>
+              
         </div>
+
+      </div>
+
     </div>
     <div class="msg_box">
         <div class="message_box">
@@ -43,16 +52,36 @@ data() {
         newMessage: '',
     }
 },
+mounted() {
+  if (localStorage.messages) {
+    this.messages = JSON.parse(localStorage.messages);
+  }
+  // Scroll to top (delayed)
+  setTimeout(() => {
+    this.scrollToBottom();
+  }, 100);
+},
+watch: {
+  messages(newName) {
+    localStorage.messages = JSON.stringify(newName);
+  }
+},
 methods: {
     login() {
         this.$router.push({ path: "../dashboard" });
     },
     async sendMessage() {
+      // Loader should start here
       if (this.newMessage.trim() === '') return;
 
       // Add the user's message to the chat
       this.messages.push({ text: this.newMessage, type: 'user' });
       this.newMessage = '';
+
+      // Scroll to top (delayed)
+      setTimeout(() => {
+        this.scrollToBottom();
+      }, 100);
 
       try {
         // Make a request to the ChatGPT API
@@ -70,9 +99,24 @@ methods: {
 
         // Add ChatGPT's response to the chat
         this.messages.push({ text: response.data.choices[0].message.content, type: 'bot' });
+        // Scroll to top (delayed)
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 100);
+        // Loader should stop here
+
       } catch (error) {
         console.error('Error sending message to ChatGPT:', error);
       }
+      
+    },
+    scrollToBottom() {
+      // Get a reference to the container
+      const container = this.$refs.container;
+      // Calculate the maximum scroll position
+      var maxScrollPosition = container.scrollHeight - container.clientHeight;
+      // Scroll to the maximum position
+      container.scrollTop = maxScrollPosition;
     },
 },
 }

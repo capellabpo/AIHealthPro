@@ -83,6 +83,7 @@ $col3: #3C4041;
 $col4: #11F3E0;
 $col5: #CAF0C1;
 $col6: #F2FBFA;
+$col7: #EEEEEE;
 
 $colError: #FF6161;
 
@@ -127,6 +128,7 @@ $colError: #FF6161;
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1;
 }
 .header_right, .header_left {
     width: 25%;
@@ -163,6 +165,7 @@ $colError: #FF6161;
     font-size: 14px;
     margin-left: 5px;
     margin-right: 5px;
+    white-space: nowrap;
 }
 .special_btn {
     background-color: $col5;
@@ -181,16 +184,25 @@ $colError: #FF6161;
 .chat {
     width: 100%;
     height: 100%;
-    overflow-y: auto;
+}
+.chat_scroll {
+    max-height: fit-content;
+    position: absolute;
+    bottom: 120px;
+    height: calc(100% - 120px);
+    width: 100%;
     overflow-x: hidden;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    box-sizing: border-box;
 }
 .messages {
+    margin: auto;
     padding: 15px 16px;
-    // border: 1px solid red;
     width: 100%;
     height: fit-content;
     min-height: 100%;
-    max-height: fit-content;
+    z-index: -1;
 }
 .msg_box {
     width: 100%;
@@ -230,6 +242,11 @@ $colError: #FF6161;
     margin-left: 5px;
     width: 100px;
     white-space: nowrap;
+    transition: 0.3s;
+    &:hover {
+        transition: 0.3s;
+        background-color: $col2;
+    }
 }
 .foot {
     width: 100%;
@@ -247,4 +264,140 @@ $colError: #FF6161;
     text-decoration: underline;
     font-family: font_M;
     color: $col5;
+}
+.msg_user, .msg_ai {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    align-items: flex-start;
+}
+.msg_user {
+    justify-content: flex-end;
+}
+.msg_ai {
+    justify-content: flex-start;
+}
+.msg_box_user, .msg_box_ai {
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-size: 14px;
+    max-width: 70%;
+}
+.msg_box_user {
+    background-color: $col1;
+    color: $col6;
+}
+.msg_box_ai {
+    padding-left: 30px;
+    padding-top: 20px;
+    margin-left: 15px;
+    background-color: $col7;
+    color: $col3;
+}
+.ai_img {
+    position: relative;
+}
+.ai_icon {
+    position: absolute;
+    top: 0;
+    left: -2px;
+    width: 40px;
+    height: 40px;
+    background-color: #00B8A8;
+    border-radius: 100%;
+    border: 3px solid white;
+}
+// PATIENT FORM
+.patient_form {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: calc(100% - 60px);
+}
+.input_container {
+    position: relative;
+    margin-top: 25px;
+}
+.input_label {
+    background-color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: $col1;
+    font-size: 12px;
+    font-family: font_M;
+    position: absolute;
+    top: -9px;
+    left: 15px;
+}
+.input_border {
+    border: 1px solid $col1;
+    border-radius: 5px;
+}
+.input_custom {
+    width: 100%;
+    height: auto;
+    padding: 8px 18px;
+    padding-top: 15px;
+    font-size: 14px;
+    color: $col3;
+    background: transparent;
+}
+.card_form {
+    background-color: white;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px #0000003f;
+}
+.card_title {
+    font-family: font_B;
+    font-size: 16px;
+    color: $col3;
+}
+.card_desc {
+    font-size: 14px;
+    color: $col3;
+}
+.card_col_sec {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.card_col_gap {
+    width: 10px;
+    height: 100%;
+}
+.btn_negative {
+    padding: 10px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-left: 5px;
+    width: 100%;
+    white-space: nowrap;
+    border: 1px solid $col1;
+    color: $col1;
+    background-color: white;
+    transition: 0.3s;
+    &:hover {
+        transition: 0.3s;
+        background-color: $col1;
+        color: white;
+    }
+}
+.btn_positive {
+    padding: 10px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-left: 5px;
+    width: 100%;
+    white-space: nowrap;
+    border: 1px solid white;
+    color: white;
+    background-color: $col1;
+    transition: 0.3s;
+    &:hover {
+        transition: 0.3s;
+        border: 1px solid $col2;
+        background-color: $col2;
+        color: white;
+    }
 }
