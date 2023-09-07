@@ -59,7 +59,7 @@ data() {
         messages: [],
         patient_form: [],
         newMessage: '',
-        loader: true,
+        loader: false,
     }
 },
 mounted() {
@@ -91,6 +91,7 @@ methods: {
       this.newMessage = '';
 
       // Loader should start here
+      this.loader = true;
 
       // Scroll to top (delayed)
       setTimeout(() => {
@@ -124,6 +125,7 @@ methods: {
           this.scrollToBottom();
         }, 100);
         // Loader should stop here
+        this.loader = false;
 
       } catch (error) {
         console.error('Error sending message to ChatGPT:', error);
