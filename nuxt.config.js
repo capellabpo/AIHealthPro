@@ -72,7 +72,7 @@ export default {
     port: 3300,
   },
   env: {
-    OPENAI_API_KEY: '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',
+    OPENAI_API_KEY: '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',
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
