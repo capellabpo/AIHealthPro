@@ -2,10 +2,11 @@
 <div class="history">
     <div class="card_form">
         <div class="card_title">Consultation History</div>
-        <div class="card_desc">You can select which dates you'd like to </div>
+        <div class="card_desc">You can choose dates to display your consultation history.</div>
 
         <div class="dateRange">
             <button class="selected" @click="showOption = !showOption">
+                <!-- {{selected_date+''+showOption}} -->
                 {{selected_date}}
             </button>
             <div class="selection" v-show="showOption">
@@ -89,8 +90,7 @@ methods: {
         }
 
         this.showOption = false;
-
-    }
+    },
 }
 
 }
