@@ -39,7 +39,9 @@
         </div>
     </div>
     <div class="foot">
-        You have &nbsp; <b> 12 messages</b> &nbsp; remaining. Sign up for free to send more messages. Read our &nbsp;<a href="#">Terms & Policy</a>
+        <!-- You have &nbsp; <b> 12 messages</b> &nbsp; remaining. Sign up for free to send more messages. Read our &nbsp;<a href="#">Terms & Policy</a> -->
+
+        Sign up for free to send more messages. Read our &nbsp;<a href="#">Terms & Policy</a>
     </div>
 </div>
 </template>
@@ -49,12 +51,16 @@ export default {
 data() {
     return {
         messages: [],
+        patient_form: [],
         newMessage: '',
     }
 },
 mounted() {
   if (localStorage.messages) {
     this.messages = JSON.parse(localStorage.messages);
+  }
+  if (localStorage.patient_form) {
+    this.patient_form = JSON.parse(localStorage.patient_form);
   }
   // Scroll to top (delayed)
   setTimeout(() => {
@@ -71,12 +77,13 @@ methods: {
         this.$router.push({ path: "../dashboard" });
     },
     async sendMessage() {
-      // Loader should start here
       if (this.newMessage.trim() === '') return;
-
+      
       // Add the user's message to the chat
       this.messages.push({ text: this.newMessage, type: 'user' });
       this.newMessage = '';
+
+      // Loader should start here
 
       // Scroll to top (delayed)
       setTimeout(() => {
@@ -88,8 +95,14 @@ methods: {
         const response = await this.$axios.post('https://api.openai.com/v1/chat/completions', {
           model: 'gpt-3.5-turbo',
           messages: [
-            { role: 'system', content: 'You are a helpful assistant.' },
-            { role: 'user', content: this.messages.map((msg) => msg.text).join('\n') },
+            { 
+              role: 'system', 
+              content: 'You are a helpful medical assistant. You will not answer anything outside medical topics. This is my information as a patient, '+JSON.stringify(this.patient_form)
+            },
+            { 
+              role: 'user', 
+              content: this.messages.map((msg) => msg.text).join('\n')
+            },
           ],
         }, {
           headers: {

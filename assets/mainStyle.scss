@@ -340,6 +340,9 @@ $colError: #FF6161;
     font-size: 14px;
     color: $col3;
     background: transparent;
+    &::placeholder {
+        color: #cae0de;
+    }
 }
 .card_form {
     background-color: white;
@@ -379,7 +382,8 @@ $colError: #FF6161;
     transition: 0.3s;
     &:hover {
         transition: 0.3s;
-        background-color: $col1;
+        border: 1px solid $colError;
+        background-color: $colError;
         color: white;
     }
 }
