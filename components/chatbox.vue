@@ -24,6 +24,12 @@
             </div>
                 
           </div>
+
+          <div class="typing_indicator" v-show="loader">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
               
         </div>
 
@@ -53,6 +59,7 @@ data() {
         messages: [],
         patient_form: [],
         newMessage: '',
+        loader: true,
     }
 },
 mounted() {
