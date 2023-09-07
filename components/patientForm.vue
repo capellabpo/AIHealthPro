@@ -10,7 +10,7 @@
                 <div class="input_container">
                     <div class="input_label">Age</div>
                     <div class="input_border">
-                        <input class="input_custom" type="text" placeholder="Years" v-model="age">
+                        <input class="input_custom" type="number" placeholder="Years" v-model="age">
                     </div>
                 </div>
                 <div class="input_container">
@@ -25,13 +25,13 @@
                 <div class="input_container">
                     <div class="input_label">Height</div>
                     <div class="input_border">
-                        <input class="input_custom" type="text" placeholder="in" v-model="height">
+                        <input class="input_custom" type="number" placeholder="in" v-model="height">
                     </div>
                 </div>
                 <div class="input_container">
                     <div class="input_label">Weight</div>
                     <div class="input_border">
-                        <input class="input_custom" type="text" placeholder="kg" v-model="weight">
+                        <input class="input_custom" type="number" placeholder="kg" v-model="weight">
                     </div>
                 </div>
             </div>
@@ -85,19 +85,19 @@
                 <div class="input_container">
                     <div class="input_label">Temperature</div>
                     <div class="input_border">
-                        <input class="input_custom" type="text" placeholder="°F" v-model="temperature">
+                        <input class="input_custom" type="number" placeholder="°F" v-model="temperature">
                     </div>
                 </div>
                 <div class="input_container">
                     <div class="input_label">Respiratory Rate</div>
                     <div class="input_border">
-                        <input class="input_custom" type="text" placeholder="BPM"  v-model="respiratory_rate">
+                        <input class="input_custom" type="number" placeholder="BPM"  v-model="respiratory_rate">
                     </div>
                 </div>
                 <div class="input_container">
                     <div class="input_label">Waistline</div>
                     <div class="input_border">
-                        <input class="input_custom" type="text" placeholder="in"  v-model="waistline">
+                        <input class="input_custom" type="number" placeholder="in"  v-model="waistline">
                     </div>
                 </div>
             </div>
@@ -118,7 +118,7 @@
                 <div class="input_container">
                     <div class="input_label">Hip Line</div>
                     <div class="input_border">
-                        <input class="input_custom" type="text" placeholder="in" v-model="hip_line">
+                        <input class="input_custom" type="number" placeholder="in" v-model="hip_line">
                     </div>
                 </div>
             </div>

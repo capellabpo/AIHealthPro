@@ -340,6 +340,7 @@ $colError: #FF6161;
     font-size: 14px;
     color: $col3;
     background: transparent;
+    text-transform: capitalize;
     &::placeholder {
         color: #cae0de;
     }
