@@ -56,10 +56,11 @@
 export default {
 data() {
     return {
-        messages: [],
-        patient_form: [],
-        newMessage: '',
-        loader: false,
+      messages: [],
+      patient_form: [],
+      newMessage: '',
+      loader: false,
+      
     }
 },
 mounted() {
@@ -73,6 +74,7 @@ mounted() {
   setTimeout(() => {
     this.scrollToBottom();
   }, 100);
+
 },
 watch: {
   messages(newName) {
@@ -105,7 +107,7 @@ methods: {
           messages: [
             { 
               role: 'system', 
-              content: 'You are a helpful medical assistant. You will not answer anything outside medical topics. This is my information as a patient, '+JSON.stringify(this.patient_form)
+              content: 'You are a helpful medical assistant. You will not answer anything outside medical topics. This is my information as a patient, '+JSON.stringify(this.patient_form[this.patient_form.length - 1])
             },
             { 
               role: 'user', 

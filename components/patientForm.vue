@@ -10,7 +10,7 @@
                 <div class="input_container">
                     <div class="input_label">Age</div>
                     <div class="input_border">
-                        <input class="input_custom" type="text" placeholder="Age" v-model="age">
+                        <input class="input_custom" type="text" placeholder="Years" v-model="age">
                     </div>
                 </div>
                 <div class="input_container">
@@ -25,13 +25,13 @@
                 <div class="input_container">
                     <div class="input_label">Height</div>
                     <div class="input_border">
-                        <input class="input_custom" type="text" placeholder="Height" v-model="height">
+                        <input class="input_custom" type="text" placeholder="in" v-model="height">
                     </div>
                 </div>
                 <div class="input_container">
                     <div class="input_label">Weight</div>
                     <div class="input_border">
-                        <input class="input_custom" type="text" placeholder="Weight" v-model="weight">
+                        <input class="input_custom" type="text" placeholder="kg" v-model="weight">
                     </div>
                 </div>
             </div>
@@ -112,7 +112,7 @@
                 <div class="input_container">
                     <div class="input_label">Oxygen Saturation</div>
                     <div class="input_border">
-                        <input class="input_custom" type="text" placeholder="SaO2" v-model="oxygen_saturation">
+                        <input class="input_custom" type="text" placeholder="SpO2" v-model="oxygen_saturation">
                     </div>
                 </div>
                 <div class="input_container">
@@ -255,6 +255,12 @@
         </div>
     </div>
 
+    <!-- ALERT MESSAGE -->
+    <div :class="`notify ${notif.type}`" v-show="notif.show">
+        <fa :icon="['fa', notif.icon]" /> &nbsp;
+        {{ notif.content }}
+    </div>
+
 </div>
 </template>
 
@@ -293,6 +299,12 @@ data() {
         ldl: "",
         egfr: "",
         patient_form: [],
+        notif: {
+            show: false,
+            type: "success",
+            icon: "circle-check",
+            content: "Sample Content"
+        },
     }
 },
 mounted() {
@@ -309,37 +321,51 @@ methods: {
     submitForm() {
         // Push Patient Information to Array
         this.patient_form.push({ 
-            age: this.age,
-            height: this.height,
-            gender: this.gender,
-            weight: this.weight,
-            current_condition: this.current_condition,
-            surgery: this.surgery,
-            allergies: this.allergies,
-            medications: this.medications,
-            hereditary: this.hereditary,
-            temperature: this.temperature,
-            respiratory_rate: this.respiratory_rate,
-            waistline: this.waistline,
-            heart_rate: this.heart_rate,
-            oxygen_saturation: this.oxygen_saturation,
-            hip_line: this.hip_line,
-            diastolic_bp: this.diastolic_bp,
-            albumin: this.albumin,
-            ast: this.ast,
-            calcium: this.calcium,
-            glucose: this.glucose,
-            potassium: this.potassium,
-            triglycerides: this.triglycerides,
-            hdl: this.hdl,
-            alt: this.alt,
-            bun: this.bun,
-            creatinine: this.creatinine,
-            hba1c: this.hba1c,
-            sodium: this.sodium,
-            ldl: this.ldl,
-            egfr: this.egfr,
+            age: this.age ? this.age : "",
+            height: this.height ? this.height+ "in" : "",
+            gender: this.gender? this.gender : "",
+            weight: this.weight? this.weight+ " kg" : "",
+            current_condition: this.current_condition ? this.current_condition : "",
+            surgery: this.surgery ? this.surgery : "",
+            allergies: this.allergies ? this.allergies : "",
+            medications: this.medications ? this.medications : "",
+            hereditary: this.hereditary ? this.hereditary : "",
+            temperature: this.temperaturethis ? this.temperature+ " °F" : "",
+            respiratory_rate: this.respiratory_rate ? this.respiratory_rate+ " BPM" : "",
+            waistline: this.waistline ? this.waistline+ " in" : "",
+            heart_rate: this.heart_rate ? this.heart_rate+ " BPM" : "",
+            oxygen_saturation: this.oxygen_saturation ? this.oxygen_saturation+ " SpO2" : "",
+            hip_line: this.hip_line ? this.hip_line+ " in" : "",
+            diastolic_bp: this.diastolic_bp ? this.diastolic_bp+ " mmHg" : "",
+            albumin: this.albumin ? this.albumin+ " g/dL" : "",
+            ast: this.ast ? this.ast+ " U/L" : "",
+            calcium: this.calcium ? this.calcium+ " Calcium" : "",
+            glucose: this.glucose ? this.glucose+ " mmHg" : "",
+            potassium: this.potassium ? this.potassium+ " mEq/L" : "",
+            triglycerides: this.triglycerides ? this.triglycerides+ " mg/dl" : "",
+            hdl: this.hdl ? this.hdl+ " mg/dl" : "",
+            alt: this.alt ? this.alt+ " U/L" : "",
+            bun: this.bun ? this.bun+ " mg/dL" : "",
+            creatinine: this.creatinine ? this.creatinine+ " mg/dL" : "",
+            hba1c: this.hba1c ? this.hba1c+ " mmol/mol" : "",
+            sodium: this.sodium ? this.sodium+ " mEq/L" : "",
+            ldl: this.ldl ? this.ldl+ " mg/dL" : "",
+            egfr: this.egfr ? this.egfr+ " mL/min/1.73m2" : "",
         });
+        
+        this.notify();
+    },
+    notify() {
+        this.notif = {
+            show: true,
+            type: "success",
+            icon: "circle-check",
+            content: "Your information has been submitted successfully!"
+        }
+
+        setTimeout(() => {
+            this.notif.show = false;
+        }, 5000);
     }
 }
 }
