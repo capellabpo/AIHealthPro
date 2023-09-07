@@ -19,7 +19,7 @@
               </div>
               <div class="msg_box_ai">
                 <!-- {{ id+" - "+ message.text}} -->
-                {{ message.text }}
+                <div v-html="formattedString(message.text)"></div>
               </div>
             </div>
                 
@@ -82,6 +82,9 @@ watch: {
   }
 },
 methods: {
+    formattedString(str) {
+      return str.replace(/\n/g, "<br>");
+    },
     login() {
         this.$router.push({ path: "../dashboard" });
     },
