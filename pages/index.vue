@@ -5,7 +5,9 @@
       <Header/>
     </div>
     <div class="page_body">
-      <div class="page_left"></div>
+      <div class="page_left">
+        <History/>
+      </div>
       <div class="page_chat">
           <Chats/>
       </div>
@@ -20,12 +22,14 @@
 import Header from "../components/header.vue";
 import Chats from "../components/chatbox.vue";
 import Form from "../components/patientForm.vue";
+import History from "../components/history.vue";
 export default {
   name: 'IndexPage',
   components: {
     Header,
     Chats,
-    Form
+    Form,
+    History
   },
 }
 </script>

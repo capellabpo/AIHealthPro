@@ -47,7 +47,8 @@ export default {
         "faBars",
         "faPaperPlane",
         "faTriangleExclamation",
-        "faCircleCheck"
+        "faCircleCheck",
+        "faXmark"
       ],
       brands: [
         "faGoogle",
