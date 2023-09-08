@@ -2,7 +2,8 @@ const axios = require('axios');
 const cors = require('cors'); // Import the cors middleware
 
 const corsOptions = {
-  origin: 'http://localhost:3300', // Allow requests from this origin
+  // origin: 'http://localhost:3300', // Allow requests from this origin
+  origin: 'https://lemon-forest-041754b10.3.azurestaticapps.net', // Allow requests from this origin
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allow these HTTP methods
   credentials: true, // Allow cookies to be sent with the request
 };
