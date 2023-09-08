@@ -1,3 +1,4 @@
+require('dotenv').config();
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -72,7 +73,8 @@ export default {
     port: 3300,
   },
   env: {
-    OPENAI_API_KEY: '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',
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    OPENAI_API: process.env.OPENAI_API
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

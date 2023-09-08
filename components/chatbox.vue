@@ -105,7 +105,7 @@ methods: {
 
       try {
         // Make a request to the ChatGPT API
-        const response = await this.$axios.post('https://api.openai.com/v1/chat/completions', {
+        const response = await this.$axios.post(process.env.OPENAI_API, {
           model: 'gpt-3.5-turbo',
           messages: [
             { 
@@ -131,6 +131,8 @@ methods: {
         }, 100);
         // Loader should stop here
         this.loader = false;
+
+        // SEND CHATS TO DB
 
       } catch (error) {
         console.error('Error sending message to ChatGPT:', error);

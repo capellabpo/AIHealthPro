@@ -89,5 +89,6 @@ sw.*
 # Vim swap files
 *.swp
 
-# NUXT CONFIG< IGNORE ENV
-nuxt.config.js
+# NUXT CONFIG IGNORE ENV
+# nuxt.config.js
+.env
