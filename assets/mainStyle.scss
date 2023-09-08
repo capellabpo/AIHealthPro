@@ -340,11 +340,15 @@ $colError: #FF6161;
     font-size: 14px;
     color: $col3;
     background: transparent;
-    text-transform: capitalize;
+    // text-transform: capitalize;
+    // text-transform: lowercase;
     &::placeholder {
         color: #cae0de;
     }
 }
+// .input_custom:first-letter {
+//     text-transform: capitalize;
+// }
 .card_form {
     background-color: white;
     padding: 20px;
@@ -411,9 +415,14 @@ $colError: #FF6161;
 .typing_indicator {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+}
+.loader {
+    justify-content: center;
+}
+.chat_typing {
     margin-top: 10px;
     padding-left: 30px;
+    justify-content: flex-start;
 }
 .dot {
     width: 10px;
