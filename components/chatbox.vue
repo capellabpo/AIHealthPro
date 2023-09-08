@@ -18,7 +18,8 @@
                 <div class="ai_icon"></div>
               </div>
               <div class="msg_box_ai">
-                {{ id+" - "+ message.text}}
+                <!-- {{ id+" - "+ message.text}} -->
+                {{ message.text}}
                 <!-- <div v-html="formattedString(message.text)"></div> -->
               </div>
             </div>
@@ -80,14 +81,10 @@ watch: {
   messages(newName) {
     localStorage.messages = JSON.stringify(newName);
   },
-  responseData(message) {
-    this.messages.push({ text: message, type: 'bot' });
-  }
+
 },
 computed: {
-  responseData() {
-    return this.$store.state.responseData
-  },
+
 },
 methods: {
     formattedString(str) {
@@ -105,6 +102,7 @@ methods: {
 
       // Loader should start here
       this.loader = true;
+      console.log(this.loader);
 
       // Scroll to top (delayed)
       setTimeout(() => {
@@ -114,29 +112,12 @@ methods: {
       var patient_data = JSON.stringify(this.patient_form[this.patient_form.length - 1]);
       
       try {
-        this.$store.dispatch('sendChat', { patient_data, messages: this.messages });
-        // Make a request to the ChatGPT API
-        // const response = await this.$axios.post(process.env.OPENAI_API, {
-        //   model: 'gpt-3.5-turbo',
-        //   messages: [
-        //     { 
-        //       role: 'system', 
-        //       content: 'You are a helpful medical assistant. You will not answer anything outside medical topics. This is my information as a patient, '+JSON.stringify(this.patient_form[this.patient_form.length - 1])
-        //     },
-        //     { 
-        //       role: 'user', 
-        //       content: this.messages.map((msg) => msg.text).join('\n')
-        //     },
-        //   ],
-        // }, {
-        //   headers: {
-        //     'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-        //   },
-        // });
+        const response = await this.$store.dispatch('sendChat', { patient_data, messages: this.messages });
 
-        // Add ChatGPT's response to the chat
-        // this.messages.push({ text: this.responseData, type: 'bot' });
-        // Scroll to top (delayed)
+        // Add the bot's response to the chat
+        this.messages.push(
+          { text: response, type: 'bot' }
+        );
 
         setTimeout(() => {
           this.scrollToBottom();

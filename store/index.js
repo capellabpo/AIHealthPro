@@ -40,8 +40,9 @@ export const state = () => ({
   
         // Commit the response to the store
         commit('setResponseData', response.data.choices[0].message.content);
-        console.log(patient_data);
-        console.log(response.data.choices[0].message.content);
+        // console.log(patient_data);
+        // console.log(response.data.choices[0].message.content);
+        return response.data.choices[0].message.content;
       } catch (error) {
         console.error(error);
         // Handle error
