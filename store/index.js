@@ -41,11 +41,12 @@ const createStore = () => {
           });
 
           if (type === 'Chat') {
-            console.log("Chat")
+            console.log("Chat");
+            // console.log(patient_data);
             commit('setResponseData', response.data.choices[0].message.content);
             return response.data.choices[0].message.content;
           } else if (type === 'Diagnosis') {
-            console.log("Diagnosis")
+            console.log("Diagnosis");
             commit('pushDiagnosis', response.data.choices[0].message.content);
           }
 

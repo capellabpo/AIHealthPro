@@ -321,16 +321,18 @@ $colError: #FF6161;
     background-color: white;
     padding-left: 5px;
     padding-right: 5px;
-    color: $col1;
+    color: $col2;
     font-size: 12px;
     font-family: font_M;
     position: absolute;
     top: -9px;
     left: 15px;
+    transition: 0.3s;
 }
 .input_border {
-    border: 1px solid $col1;
+    border: 1px solid $col2;
     border-radius: 5px;
+    transition: 0.3s;
 }
 .input_custom {
     width: 100%;
@@ -340,8 +342,6 @@ $colError: #FF6161;
     font-size: 14px;
     color: $col3;
     background: transparent;
-    // text-transform: capitalize;
-    // text-transform: lowercase;
     &::placeholder {
         color: #cae0de;
     }
@@ -349,6 +349,18 @@ $colError: #FF6161;
 // .input_custom:first-letter {
 //     text-transform: capitalize;
 // }
+.input_container:hover {
+    transition: 0.3s;
+    .input_label {
+        transition: 0.3s;
+        color: $col1;
+    }
+    .input_border {
+        transition: 0.3s;
+        border: 1px solid $col1;
+    }
+}
+
 .card_form {
     background-color: white;
     padding: 20px;

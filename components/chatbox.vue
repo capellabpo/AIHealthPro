@@ -55,6 +55,8 @@
   </template>
   
   <script>
+  import moment from 'moment';
+
   export default {
   data() {
       return {
@@ -62,7 +64,7 @@
         patient_form: [],
         newMessage: '',
         loader: false,
-        
+        today: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
       }
   },
   mounted() {
@@ -105,7 +107,7 @@
       addDiag(newval, oldVal) {
         // Add the bot's response to the chat
         this.messages.push(
-          { text: this.$store.state.diagnosisData, type: 'bot' }
+          { text: this.$store.state.diagnosisData, type: 'bot',  createDate: this.today}
         );
 
         // Scroll to top (delayed)
@@ -115,9 +117,9 @@
       },
       async sendMessage() {
         if (this.newMessage.trim() === '') return;
-        
+
         // Add the user's message to the chat
-        this.messages.push({ text: this.newMessage, type: 'user' });
+        this.messages.push({ text: this.newMessage, type: 'user', createDate: this.today});
         this.newMessage = '';
   
         // Loader should start here
@@ -141,9 +143,7 @@
           });
   
           // Add the bot's response to the chat
-          this.messages.push(
-            { text: response, type: 'bot' }
-          );
+          this.messages.push({ text: response, type: 'bot',  createDate: this.today});
   
           setTimeout(() => {
             this.scrollToBottom();
