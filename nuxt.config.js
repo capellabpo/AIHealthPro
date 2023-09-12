@@ -49,7 +49,11 @@ export default {
         "faPaperPlane",
         "faTriangleExclamation",
         "faCircleCheck",
-        "faXmark"
+        "faXmark",
+        "faEye",
+        "faEyeSlash",
+        "faRightToBracket",
+        "faCheck",
       ],
       brands: [
         "faGoogle",

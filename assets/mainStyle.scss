@@ -85,6 +85,8 @@ $col5: #CAF0C1;
 $col6: #F2FBFA;
 $col7: #EEEEEE;
 
+$border: #D0D5DD;
+
 $colError: #FF6161;
 
 // INDEX
@@ -527,4 +529,143 @@ $colError: #FF6161;
         background-color: $col1;
         color: white;
     }
+}
+
+// LOGIN
+.login_page {
+    width:  100vw;
+    height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+.login_card {
+    width: 500px;
+    height: auto;
+    padding: 30px;
+    padding-top: 40px;
+    margin-top: 100px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px #0000003f;
+}
+.login_logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login_logo .header_logo {
+    font-size: 20px;
+}
+.sign_label {
+    font-size: 23px;
+    color: $col3;
+    font-family: font_M;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.sign_label_small {
+    font-size: 14px;
+    color: $col3;
+    font-family: font_M;
+}
+.login_inputs {
+    margin-top: 20px;
+}
+.login_username, .input_icon {
+    display: block;
+}
+.input_icon {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.login_username, .login_password, .pass_icon, .login_btn {
+    border: 1px solid $border;
+    border-radius: 8px;
+    width: 100%;
+    padding: 10px 15px;
+    color: $col3;
+    height: 50px;
+    font-size: 16px;
+}
+.login_password {
+    border-radius: 8px 0 0 8px;
+    border-right: 0px;
+}
+.login_username {
+    &:focus {
+        border: 1px solid $col1;
+    }
+}
+.login_password {
+    &:focus {
+        border: 1px solid $col1;
+        border-right: 0;
+    }
+}
+.pass_icon {
+    border-radius: 0 8px 8px 0;
+    border-left: 0px;
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+    background-color: $col1;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $col1;
+}
+.login_btn {
+    background-color: $col1;
+    color: white;
+    font-size: 16px;
+    transition: 0.3s;
+    &:hover {
+        background-color: $col2;
+        color: white;
+        transition: 0.3s;
+    }
+}
+.login_row, 
+.checkbox_layout, 
+.input_half_1, 
+.input_half_2,
+.check_box,
+.label_notes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.input_half_1 {
+    justify-content: flex-start;
+    width: 50%;
+}
+.input_half_2 {
+    width: 50%;
+    justify-content: flex-end;
+}
+.check_box, .check_box_act {
+    border: 2px solid $border;
+    background-color: transparent;
+    border-radius: 5px;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.checkbox_layout {
+    cursor: pointer;
+}
+.check_box_act {
+    border: 2px solid $col1;
+    background-color: $col1;
+    color: white;
+}
+.forgot_pass {
+    color: $col1;    
+    cursor: pointer;
 }
