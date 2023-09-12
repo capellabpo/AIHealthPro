@@ -54,6 +54,9 @@ export default {
         "faEyeSlash",
         "faRightToBracket",
         "faCheck",
+        "faFolder",
+        "faTrash",
+        "faAngleRight"
       ],
       brands: [
         "faGoogle",

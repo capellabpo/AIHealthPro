@@ -623,7 +623,9 @@ $colError: #FF6161;
     color: white;
     font-size: 16px;
     transition: 0.3s;
+    border: 1px solid $col1;
     &:hover {
+        border: 1px solid $col2;
         background-color: $col2;
         color: white;
         transition: 0.3s;
@@ -668,4 +670,135 @@ $colError: #FF6161;
 .forgot_pass {
     color: $col1;    
     cursor: pointer;
+}
+// SIDE BAR
+.sidebar {
+    position: relative;
+    z-index: 100;
+}
+.sidebar_bg {
+    height: 100%;
+    width: 25%;
+    height: 100vh;
+    background-color: $col3;
+    overflow: hidden;
+    position: absolute;
+}
+.show_sidebar_style {
+    bottom: 0px;
+    left: 0px;
+    animation: slideIn 0.3s;
+}
+.hide_sidebar_style {
+    bottom: 0;
+    left: -25%;
+    animation: slideOut 0.3s;
+}
+@keyframes slideIn {
+    0% { bottom: 0; left: -25%; }
+    100% { bottom: 0; left: 0; }
+}
+@keyframes slideOut {
+    0% { bottom: 0; left: 0; }
+    100% { bottom: 0; left: -25%; }
+}
+.side_content {
+    height: calc(100% - 180px);
+    width: 100%;
+    display: block;
+}
+.side_head, .side_foot {
+    display: block;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.side_btn {
+    width: 60%;
+    height: 38px;
+    border-radius: 5px;
+    background-color: $col1;
+    color: white;
+    font-size: 12px;
+    transition: 0.3s;
+    &:hover {
+        background-color: $col5;
+        color: $col2;
+        transition: 0.3s;
+    }
+}
+.side_btn_head {
+    width: 60%;
+    height: 38px;
+    border-radius: 5px;
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    font-size: 12px;
+    transition: 0.3s;
+    &:hover {
+        border: 1px solid $col1;
+        background-color: $col1;
+        color: white;
+        transition: 0.3s;
+    }
+}
+.side_btn_icon {
+    width: 38px;
+    height: 38px;
+    margin-left: 10px;
+    border-radius: 5px;
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    font-size: 12px;
+    transition: 0.3s;
+    &:hover {
+        border: 1px solid $col1;
+        background-color: $col1;
+        color: white;
+        transition: 0.3s;
+    }
+}
+.side_menu {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 20px;
+}
+.nav_content {
+    width: calc(60% + 68px);
+}
+.side_nav {
+    padding: 10px 15px;
+    color: white;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    cursor: pointer;
+    &:hover {
+        transition: 0.3s;
+        color: $col1;
+    }
+}
+.nav_left, .nav_right {
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+.nav_left {
+    justify-content: flex-start;
+}
+.nav_right {
+    justify-content: flex-end;
+}
+.line {
+    width: 100%;
+    height: 2px;
+    background-color: $col1;
 }

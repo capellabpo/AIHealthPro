@@ -4,7 +4,7 @@
     <div class="page_header">
       <div class="header">
         <div class="header_left">
-            <button class="icon_btn">
+            <button class="icon_btn" @click="show_sidebar = !show_sidebar">
                 <fa :icon="['fa', 'bars']" />
             </button>
             &ensp; 
@@ -34,16 +34,46 @@
       </div>
     </div>
     <div class="page_body">
+      <!-- HISTORY -->
       <div class="page_left">
         <History/>
       </div>
+      <!-- CHATBOX -->
       <div class="page_chat">
           <Chats/>
       </div>
+      <!-- PATIENT FORM -->
       <div class="page_right">
         <Form/>
       </div>
     </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div :class="`sidebar_bg ${show_sidebar ? 'show_sidebar_style' : 'hide_sidebar_style'}`"
+      ref="side_bar">
+
+        <div class="side_head">
+          <button class="side_btn_head">
+            <fa :icon="['fa', 'circle-plus']" /> &nbsp;
+            New Consultation
+          </button>
+          <button class="side_btn_icon" @click="show_sidebar = !show_sidebar">
+            <fa :icon="['fa', 'xmark']" />
+          </button>
+        </div>
+        <div class="side_content">
+          <SideMenu/>
+        </div>
+        <div class="side_foot">
+          <button class="side_btn">
+            Upgrade to Plus
+          </button>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -51,17 +81,25 @@
 import Chats from "../components/chatbox.vue";
 import Form from "../components/patientForm.vue";
 import History from "../components/history.vue";
+import SideMenu from "../components/sidemenu.vue";
 export default {
   name: 'IndexPage',
   components: {
     Chats,
     Form,
-    History
+    History,
+    SideMenu
   },
   data() {
     return {
-
+      show_sidebar: true,
+      side_bar: null, // this.$refs.side_bar
     }
+  },
+  mounted() {
+    // DEAFULT STATE OF SIDEBAR
+    const element = this.$refs.side_bar;
+    element.classList.remove('hide_sidebar_style');
   },
   methods: {
     openLogin() {
@@ -69,7 +107,7 @@ export default {
     },
     openSignUp() {
       this.$router.push({ path: "../register" });
-    } 
+    },
   }
 }
 </script>
