@@ -1,7 +1,7 @@
 <template>
 <div class="side_menu">
     <div class="nav_content">
-        <div class="side_nav">
+        <!-- <div class="side_nav">
             <div class="nav_left">
                 <fa :icon="['fa', 'comment']" /> &ensp;
                 All Chats
@@ -9,11 +9,20 @@
             <div class="nav_right">
                 <fa :icon="['fa', 'angle-right']" />
             </div>
-        </div>
+        </div> -->
         <div class="side_nav">
             <div class="nav_left">
                 <fa :icon="['fa', 'folder']" /> &ensp;
                 My Folder
+            </div>
+            <div class="nav_right">
+                <fa :icon="['fa', 'angle-right']" />
+            </div>
+        </div>
+        <div class="side_nav">
+            <div class="nav_left">
+                <fa :icon="['fa', 'newspaper']" /> &ensp;
+                Articles
             </div>
             <div class="nav_right">
                 <fa :icon="['fa', 'angle-right']" />

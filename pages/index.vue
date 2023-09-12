@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="header_center">
-            <button class="head_btn">
+            <!-- <button class="head_btn">
                 <fa :icon="['fa', 'comment']" /> &nbsp; Chat
             </button>
             <button class="head_btn">
@@ -21,13 +21,25 @@
             </button>
             <button class="head_btn">
                 <fa :icon="['fa', 'newspaper']" /> &nbsp; Articles
+            </button> -->
+            <button class="head_btn_menu">
+                <fa :icon="['fa', 'circle-plus']" /> &nbsp; New Consulation
+            </button>
+            <button class="head_btn_menu">
+                <fa :icon="['fa', 'folder']" /> &nbsp; My Folders
+            </button>
+            <button class="head_btn_menu">
+                <fa :icon="['fa', 'newspaper']" /> &nbsp; Articles
+            </button>
+            <button class="head_btn_menu">
+                <fa :icon="['fa', 'trash']" /> &nbsp; Trash
             </button>
         </div>
         <div class="header_right">
-            <button class="head_btn" @click="openLogin()">
-                <fa :icon="['fa', 'user']" /> &nbsp; Sign In
+            <button class="head_btn_menu" @click="openLogin()">
+                Sign In
             </button>
-            <button class="head_btn special_btn" @click="openSignUp()">
+            <button class="head_btn" @click="openSignUp()">
                 <fa :icon="['fa', 'user-plus']" /> &nbsp; Sign Up
             </button>
         </div>
@@ -92,7 +104,7 @@ export default {
   },
   data() {
     return {
-      show_sidebar: true,
+      show_sidebar: false,
       side_bar: null, // this.$refs.side_bar
     }
   },

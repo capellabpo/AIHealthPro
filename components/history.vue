@@ -20,6 +20,12 @@
         </div>
     </div>
 
+    <div class="notice_container">
+        <div class="notice_img"></div>
+        <div class="notice_title">No History</div>
+        <div class="notice_sub">Sign up now to record every consultations!</div>
+    </div>
+
 </div>
 </template>
 
