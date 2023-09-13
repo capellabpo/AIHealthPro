@@ -41,7 +41,7 @@
       <div class="msg_box">
           <div class="message_box">
               <input type="text" class="box" v-model="newMessage" @keyup.enter="sendMessage" placeholder="Ask your question here">
-              <button class="msg_btn" @click="addDiag">
+              <button class="msg_btn" @click="sendMessage">
                   <fa :icon="['fa', 'paper-plane']" /> &nbsp; Send
               </button>
           </div>
