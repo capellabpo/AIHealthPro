@@ -32,10 +32,10 @@ const createStore = () => {
       async sendChat({ commit }, payload) {
         const { patient_data, messages, type } = payload;
 
-        console.log(patient_data);
-        console.log(messages);
-        console.log(messages.map((msg) => msg.content).join('\n'));
-        console.log(type);
+        // console.log(patient_data);
+        // console.log(messages);
+        // console.log(messages.map((msg) => msg.content).join('\n'));
+        // console.log(type);
         try {
           const response = await this.$axios.post(process.env.OPEN_API, {
             user_message: type === 'Chat' ? messages.map((msg) => msg.content).join('\n') : messages,
