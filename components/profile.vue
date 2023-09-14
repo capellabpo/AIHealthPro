@@ -9,7 +9,7 @@
     </div>
     <div class="input_container">
         <span class="sign_label_small2">Email Address</span>
-        <input type="text" class="input_custom2" placeholder="Name" :value=email disabled>
+        <input type="text" class="input_custom2" placeholder="Email" :value=email disabled>
     </div>
 
     
@@ -70,8 +70,8 @@
 export default {
     data() {
         return {
-            username: 'Kenn',
-            email: 'sample@email.com',
+            username: '',
+            email: '',
             current_password: '',
             new_password: '',
             confirm_password: '',
@@ -80,6 +80,16 @@ export default {
             show_confirm_pass: false,
 
             changePass: false
+        }
+    },
+    mounted() {
+        // GET USER'S NAME
+        if (localStorage.username) {
+            this.username = localStorage.username;
+        }
+        // GET USER'S EMAIL
+        if (localStorage.email) {
+            this.email = localStorage.email
         }
     },
     methods: {

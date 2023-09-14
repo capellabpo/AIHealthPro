@@ -8,6 +8,7 @@ const createStore = () => {
       diagnosisData: 'No Diagnosis',
       showLogin: false,
       showRegister: false,
+      is_logged_in: false,
     },
     mutations: {
       setResponseData(state, data) {
@@ -21,6 +22,9 @@ const createStore = () => {
       },
       setRegister(state, data) {
         state.showRegister = data;
+      },
+      user_is_in(state, data) {
+        state.is_logged_in = data;
       }
     },
     actions: {
@@ -64,7 +68,7 @@ const createStore = () => {
         commit('setRegister', false);
       },
       // REGISTER
-      openRegister({commit}) {
+      async openRegister({commit}, registrationData) {
         commit('setLogin', false);
         commit('setRegister', true);
       },
@@ -72,7 +76,80 @@ const createStore = () => {
       closeModals({commit}) {
         commit('setLogin', false);
         commit('setRegister', false);
+      },
+      // REGISTER NEW USER
+      async registerNewUser({commit}, registrationData) {
+        const { user_name, user_email, user_password } = registrationData;
+
+        console.log(`${process.env.DB_BASE}/api/users/signup`);
+        console.log(user_name);
+        console.log(user_email);
+        console.log(user_password);
+
+        try {
+          const response = await this.$axios.post(`${process.env.DB_BASE}/api/users/signup`, {
+            name: user_name,
+            email: user_email,
+            password: user_password
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if(response.data.token) {
+            localStorage.token = String(response.data.token);
+            localStorage.username = String(response.data.name);
+            localStorage.email = String(response.data.email);
+            return 1;
+          }
+          else {
+            return 0;
+          }
+          
+        } catch (error) {
+          console.error(error);
+          return "Error from Try Catch", error;
+          // Handle error
+        }
+      },
+      // LOGIN USER
+      async loginUser({commit}, loginUser) {
+        const { user_email, user_password } = loginUser;
+
+        console.log(user_email);
+        console.log(user_password);
+
+        try {
+          const response = await this.$axios.post(`${process.env.DB_BASE}/api/users/signin`, {
+            email: user_email,
+            password: user_password
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if(response.data.token) {
+            localStorage.token = String(response.data.token);
+            localStorage.email = String(response.data.email);
+            localStorage.username = String(response.data.name);
+            return 1;
+          }
+          else {
+            return 0;
+          }
+          
+        } catch (error) {
+          console.error(error);
+          return "Error from Try Catch", error;
+          // Handle error
+        }
       }
+
+
     },
   });
 };

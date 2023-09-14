@@ -61,7 +61,7 @@
             </button>
         </div>
         <div class="header_right">
-          <div class="head_profile" v-if="!loggedIn">
+          <div class="head_profile" v-if="!user_token">
             <button class="head_btn_menu" @click="openLogin()">
               Sign In
             </button>
@@ -208,10 +208,11 @@ export default {
       side_bar: null, // this.$refs.side_bar
       show_login: false,
       show_register: false,
-      loggedIn: true,
-      username: 'Kenn',
-      show_settings: true,
+      loggedIn: false,
+      username: '',
+      show_settings: false,
       show_setting_selection: false,
+      user_token: '',
       selected_setting: {},
       setting_options: [
         { setting: 'Profile', id: 'setting1', icon: 'user'},
@@ -231,9 +232,19 @@ export default {
     const settings = this.$refs.settings_bar;
     settings.classList.remove('hide_settings_style');
     this.selected_setting = {
-      setting: 'Settings',
-      id: 'setting2'
+      setting: 'Profile',
+      id: 'setting1'
     };
+
+    // GET TOKEN FROM LOCAL STORAGE
+    if (localStorage.token) {
+      this.user_token = String(localStorage.token);
+    }
+    // GET USER'S NAME
+    if (localStorage.username) {
+      const name = String(localStorage.username).split(' ')[0];
+      this.username = name;
+    }
   },
   watch: {
     '$store.state.showLogin':function(newVal, oldVal) {
@@ -260,8 +271,12 @@ export default {
     chooseSetting(val) {
       this.show_setting_selection = false;
       if(val.id == 'setting5') {
-        this.loggedIn = false;
-        this.show_settings = false;
+        localStorage.removeItem("username");
+        localStorage.removeItem("email");
+        localStorage.removeItem("token");
+        
+        window.location.reload();
+
       }
       else if(val.id == 'setting4') {
         // NAVIGATE TO HELP PAGE

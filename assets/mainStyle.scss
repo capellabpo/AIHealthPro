@@ -1241,3 +1241,11 @@ $colError2: #bd4747;
     background-color: $col1;
     justify-content: flex-end;
 }
+.errorMess {
+    color: $colError;
+    font-size: 12px;
+    font-family: font_M;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}

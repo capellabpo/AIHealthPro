@@ -10,12 +10,12 @@
     </div>
     <div class="login_inputs">
         <span class="sign_label_small">Email</span>
-        <input type="text" class="login_username" placeholder="Email">
+        <input type="text" class="login_username" placeholder="Email" v-model="user_email">
     </div>
     <div class="login_inputs">
         <span class="sign_label_small">Password</span>
         <div class="input_icon">
-            <input :type="(password ? 'password' : 'text')" class="login_password" placeholder="Password">
+            <input :type="(password ? 'password' : 'text')" class="login_password" placeholder="Password" v-model="user_password" @keyup.enter="openDashboard">
             <button class="pass_icon" @click="password = !password">
                 <fa :icon="['fa', (password ? 'eye' : 'eye-slash')]" />
             </button>
@@ -37,9 +37,19 @@
         </div>
     </div>
     <div class="login_inputs">
-        <button class="login_btn" @click="openDashboard()">
-            Sign in
+        <button class="login_btn" @click="openDashboard" v-if="!loader">
+            Sign In
         </button>
+
+        <div class="loader_container" v-else>
+            <div class="typing_indicator loader">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+
+        <div class="errorMess" v-show="showError">{{ showError }}</div>
     </div>
     <div class="login_inputs">
         <div class="label_notes">
@@ -57,6 +67,11 @@ data() {
     return {
         password: true,
         remember: false,
+
+        user_email: '',
+        user_password: '',
+        loader: false,
+        showError: '',
     }
 },
 methods: {
@@ -66,8 +81,25 @@ methods: {
     openRegister() {
         this.$store.dispatch('openRegister');
     },
-    openDashboard() {
-        
+    async openDashboard() {
+        this.loader = true;
+        this.showError = '';
+        const response = await this.$store.dispatch('loginUser', { 
+            user_email: this.user_email,
+            user_password: this.user_password
+        });
+
+        // console.log(response);
+        if(response == 1) {
+            // SUCCESS
+            window.location.reload();
+        }
+        else  {
+            // FAILED
+            this.loader = false;
+            this.showError = response.response.data;
+            console.log(response.response.data);
+        }
     },
 }
 }

@@ -89,6 +89,7 @@ export default {
   },
   env: {
     OPEN_API: process.env.OPEN_API,
+    DB_BASE: process.env.DB_BASE,
     // OPEN_API_KEY: process.env.OPEN_API_KEY,
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build

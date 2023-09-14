@@ -13,22 +13,36 @@
         <div class="sign_label_small" style="text-align: center;">To get started, please create an account so you can access exclusive content and personalized recommendations.</div>
     </div>
     <div class="login_inputs">
+        <span class="sign_label_small">Name</span>
+        <input type="text" class="login_username" placeholder="Enter your name" v-model="newUsername">
+    </div>
+    <div class="login_inputs">
         <span class="sign_label_small">Email</span>
-        <input type="text" class="login_username" placeholder="Email">
+        <input type="text" class="login_username" placeholder="Enter your email" v-model="newEmail">
     </div>
     <div class="login_inputs">
         <span class="sign_label_small">Password</span>
         <div class="input_icon">
-            <input :type="(password ? 'password' : 'text')" class="login_password" placeholder="Password">
+            <input :type="(password ? 'password' : 'text')" class="login_password" placeholder="Password"  v-model="newPassword" @keyup.enter="openDashboard">
             <button class="pass_icon" @click="password = !password">
                 <fa :icon="['fa', (password ? 'eye' : 'eye-slash')]" />
             </button>
         </div>
     </div>
     <div class="login_inputs">
-        <button class="login_btn" @click="openDashboard()">
+        <button class="login_btn" @click="openDashboard()" v-if="!loader">
             Get Started
         </button>
+
+        <div class="loader_container" v-else>
+            <div class="typing_indicator loader">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+
+        <div class="errorMess" v-show="showError">{{ showError }}</div>
     </div>
     <div class="login_inputs">
         <div class="label_notes">
@@ -47,14 +61,39 @@
         return {
             password: true,
             remember: false,
+
+            newUsername: '',
+            newEmail: '',
+            newPassword: '',
+
+            loader: false,
+            showError: '',
         }
     },
     methods: {
         openLogin() {
             this.$store.dispatch('openLogin');
         },
-        openDashboard() {
-            // this.$router.push({ path: "/" });
+        async openDashboard() {
+            this.loader = true;
+            this.showError = '';
+            const response = await this.$store.dispatch('registerNewUser', { 
+                user_name: this.newUsername,
+                user_email: this.newEmail,
+                user_password: this.newPassword
+            });
+
+            console.log(response);
+            if(response == 1) {
+                // SUCCESS
+                window.location.reload();
+            }
+            else  {
+                // FAILED
+                this.loader = false;
+                this.showError = response.response.data;
+                console.log(response.response.data);
+            }
         },
     }
     }
