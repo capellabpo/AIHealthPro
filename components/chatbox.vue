@@ -135,15 +135,21 @@
           var patient_data = JSON.stringify(this.patient_form[this.patient_form.length - 1]);
   
           // console.log(patient_data);
+          // console.log(this.messages);
   
           const response = await this.$store.dispatch('sendChat', { 
             patient_data, 
             messages: this.messages,
             type: "Chat"
           });
+
+          // EMPTY MESSAGE
+          // this.newMessage = '';
   
           // Add the bot's response to the chat
           this.messages.push({ content: response, role: 'bot',  createDate: this.today});
+
+          
   
           setTimeout(() => {
             this.scrollToBottom();

@@ -32,9 +32,13 @@ const createStore = () => {
       async sendChat({ commit }, payload) {
         const { patient_data, messages, type } = payload;
 
+        console.log(patient_data);
+        console.log(messages);
+        console.log(messages.map((msg) => msg.content).join('\n'));
+        console.log(type);
         try {
           const response = await this.$axios.post(process.env.OPEN_API, {
-            user_message: type === 'Chat' ? messages.map((msg) => msg.text).join('\n') : messages,
+            user_message: type === 'Chat' ? messages.map((msg) => msg.content).join('\n') : messages,
             system_message: 'You are a helpful medical assistant. You will not answer anything outside medical topics. This is my information as a patient, ' + patient_data,
             message_history: []
           },
@@ -47,12 +51,12 @@ const createStore = () => {
 
           // console.log(response.data.response);
           if (type === 'Chat') {
-            console.log("Chat");
+            // console.log("Chat");
             // console.log(patient_data);
             commit('setResponseData', response.data.response);
             return response.data.response;
           } else if (type === 'Diagnosis') {
-            console.log("Diagnosis");
+            // console.log("Diagnosis");
             commit('pushDiagnosis', response.data.response);
           }
 
