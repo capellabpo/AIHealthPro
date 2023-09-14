@@ -49,14 +49,20 @@ export default {
         "faPaperPlane",
         "faTriangleExclamation",
         "faCircleCheck",
-        "faXmark",
+        "faXmark",  
         "faEye",
         "faEyeSlash",
         "faRightToBracket",
         "faCheck",
         "faFolder",
         "faTrash",
-        "faAngleRight"
+        "faAngleRight",
+        "faAngleDown",
+        "faCaretDown",
+        "faGear",
+        "faLifeRing",
+        "faCircleInfo",
+        "faRightFromBracket"
       ],
       brands: [
         "faGoogle",
@@ -67,6 +73,7 @@ export default {
         "faPinterest",
         "faVuejs",
         "faReact",
+        
       ]
     }
   },

@@ -1,6 +1,7 @@
 <template>
     <div class="patient_form">
-        
+        <div class="form_scroll">
+
         <!-- Basic Information -->
         <div class="card_form">
             <div class="card_title">Basic Information</div>
@@ -248,10 +249,10 @@
         </div>
     
         <!-- BUTTONS -->
-        <div class="card_form">
+        <div class="form_btns">
             <div class="card_col_sec" v-if="loader == false">
                 <div class="card_col">
-                    <div class="form_btns">
+                    <div class="form_btns2">
                         <button class="btn_negative" @click="clearFields()">
                             <fa :icon="['fa', 'paper-plane']" /> &nbsp; Clear
                         </button>
@@ -261,7 +262,7 @@
                 <div class="card_col_gap"></div>
     
                 <div class="card_col">
-                    <div class="form_btns">
+                    <div class="form_btns2">
                         <button class="btn_positive" @click="submitForm()">
                             <fa :icon="['fa', 'paper-plane']" /> &nbsp; Submit Information
                         </button>
@@ -269,11 +270,16 @@
                 </div>
             </div>
     
-            <div class="typing_indicator loader" v-else-if="loader == true">
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
+            <div class="loader_container" v-else>
+                <div class="typing_indicator loader">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
             </div>
+
+        </div>
+
         </div>
     
         <!-- ALERT MESSAGE -->
@@ -372,8 +378,8 @@
     },
     watch: {
         patient_form(patient_data) {
-        localStorage.patient_form = JSON.stringify(patient_data);
-      }
+            localStorage.patient_form = JSON.stringify(patient_data);
+        }
     },
     methods: {
         async submitForm() {
@@ -424,6 +430,40 @@
                 type: "Diagnosis"
             });
             this.notify();
+        },
+        clearFields() {
+            var form = "";
+            this.age = "";
+            this.height = "";
+            this.gender = "";
+            this.weight = "";
+            this.symptoms = "";
+            this.current_condition = "";
+            this.surgery = "";
+            this.allergies = "";
+            this.medications = "";
+            this.hereditary = "";
+            this.temperaturethis = "";
+            this.respiratory_rate = "";
+            this.waistline = "";
+            this.heart_rate = "";
+            this.oxygen_saturation = "";
+            this.hip_line = "";
+            this.diastolic_bp = "";
+            this.albumin = "";
+            this.ast = "";
+            this.calcium = "";
+            this.glucose = "";
+            this.potassium = "";
+            this.triglycerides = "";
+            this.hdl = "";
+            this.alt = "";
+            this.bun = "";
+            this.creatinine = "";
+            this.hba1c = "";
+            this.sodium = "";
+            this.ldl = "";
+            this.egfr = "";
         },
         notify() {
             this.loader = false;

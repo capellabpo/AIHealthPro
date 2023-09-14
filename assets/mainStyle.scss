@@ -2,17 +2,18 @@
     font-family: font_R;
     src: url(poppins_regular.ttf);
 }
-
 @font-face {
     font-family: font_M;
     src: url(poppins_medium.ttf);
 }
-
 @font-face {
     font-family: font_B;
     src: url(poppins_bold.ttf);
 }
-
+@font-face {
+    font-family: font_SB;
+    src: url(poppins_semibold.ttf);
+}
 @font-face {
     font-family: font_BL;
     src: url(poppins_black.ttf);
@@ -110,7 +111,14 @@ $colError: #FF6161;
     width: 25%;
     height: 100%;
     background-color: $col6;
+    // background-color: white;
 }
+// .page_left {
+//     border-right: 1px solid $border;
+// }
+// .page_right {
+//     border-left: 1px solid $border;
+// }
 .page_chat {
     width: 50%;
     height: 100%;
@@ -332,6 +340,25 @@ $colError: #FF6161;
     overflow-x: hidden;
     height: calc(100% - 60px);
 }
+.form_btns {
+    background-color: white;
+    width: 25%;
+    height: 60px;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    box-shadow: 10px -5px 10px 0px #00000028;
+}
+.form_btns2 {
+    background-color: white;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.form_scroll {
+    margin-bottom: 65px;
+}
 .input_container {
     position: relative;
     margin-top: 25px;
@@ -379,13 +406,12 @@ $colError: #FF6161;
         border: 1px solid $col1;
     }
 }
-
 .card_form {
     background-color: white;
     padding: 20px;
-    margin: 10px;
+    margin: 5px;
     border-radius: 10px;
-    box-shadow: 0px 0px 10px 0px #0000003f;
+    box-shadow: 0px 0px 10px 0px #00000028;
 }
 .card_title {
     font-family: font_B;
@@ -395,6 +421,7 @@ $colError: #FF6161;
 .card_desc {
     font-size: 14px;
     color: $col3;
+    margin-top: 10px;
 }
 .card_col_sec {
     display: flex;
@@ -449,6 +476,13 @@ $colError: #FF6161;
 }
 .loader {
     justify-content: center;
+}
+.loader_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 60px;
 }
 .chat_typing {
     margin-top: 10px;
@@ -530,18 +564,19 @@ $colError: #FF6161;
     left: 0px;
     background-color: white;
     border-radius: 5px;
-    padding: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     box-shadow: 0px 0px 10px 0px #0000003f;
 }
 .select {
     background-color: white;
-    padding: 8px 15px;
+    padding: 8px 20px;
     font-size: 12px;
     border-radius: 5px;
     transition: 0.3s;
     cursor: pointer;
     &:hover {
-        border-radius: 5px;
+        border-radius: 0px;
         transition: 0.3s;
         background-color: $col1;
         color: white;
@@ -598,6 +633,27 @@ $colError: #FF6161;
 }
 .login_logo .header_logo {
     font-size: 20px;
+}
+.head_profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.head_username {
+    color: white;
+    font-family: font_M;
+}
+.profile_btn {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    font-family: font_M;
+    padding: 0px;
+    color: $col2;
+    background-color: $col5;
+    border: 3px solid white;
+    border-radius: 100%;
+    margin-left: 10px;
 }
 .sign_label {
     font-size: 23px;
@@ -876,4 +932,248 @@ $colError: #FF6161;
     font-family: font_R;
     text-align: center;
     width: 100%;
+}
+// SETTINGS
+.settings {
+    position: relative;
+    z-index: 100;
+}
+.settings_bar {
+    height: 100%;
+    width: 25%;
+    height: 100vh;
+    background-color: white;
+    overflow: hidden;
+    position: absolute;
+    border-left: 1px solid $border;
+}
+.show_settings_style {
+    bottom: 0px;
+    right: 0px;
+    animation: slideIn2 0.3s;
+}
+.hide_settings_style  {
+    bottom: 0;
+    right: -25%;
+    animation: slideOut2 0.3s;
+}
+@keyframes slideIn2 {
+    0% { bottom: 0; right: -25%; }
+    100% { bottom: 0; right: 0; }
+}
+@keyframes slideOut2 {
+    0% { bottom: 0; right: 0; }
+    100% { bottom: 0; right: -25%; }
+}
+.select_settings_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.selected_setting {
+    width: 100%;
+    height: 38px;
+    border-radius: 5px;
+    background-color: transparent;
+    border: 1px solid $border;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.button_div1, .button_div2 {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    padding-right: 10px;
+    padding-left: 10px;
+    color: $col3;
+    font-size: 14px;
+}
+.button_div1 {
+    font-family: font_SB;
+    justify-content: flex-start;
+}
+.button_div2 {
+    justify-content: flex-end;
+}
+.select_settings {
+    position: relative;
+}
+.options_container {
+    position: absolute;
+    top: 20px;
+    left: 1px;
+    width: auto;
+    height: auto;
+    background-color: white;
+    border-radius: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    box-shadow: 0px 0px 10px 0px #0000003f;
+    z-index: 100;
+}
+.side_btn_icon_2 {
+    min-width: 38px;
+    height: 38px;
+    margin-left: 10px;
+    border-radius: 5px;
+    background-color: transparent;
+    border: 1px solid $border;
+    color: $border;
+    font-size: 12px;
+    transition: 0.3s;
+    &:hover {
+        border: 1px solid $col1;
+        background-color: $col1;
+        color: white;
+        transition: 0.3s;
+    }
+}
+.settings_options {
+    background-color: white;
+    padding: 8px 20px;
+    font-size: 12px;
+    border-radius: 5px;
+    transition: 0.3s;
+    white-space: nowrap;
+    color: $col3;
+    cursor: pointer;
+    &:hover {
+        border-radius: 0px;
+        transition: 0.3s;
+        background-color: $col1;
+        color: white;
+    }
+    transition: 0.3s;
+}
+.setting_icon {
+    color: $col2;
+    transition: 0.3s;
+}
+.settings_options {
+    transition: 0.3s;
+    &:hover {
+        .setting_icon {
+            color: white;
+        }
+    }
+}
+.settings_component {
+    height: calc(100% - 138px);
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.components {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    padding-top: 0px;
+}
+.card_title2 {
+    margin-top: 20px;
+    font-size: 18px;
+    font-family: font_M;
+}
+.sign_label_small2 {
+    font-size: 13px;
+    font-family: font_M;
+    color: $col1;
+}
+.input_custom2 {
+    width: 100%;
+    height: 38px;
+    border-radius: 5px;
+    background-color: transparent;
+    border: 1px solid $border;
+    padding: 8px 15px;
+    transition: 0.3s;
+    font-size: 14px;
+    color: $col3;
+    &:hover {
+        transition: 0.3s;
+        border: 1px solid $col1;
+    }
+    &:focus {
+        transition: 0.3s;
+        border: 1px solid $col1;
+    }
+    &[type="text"]:disabled {
+        background-color: $col7;
+        border: 1px solid $col7;
+        color: $col2;
+    }
+}
+.input_custom2_btn {
+    min-width: 38px;
+    height: 38px;
+    border-radius: 5px;
+    background-color: transparent;
+    color: $border;
+    border: 1px solid $border;
+    margin-left: 10px;
+    transition: 0.3s;
+    &:hover {
+        transition: 0.3s;
+        border: 1px solid $col1;
+        background-color: $col1;
+        color: white;
+    }
+}
+.btn_active {
+    background-color: $col1;
+    color: white;
+    border: 1px solid $col1;
+}
+.input_custom2_btn2 {
+    width: auto;
+    height: 38px;
+    border-radius: 5px;
+    background-color: $col1;
+    color: white;
+    margin-left: 10px;
+    padding: 5px 20px;
+    font-size: 14px;
+    transition: 0.3s;
+    &:hover {
+        transition: 0.3s;
+        background-color: $col2;
+    }
+}
+.input_custom2_btn3 {
+    width: auto;
+    height: 38px;
+    border-radius: 5px;
+    background-color: transparent;
+    border: 1px solid $col1;
+    color: $col1;
+    margin-left: 10px;
+    padding: 5px 20px;
+    font-size: 14px;
+    transition: 0.3s;
+    &:hover {
+        transition: 0.3s;
+        color: white;
+        border: 1px solid $col2;
+        background-color: $col2;
+    }
+}
+.btn_container_right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.input_container2 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.note_line {
+    width: 100%;
+    height: 1px;
+    background-color: $border;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }

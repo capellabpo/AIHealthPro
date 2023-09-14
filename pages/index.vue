@@ -61,12 +61,22 @@
             </button>
         </div>
         <div class="header_right">
+          <div class="head_profile" v-if="!loggedIn">
             <button class="head_btn_menu" @click="openLogin()">
-                Sign In
+              Sign In
             </button>
             <button class="head_btn" @click="openSignUp()">
-                <fa :icon="['fa', 'user-plus']" /> &nbsp; Sign Up
+              <fa :icon="['fa', 'user-plus']" /> &nbsp; Sign Up
             </button>
+          </div>
+          <div class="head_profile" v-else>
+            <div class="head_username">
+                Hi, {{ username }}
+            </div>
+            <button class="profile_btn" @click="show_settings = !show_settings">
+              {{ username ? username[0] : '' }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -111,6 +121,61 @@
       </div>
     </div>
 
+    <!-- SETTINGS -->
+    <div class="settings">
+      <div :class="`settings_bar ${show_settings ? 'show_settings_style' : 'hide_settings_style'}`" ref="settings_bar">
+
+        <!-- Selection -->
+        <div class="select_settings_container">
+
+          <div class="select_settings" v-show="show_setting_selection">
+            <div class="options_container">
+              <div class="settings_options" 
+              v-for="(settings, x) in setting_options"
+              :key="x+settings.id"
+              @click="chooseSetting(settings)">
+
+                <span class="setting_icon">
+                  <fa :icon="['fa', settings.icon]" /> &nbsp;
+                </span>
+                {{ settings.setting }}
+
+              </div>
+            </div>
+          </div>
+          
+          <button class="selected_setting" @click="show_setting_selection = !show_setting_selection">
+            <div class="button_div1">
+              {{ selected_setting.setting }}
+            </div>
+            <div class="button_div2">
+              <fa :icon="['fa', 'angle-down']" />
+            </div>
+          </button>
+
+          <button class="side_btn_icon_2" @click="show_settings = !show_settings">
+            <fa :icon="['fa', 'xmark']" />
+          </button>
+          
+        </div>
+
+        <!-- SETTINGS COMPONENTS -->
+        <div class="settings_component">
+          
+          <div class="components" v-if="selected_setting.id == 'setting1'">
+            <Profile/>
+          </div>
+          <div class="components" v-else-if="selected_setting.id == 'setting2'">
+            <Settings/>
+          </div>
+          <div class="components" v-else-if="selected_setting.id == 'setting3'">
+            <Plan/>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -121,6 +186,9 @@ import History from "../components/history.vue";
 import SideMenu from "../components/sidemenu.vue";
 import Login from "../pages/login.vue";
 import Register from "../pages/register.vue";
+import Plan from "../components/plans.vue";
+import Profile from "../components/profile.vue";
+import Settings from "../components/settings.vue";
 export default {
   name: 'IndexPage',
   components: {
@@ -129,7 +197,10 @@ export default {
     History,
     SideMenu,
     Login,
-    Register
+    Register,
+    Plan,
+    Profile,
+    Settings
   },
   data() {
     return {
@@ -137,12 +208,32 @@ export default {
       side_bar: null, // this.$refs.side_bar
       show_login: false,
       show_register: false,
+      loggedIn: true,
+      username: 'Kenn',
+      show_settings: false,
+      show_setting_selection: false,
+      selected_setting: {},
+      setting_options: [
+        { setting: 'Profile', id: 'setting1', icon: 'user'},
+        { setting: 'Settings', id: 'setting2', icon: 'gear'},
+        { setting: 'Plan', id: 'setting3', icon: 'life-ring'},
+        { setting: 'Help & FAQs', id: 'setting4', icon: 'circle-info'},
+        { setting: 'Logout', id: 'setting5', icon: 'right-from-bracket'},
+      ]
     }
   },
   mounted() {
     // DEAFULT STATE OF SIDEBAR
-    const element = this.$refs.side_bar;
-    element.classList.remove('hide_sidebar_style');
+    const sidebar = this.$refs.side_bar;
+    sidebar.classList.remove('hide_sidebar_style');
+
+    // DEAFULT STATE OF SETTINGS
+    const settings = this.$refs.settings_bar;
+    settings.classList.remove('hide_settings_style');
+    this.selected_setting = {
+      setting: 'Profile',
+      id: 'setting1'
+    };
   },
   watch: {
     '$store.state.showLogin':function(newVal, oldVal) {
@@ -154,6 +245,9 @@ export default {
     },
   },
   methods: {
+    openSettings() {
+      this.show_settings = !this.show_settings;
+    },
     openLogin() {
       this.$store.dispatch('openLogin');
     },
@@ -162,7 +256,23 @@ export default {
     },
     closeModals() {
       this.$store.dispatch('closeModals');
-    }
+    },
+    chooseSetting(val) {
+      this.show_setting_selection = false;
+      if(val.id == 'setting5') {
+        this.loggedIn = false;
+        this.show_settings = false;
+      }
+      else if(val.id == 'setting4') {
+        // NAVIGATE TO HELP PAGE
+      }
+      else {
+        this.selected_setting = {
+          setting: val.setting,
+          id: val.id
+        };
+      }
+    },
 
   }
 }
