@@ -210,7 +210,7 @@ export default {
       show_register: false,
       loggedIn: true,
       username: 'Kenn',
-      show_settings: false,
+      show_settings: true,
       show_setting_selection: false,
       selected_setting: {},
       setting_options: [
@@ -231,8 +231,8 @@ export default {
     const settings = this.$refs.settings_bar;
     settings.classList.remove('hide_settings_style');
     this.selected_setting = {
-      setting: 'Profile',
-      id: 'setting1'
+      setting: 'Settings',
+      id: 'setting2'
     };
   },
   watch: {

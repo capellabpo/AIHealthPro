@@ -1,7 +1,7 @@
 <template>
 <div class="settings_content">
+    <div class="card_title">Personal Info</div>
     <div class="card_desc">Update your profile here.</div>
-    <div class="note_line"></div>
 
     <div class="input_container">
         <span class="sign_label_small2">Name</span>

@@ -90,6 +90,7 @@ $col8: #868686;
 $border: #D0D5DD;
 
 $colError: #FF6161;
+$colError2: #bd4747;
 
 // INDEX
 .mainPage {
@@ -414,8 +415,8 @@ $colError: #FF6161;
     box-shadow: 0px 0px 10px 0px #00000028;
 }
 .card_title {
-    font-family: font_B;
-    font-size: 16px;
+    font-family: font_M;
+    font-size: 18px;
     color: $col3;
 }
 .card_desc {
@@ -1160,6 +1161,21 @@ $colError: #FF6161;
         background-color: $col2;
     }
 }
+.input_custom2_btn4 {
+    width: auto;
+    height: 38px;
+    border-radius: 5px;
+    background-color: $colError;
+    color: white;
+    margin-left: 10px;
+    padding: 5px 20px;
+    font-size: 14px;
+    transition: 0.3s;
+    &:hover {
+        transition: 0.3s;
+        background-color: $colError2;
+    }
+}
 .btn_container_right {
     display: flex;
     align-items: center;
@@ -1176,4 +1192,52 @@ $colError: #FF6161;
     background-color: $border;
     margin-top: 20px;
     margin-bottom: 20px;
+}
+.custom_toggle_container {
+    width: 100%;
+    margin-top: 20px;
+}
+.toggle_icon_text {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.toggle_box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.toggle_text {
+    width: calc(100% - 50px);
+    padding-left: 10px;
+}
+.toggle_holder {
+    max-width: 35px;
+    max-height: 20px;
+    min-width: 35px;
+    min-height: 20px;
+    background-color: $border;
+    border-radius: 10px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+.toggle_circle {
+    max-width: 16px;
+    max-height: 16px;
+    min-width: 16px;
+    min-height: 16px;
+    border-radius: 100%;
+    background-color: white;
+    transition: 0.3s;
+}
+.toggle_holder_active {
+    transition: 0.3s;
+    background-color: $col1;
+    justify-content: flex-end;
 }
