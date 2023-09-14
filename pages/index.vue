@@ -1,6 +1,31 @@
 
 <template>
   <div class="mainPage">
+
+    <!-- LOGIN MODAL -->
+    <div class="modal_bg" v-show="show_login">
+      <div class="close_modal">
+        <button type="button" class="close_modal_btn" @click="closeModals">
+          <fa :icon="['fa', 'xmark']" />
+        </button>
+      </div>
+      <div class="modal_container">
+        <Login/>
+      </div>
+    </div>
+
+    <!-- REGISTER -->
+    <div class="modal_bg" v-show="show_register">
+      <div class="close_modal">
+        <button type="button" class="close_modal_btn" @click="closeModals">
+          <fa :icon="['fa', 'xmark']" />
+        </button>
+      </div>
+      <div class="modal_container">
+        <Register/>
+      </div>
+    </div>
+
     <div class="page_header">
       <div class="header">
         <div class="header_left">
@@ -94,18 +119,24 @@ import Chats from "../components/chatbox.vue";
 import Form from "../components/patientForm.vue";
 import History from "../components/history.vue";
 import SideMenu from "../components/sidemenu.vue";
+import Login from "../pages/login.vue";
+import Register from "../pages/register.vue";
 export default {
   name: 'IndexPage',
   components: {
     Chats,
     Form,
     History,
-    SideMenu
+    SideMenu,
+    Login,
+    Register
   },
   data() {
     return {
       show_sidebar: false,
       side_bar: null, // this.$refs.side_bar
+      show_login: false,
+      show_register: false,
     }
   },
   mounted() {
@@ -113,13 +144,26 @@ export default {
     const element = this.$refs.side_bar;
     element.classList.remove('hide_sidebar_style');
   },
+  watch: {
+    '$store.state.showLogin':function(newVal, oldVal) {
+      this.show_login = newVal;
+    },
+    '$store.state.showRegister':function(newVal, oldVal) {
+      // console.log(newVal);
+      this.show_register = newVal;
+    },
+  },
   methods: {
     openLogin() {
-      this.$router.push({ path: "../login" });
+      this.$store.dispatch('openLogin');
     },
     openSignUp() {
-      this.$router.push({ path: "../register" });
+      this.$store.dispatch('openRegister');
     },
+    closeModals() {
+      this.$store.dispatch('closeModals');
+    }
+
   }
 }
 </script>

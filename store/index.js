@@ -6,6 +6,8 @@ const createStore = () => {
     state: {
       responseData: null,
       diagnosisData: 'No Diagnosis',
+      showLogin: false,
+      showRegister: false,
     },
     mutations: {
       setResponseData(state, data) {
@@ -14,8 +16,15 @@ const createStore = () => {
       pushDiagnosis(state, data) {
         state.diagnosisData = data;
       },
+      setLogin(state, data) {
+        state.showLogin = data;
+      },
+      setRegister(state, data) {
+        state.showRegister = data;
+      }
     },
     actions: {
+      // CHATS
       async sendChat({ commit }, payload) {
         const { patient_data, messages, type } = payload;
 
@@ -48,6 +57,22 @@ const createStore = () => {
           // Handle error
         }
       },
+
+      // LOGIN
+      openLogin({commit}) {
+        commit('setLogin', true);
+        commit('setRegister', false);
+      },
+      // REGISTER
+      openRegister({commit}) {
+        commit('setLogin', false);
+        commit('setRegister', true);
+      },
+      // CLOSE LOGIN AND REGISTER MODALS
+      closeModals({commit}) {
+        commit('setLogin', false);
+        commit('setRegister', false);
+      }
     },
   });
 };

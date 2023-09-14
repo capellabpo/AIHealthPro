@@ -7,20 +7,20 @@
             
             <div class="message" v-for="(message, id) in messages" :key="id" :id="id">
               
-              <div class="msg_user" v-if="message.type === 'user'">
+              <div class="msg_user" v-if="message.role === 'user'">
                 <div class="msg_box_user">
                   <!-- {{ id+" - "+ message.text}} -->
-                  {{ message.text }}
+                  {{ message.content }}
                 </div>
               </div>
-              <div class="msg_ai" v-else-if="message.type === 'bot'">
+              <div class="msg_ai" v-else-if="message.role === 'bot'">
                 <div class="ai_img">
                   <div class="ai_icon"></div>
                 </div>
                 <div class="msg_box_ai">
                   <!-- {{ id+" - "+ message.text}} -->
                   <!-- {{ message.text}} -->
-                  <div v-html="formattedString(message.text)"></div>
+                  <div v-html="formattedString(message.content)"></div>
                 </div>
               </div>
                   
@@ -107,7 +107,7 @@
       addDiag(newval, oldVal) {
         // Add the bot's response to the chat
         this.messages.push(
-          { text: this.$store.state.diagnosisData, type: 'bot',  createDate: this.today}
+          { content: this.$store.state.diagnosisData, role: 'bot',  createDate: this.today}
         );
 
         // Scroll to top (delayed)
@@ -119,7 +119,7 @@
         if (this.newMessage.trim() === '') return;
 
         // Add the user's message to the chat
-        this.messages.push({ text: this.newMessage, type: 'user', createDate: this.today});
+        this.messages.push({ content: this.newMessage, role: 'user', createDate: this.today});
         this.newMessage = '';
   
         // Loader should start here
@@ -143,7 +143,7 @@
           });
   
           // Add the bot's response to the chat
-          this.messages.push({ text: response, type: 'bot',  createDate: this.today});
+          this.messages.push({ content: response, role: 'bot',  createDate: this.today});
   
           setTimeout(() => {
             this.scrollToBottom();
