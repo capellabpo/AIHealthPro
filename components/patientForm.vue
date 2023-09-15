@@ -26,7 +26,7 @@
                     <div class="input_container">
                         <div class="input_label">Height</div>
                         <div class="input_border">
-                            <input class="input_custom" type="number" placeholder="in" v-model="height">
+                            <input class="input_custom" type="number" placeholder="ft" v-model="height">
                         </div>
                     </div>
                     <div class="input_container">
@@ -389,7 +389,7 @@
             // Push Patient Information to Array
             this.patient_form.push({ 
                 age: this.age ? this.age : "",
-                height: this.height ? this.height+ "in" : "",
+                height: this.height ? this.height+ " ft" : "",
                 gender: this.gender? this.gender : "",
                 weight: this.weight? this.weight+ " kg" : "",
                 symptoms: this.symptoms? this.symptoms : "",
