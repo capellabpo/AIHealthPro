@@ -61,6 +61,7 @@ export default {
         "faRightFromBracket",
         "faMars",
         "faVenus",
+        "faTransgender",
       ],
       brands: [
         "faGoogle",

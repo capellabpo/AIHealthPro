@@ -395,7 +395,9 @@
             patient_form: [],
             sex: [
                 { name: 'Male', id: 'sex_male', icon: 'mars'},
-                { name: 'Female', id: 'sex_female', icon: 'venus'}
+                { name: 'Female', id: 'sex_female', icon: 'venus'},
+                { name: 'Transman', id: 'sex_transman', icon: 'transgender'},
+                { name: 'Transwoman', id: 'sex_transwoman', icon: 'transgender'},
             ],
             show_sex_options: false,
             notif: {
