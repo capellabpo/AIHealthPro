@@ -86,7 +86,7 @@ export default {
   },
   env: {
     OPEN_API: "https://api-aihealthpros.azurewebsites.net/chat/",
-    DB_BASE: "https://api-node-aihealthpros.azurewebsites.net/",
+    DB_BASE: "https://api-node-aihealthpros.azurewebsites.net",
     // OPEN_API_KEY: process.env.OPEN_API_KEY,
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build

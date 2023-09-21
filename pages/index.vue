@@ -47,16 +47,16 @@
             <button class="head_btn">
                 <fa :icon="['fa', 'newspaper']" /> &nbsp; Articles
             </button> -->
-            <button class="head_btn_menu">
+            <button class="head_btn_menu" @click="header_buttons('New')">
                 <fa :icon="['fa', 'circle-plus']" /> &nbsp; New Consulation
             </button>
-            <button class="head_btn_menu">
+            <button class="head_btn_menu" @click="header_buttons('Folders')">
                 <fa :icon="['fa', 'folder']" /> &nbsp; My Folders
             </button>
-            <button class="head_btn_menu">
+            <button class="head_btn_menu" @click="header_buttons('Articles')">
                 <fa :icon="['fa', 'newspaper']" /> &nbsp; Articles
             </button>
-            <button class="head_btn_menu">
+            <button class="head_btn_menu" @click="header_buttons('Trash')">
                 <fa :icon="['fa', 'trash']" /> &nbsp; Trash
             </button>
         </div>
@@ -256,6 +256,31 @@ export default {
     },
   },
   methods: {
+    header_buttons(clicked) {
+      if(this.user_token) {
+        if(clicked == "New") {
+          // alert("New Consultation");
+          // GENERATE CONSULTATION ID
+          const randomPart = Math.floor(Math.random() * 10000);
+          const timestamp = new Date().getTime();
+          const uniqueID = `${timestamp}-${randomPart}`;
+          alert(uniqueID);
+        }
+        else if(clicked == "Folders") {
+          alert("My Folders");
+        }
+        else if(clicked == "Articles") {
+          alert("Articles");
+        }
+        else if(clicked == "Trash") {
+          alert("Trash");
+        }
+      }
+      else {
+        this.$store.dispatch('openRegister');
+      }
+      
+    },
     openSettings() {
       this.show_settings = !this.show_settings;
     },
