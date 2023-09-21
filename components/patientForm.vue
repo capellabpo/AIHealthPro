@@ -14,26 +14,89 @@
                             <input class="input_custom" type="number" placeholder="Years" v-model="age">
                         </div>
                     </div>
-                    <div class="input_container">
-                        <div class="input_label">Gender</div>
-                        <div class="input_border">
-                            <input class="input_custom" type="text" placeholder="Gender" v-model="gender">
-                        </div>
-                    </div>
                 </div>
                 <div class="card_col_gap"></div>
                 <div class="card_col">
                     <div class="input_container">
-                        <div class="input_label">Height</div>
+                        <div class="input_label">Sex</div>
                         <div class="input_border">
-                            <input class="input_custom" type="number" placeholder="ft" v-model="height">
+                            <!-- <input class="input_custom" type="text" placeholder="Gender" v-model="gender"> -->
+                    
+                            <!-- SEX SELECT -->
+                            <div class="select_settings_container_2">
+
+                                <div class="select_settings" v-show="show_sex_options">
+                                    <div class="options_container">
+                                        <div class="settings_options" v-for="(sex_choice, x) in sex" :key="x+sex_choice.id" @click="chooseSex(sex_choice)">
+
+                                        <span class="setting_icon">
+                                            <fa :icon="['fa', sex_choice.icon]" /> &nbsp;
+                                        </span>
+                                        {{ sex_choice.name }}
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button class="selected_setting_2" @click="show_sex_options = !show_sex_options">
+                                    <div class="button_div1">
+                                        {{ gender }}
+                                    </div>
+                                    <div class="button_div2">
+                                        <fa :icon="['fa', 'angle-down']" />
+                                    </div>
+                                </button>   
+                            </div>
                         </div>
                     </div>
-                    <div class="input_container">
-                        <div class="input_label">Weight</div>
-                        <div class="input_border">
-                            <input class="input_custom" type="number" placeholder="kg" v-model="weight">
-                        </div>
+
+                </div>
+            </div>
+            <div class="card_col">
+                <div class="input_container">
+                    <div class="input_label">Height</div>
+                    <div class="input_border">
+                        <input class="input_custom" type="number" :placeholder="unit_height" v-model="height">
+                    </div>
+                    <div class="input_unit_choices">
+                        <button type="button" 
+                        :class="`unit_choice ${unit_height == 'ft' ? 'unit_choice_actv' : ''}`"
+                        @click="change_height_unit('ft')">
+                            feet
+                        </button>
+                        <button type="button" 
+                        :class="`unit_choice ${unit_height == 'in' ? 'unit_choice_actv' : ''}`"
+                        @click="change_height_unit('in')">
+                            inches
+                        </button>
+                        <button type="button" 
+                        :class="`unit_choice ${unit_height == 'm' ? 'unit_choice_actv' : ''}`"
+                        @click="change_height_unit('m')">
+                            meters
+                        </button>
+                        <button type="button" 
+                        :class="`unit_choice ${unit_height == 'cm' ? 'unit_choice_actv' : ''}`"
+                        @click="change_height_unit('cm')">
+                            centimeters
+                        </button>
+                    </div>
+                </div>
+                <div class="input_container">
+                    <div class="input_label">Weight</div>
+                    <div class="input_border">
+                        <input class="input_custom" type="number" :placeholder="unit_weight" v-model="weight">
+                    </div>
+                    <div class="input_unit_choices">
+                        <button type="button" 
+                        :class="`unit_choice ${unit_weight == 'kg' ? 'unit_choice_actv' : ''}`"
+                        @click="change_weight_unit('kg')">
+                            kilogram
+                        </button>
+                        <button type="button" 
+                        :class="`unit_choice ${unit_weight == 'lb' ? 'unit_choice_actv' : ''}`"
+                        @click="change_weight_unit('lb')">
+                            pounds
+                        </button>
                     </div>
                 </div>
             </div>
@@ -300,6 +363,8 @@
             height: "",
             gender: "",
             weight: "",
+            unit_height: "ft",
+            unit_weight: "kg",
             symptoms: "",
             current_condition: "",
             surgery: "",
@@ -328,6 +393,11 @@
             ldl: "",
             egfr: "",
             patient_form: [],
+            sex: [
+                { name: 'Male', id: 'sex_male', icon: 'mars'},
+                { name: 'Female', id: 'sex_female', icon: 'venus'}
+            ],
+            show_sex_options: false,
             notif: {
                 show: false,
                 type: "success",
@@ -345,8 +415,10 @@
         var form = this.patient_form[this.patient_form.length - 1];
         this.age = form.age;
         this.height = parseFloat(form.height);
+        this.unit_height = form.height.split(" ")[1];
         this.gender = form.gender;
         this.weight = parseFloat(form.weight);
+        this.weight = form.weight.split(" ")[1];
         this.symptoms = form.symptoms;
         this.current_condition = form.current_condition;
         this.surgery = form.surgery;
@@ -382,6 +454,17 @@
         }
     },
     methods: {
+        change_height_unit(unit) {
+            this.unit_height = unit;
+        },
+        change_weight_unit(unit) {
+            this.unit_weight = unit;
+        },
+        chooseSex(sex) {
+            console.log(sex)
+            this.gender = sex.name;
+            this.show_sex_options = !this.show_sex_options;
+        },
         async submitForm() {
             // Loader
             this.loader = true;
@@ -389,9 +472,9 @@
             // Push Patient Information to Array
             this.patient_form.push({ 
                 age: this.age ? this.age : "",
-                height: this.height ? this.height+ " ft" : "",
+                height: this.height ? this.height+" "+this.unit_height : "",
                 gender: this.gender? this.gender : "",
-                weight: this.weight? this.weight+ " kg" : "",
+                weight: this.weight? this.weight+" "+this.unit_weight : "",
                 symptoms: this.symptoms? this.symptoms : "",
                 current_condition: this.current_condition ? this.current_condition : "",
                 surgery: this.surgery ? this.surgery : "",

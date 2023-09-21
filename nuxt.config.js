@@ -59,6 +59,8 @@ export default {
         "faLifeRing",
         "faCircleInfo",
         "faRightFromBracket",
+        "faMars",
+        "faVenus",
       ],
       brands: [
         "faGoogle",
