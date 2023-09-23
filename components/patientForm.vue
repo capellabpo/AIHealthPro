@@ -5,7 +5,9 @@
         <!-- Basic Information -->
         <div class="card_form">
             <div class="card_title">Basic Information</div>
-            <div class="card_desc">Provide your personal and medical details to receive results that are better suited to your interest and needs. <br> {{ current_consultation_id }}</div>
+            <div class="card_desc">Provide your personal and medical details to receive results that are better suited to your interest and needs. 
+                <!-- <br> {{ current_consultation_id }} -->
+            </div>
             <div class="card_col_sec">
                 <div class="card_col">
                     <div class="input_container">
@@ -318,7 +320,7 @@
                     <div class="card_col_gap"></div>
                     <div class="form_btns2">
                         <button class="btn_negative" @click="clearFields()">
-                            <fa :icon="['fa', 'paper-plane']" /> &nbsp; Clear
+                            <fa :icon="['fa', 'eraser']" /> &nbsp; Clear
                         </button>
                     </div>
                 </div>
@@ -363,7 +365,7 @@
         return {
             age: "",
             height: "",
-            gender: "",
+            gender: "Select",
             weight: "",
             unit_height: "ft",
             unit_weight: "kg",
@@ -396,6 +398,7 @@
             egfr: "",
             patient_form: [],
             current_consultation_id: "",
+            current_user_id: "",
             sex: [
                 { name: 'Male', id: 'sex_male', icon: 'mars'},
                 { name: 'Female', id: 'sex_female', icon: 'venus'},
@@ -414,55 +417,67 @@
         }
     },
     mounted() {
-      if (localStorage.patient_form) {
-        this.patient_form = JSON.parse(localStorage.patient_form);
-        // console.log(this.patient_form[this.patient_form.length - 1]);
-        var form = this.patient_form[this.patient_form.length - 1];
-        this.age = form.age;
-        this.height = form.height ? parseFloat(form.height) : "";
-        this.unit_height = form.height ? form.height.split(" ")[1] : "";
-        this.gender = form.gender;
-        this.weight = form.weight ? parseFloat(form.weight) : "";
-        this.unit_weight = form.weight ? form.weight.split(" ")[1] : "";
-        this.symptoms = form.symptoms;
-        this.current_condition = form.current_condition;
-        this.surgery = form.surgery;
-        this.allergies = form.allergies;
-        this.medications = form.medications;
-        this.hereditary = form.hereditary;
-        this.temperaturethis = form.temperature ? parseFloat(form.temperature) : "";
-        this.respiratory_rate = form.respiratory_rate ? parseFloat(form.respiratory_rate) : "";
-        this.waistline = form.waistline ? parseFloat(form.waistline) : "";
-        this.heart_rate = form.heart_rate;
-        this.oxygen_saturation = form.oxygen_saturation;
-        this.hip_line = form.hip_line ? parseFloat(form.hip_line) : "";
-        this.diastolic_bp = form.diastolic_bp;
-        this.albumin = form.albumin;
-        this.ast = form.ast;
-        this.calcium = form.calcium;
-        this.glucose = form.glucose;
-        this.potassium = form.potassium;
-        this.triglycerides = form.triglycerides;
-        this.hdl = form.hdl;
-        this.alt = form.alt;
-        this.bun = form.bun;
-        this.creatinine = form.creatinine;
-        this.hba1c = form.hba1c;
-        this.sodium = form.sodium;
-        this.ldl = form.ldl;
-        this.egfr = form.egfr;
-      }
+        //GET USER ID
+        if (localStorage.user_id) {
+            this.current_user_id = localStorage.user_id;
+        } 
+
+        // GET PATIENT FORM DATA
+         if (localStorage.patient_form) {
+            this.patient_form = JSON.parse(localStorage.patient_form);
+            // console.log(this.patient_form[this.patient_form.length - 1]);
+            var form = this.patient_form[this.patient_form.length - 1];
+            this.age = form.age;
+            this.height = form.height ? parseFloat(form.height) : "";
+            this.unit_height = form.height ? form.height.split(" ")[1] : "";
+            this.gender = form.gender;
+            this.weight = form.weight ? parseFloat(form.weight) : "";
+            this.unit_weight = form.weight ? form.weight.split(" ")[1] : "";
+            this.symptoms = form.symptoms;
+            this.current_condition = form.current_condition;
+            this.surgery = form.surgery;
+            this.allergies = form.allergies;
+            this.medications = form.medications;
+            this.hereditary = form.hereditary;
+            this.temperaturethis = form.temperature ? parseFloat(form.temperature) : "";
+            this.respiratory_rate = form.respiratory_rate ? parseFloat(form.respiratory_rate) : "";
+            this.waistline = form.waistline ? parseFloat(form.waistline) : "";
+            this.heart_rate = form.heart_rate;
+            this.oxygen_saturation = form.oxygen_saturation;
+            this.hip_line = form.hip_line ? parseFloat(form.hip_line) : "";
+            this.diastolic_bp = form.diastolic_bp;
+            this.albumin = form.albumin;
+            this.ast = form.ast;
+            this.calcium = form.calcium;
+            this.glucose = form.glucose;
+            this.potassium = form.potassium;
+            this.triglycerides = form.triglycerides;
+            this.hdl = form.hdl;
+            this.alt = form.alt;
+            this.bun = form.bun;
+            this.creatinine = form.creatinine;
+            this.hba1c = form.hba1c;
+            this.sodium = form.sodium;
+            this.ldl = form.ldl;
+            this.egfr = form.egfr;
+        }
     },
     watch: {
         // GET PATIENT FORM
         patient_form(patient_data) {
             localStorage.patient_form = JSON.stringify(patient_data);
         },
-
         // CURRENT CONSULTATION ID
         '$store.state.current_consultation':function(newVal, oldVal) {
             this.current_consultation_id = newVal;
         },
+        // CLEAR ALL AFTER CLICKING NEW CONSULATION
+        '$store.state.clearAll':function(newValue, oldValue) {
+        // console.log('Watcher triggered:', newValue, oldValue);
+        if(newValue == true) {
+            this.clearFields();
+        }
+    },
     },
     methods: {
         change_height_unit(unit) {
@@ -472,7 +487,7 @@
             this.unit_weight = unit;
         },
         chooseSex(sex) {
-            console.log(sex)
+            // console.log(sex)
             this.gender = sex.name;
             this.show_sex_options = !this.show_sex_options;
         },
@@ -517,20 +532,44 @@
             });
     
             var form = JSON.stringify(this.patient_form[this.patient_form.length - 1]);
-    
+            
+            // SEND PATIENT INFO TO CHATBOT
             await this.$store.dispatch('sendChat', { 
                 patient_data: form, 
                 messages: this.command,
                 type: "Diagnosis"
             });
-            this.notify();
+
+            if(localStorage.userId) { //CHECK IF USER IS LOGGED IN
+                this.notify();
+                // SAVE PATIENT FORM IF LOGGED IN
+                const res = await this.$store.dispatch('savePatientData', { 
+                    patient_data: this.patient_form[this.patient_form.length - 1], 
+                    consultation_id: this.current_consultation_id,
+                    user_id: "Diagnosis"
+                });
+
+                // RESPONSES
+                if(res == 1) {
+                    if(localStorage.userId) { //CHECK IF USER IS LOGGED IN
+                        this.notify();
+                    }
+                }
+                else {
+                    this.notifyError();
+                }
+            }
+
+            
         },
         clearFields() {
             var form = "";
             this.age = "";
             this.height = "";
-            this.gender = "";
+            this.unit_height = "ft";
+            this.gender = "Select";
             this.weight = "";
+            this.unit_weight = "kg";
             this.symptoms = "";
             this.current_condition = "";
             this.surgery = "";
@@ -566,6 +605,19 @@
                 type: "success",
                 icon: "circle-check",
                 content: "Your information has been submitted successfully!"
+            }
+    
+            setTimeout(() => {
+                this.notif.show = false;
+            }, 5000);
+        },
+        notifyError() {
+            this.loader = false;
+            this.notif = {
+                show: true,
+                type: "fail",
+                icon: "triangle-exclamation",
+                content: "Failed to save your information. Please check our internet connection."
             }
     
             setTimeout(() => {

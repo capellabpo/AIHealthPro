@@ -230,6 +230,14 @@ export default {
       this.current_consultation_id = String(localStorage.consultationID);
       this.$store.commit('setCurrentConsultation', this.current_consultation_id);
     }
+    else {
+      // GENERATE CONSULTATION ID
+      const randomPart = Math.floor(Math.random() * 10000);
+      const timestamp = new Date().getTime();
+      const uniqueID = `${timestamp}-${randomPart}`;
+      localStorage.setItem("consultationID", uniqueID);
+      this.$store.commit('setCurrentConsultation', uniqueID);
+    }
 
     // DEAFULT STATE OF SIDEBAR
     const sidebar = this.$refs.side_bar;
@@ -276,6 +284,13 @@ export default {
           const uniqueID = `${timestamp}-${randomPart}`;
           localStorage.setItem("consultationID", uniqueID);
           this.$store.commit('setCurrentConsultation', uniqueID);
+
+          // REMOVE CURRENT MESSAGES AND PATIENT DATA
+          localStorage.removeItem("messages");
+          localStorage.removeItem("patient_form");
+
+          // CLEAR CHATBOX & FORM
+          this.$store.commit('clearChatbox', true);
         }
         else if(clicked == "Folders") {
           alert("My Folders");
@@ -310,6 +325,7 @@ export default {
         localStorage.removeItem("username");
         localStorage.removeItem("email");
         localStorage.removeItem("token");
+        localStorage.removeItem("userId");
         
         window.location.reload();
 

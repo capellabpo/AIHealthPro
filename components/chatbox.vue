@@ -85,8 +85,13 @@
       localStorage.messages = JSON.stringify(newName);
     },
     '$store.state.diagnosisData':function(newValue, oldValue) {
-      console.log('Watcher triggered:', newValue, oldValue);
       this.addDiag(newValue, oldValue);
+    },
+    '$store.state.clearAll':function(newValue, oldValue) {
+      // console.log('Watcher triggered:', newValue, oldValue);
+      if(newValue == true) {
+        this.messages = [];
+      }
     },
   },
   computed: {
@@ -120,6 +125,19 @@
 
         // Add the user's message to the chat
         this.messages.push({ content: this.newMessage, role: 'user', createDate: this.today});
+
+        if(localStorage.token) { //CHECK IF USER IS LOGGED IN
+          // SAVE CHAT
+          const response = await this.$store.dispatch('saveChats', { 
+            token: localStorage.token,
+            consulation_id: localStorage.consultationID,
+            user_id: localStorage.userId,
+            user_role: 'user',
+            chat_content: this.newMessage
+          });
+        }
+
+        // EMPTY NEW MESSAGE
         this.newMessage = '';
   
         // Loader should start here
@@ -147,7 +165,20 @@
           // this.newMessage = '';
   
           // Add the bot's response to the chat
-          this.messages.push({ content: response, role: 'bot',  createDate: this.today});
+          // console.log(response);
+          // console.log(response.data);
+          var reply = response.response;
+          this.messages.push({ content: reply, role: 'bot',  createDate: this.today});
+          if(localStorage.token) { //CHECK IF USER IS LOGGED IN
+          // SAVE CHAT
+          const response = await this.$store.dispatch('saveChats', { 
+            token: localStorage.token,
+            consulation_id: localStorage.consultationID,
+            user_id: localStorage.userId,
+            user_role: 'bot',
+            chat_content: reply
+          });
+        }
 
           
   

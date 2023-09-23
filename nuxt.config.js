@@ -62,6 +62,7 @@ export default {
         "faMars",
         "faVenus",
         "faTransgender",
+        "faEraser"
       ],
       brands: [
         "faGoogle",

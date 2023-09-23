@@ -565,6 +565,10 @@ $colError2: #bd4747;
     background-color: $col5;
     color: $col2;
 }
+.fail {
+    background-color: $colError;
+    color: white;
+}
 
 // Date Range
 .dateRange {

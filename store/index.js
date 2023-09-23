@@ -10,6 +10,7 @@ const createStore = () => {
       showRegister: false,
       is_logged_in: false,
       current_consultation: "",
+      clearAll: false
     },
     mutations: {
       setResponseData(state, data) {
@@ -29,9 +30,80 @@ const createStore = () => {
       },
       setCurrentConsultation(state, data) {
         state.current_consultation = data;
+      },
+      clearChatbox(state, data) {
+        state.clearAll = data;
       }
     },
     actions: {
+      // SAVE CHATS
+      async saveChats({ commit }, payload) {
+
+        const { token, consulation_id, user_id, user_role, chat_content } = payload;
+        console.log(payload);
+        try {
+          const response = await this.$axios.post(`${process.env.DB_BASE}/api/chatbot/consulation`, {
+            token: token,
+            consulationId: consulation_id,
+            userId: user_id,
+            role: user_role,
+            content: chat_content
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          console.log(response);
+          // REPONSE SHOULD CONTAIN THE CHAT LIMIT
+          if(response.status === 200) {
+            return 1;
+          }
+          else {
+            return 0;
+          }
+
+        } catch (error) {
+          console.log("Saving Patient Form Error:",error);
+          return 0;
+        }
+
+      },
+      // SAVE PATIENT FORM DATA
+      async savePatientData({ commit }, payload) {
+
+        const { patient_data, consultation_id, user_id } = payload;
+        // console.log(patient_data);
+        // console.log(consultation_id);
+        // console.log(user_id);
+        try {
+          const response = await this.$axios.post(`${process.env.DB_BASE}/api/chatbot/patientForm`, {
+            consultationId: consultation_id,
+            patientInfo: patient_data,
+            userId: user_id
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          // console.log(response);
+          if(response.status === 200) {
+            return 1;
+          }
+          else {
+            return 0;
+          }
+          // commit('setResponseData', response.data.response);
+          // return response.data.response;
+        } catch (error) {
+          console.log("Saving Patient Form Error:",error);
+          return 0;
+        }
+
+      },
       // GRAB IP
       async ipGrabber({ commit }) {
         try {
@@ -45,14 +117,14 @@ const createStore = () => {
             },
           });
 
-          console.log(response);
-          if(response.response) {
-            console.log(response.response.data);
-          }
+          // console.log(response);
+          // if(response.response) {
+          //   console.log(response.response.data);
+          // }
         }
         catch (error) {
-          console.log('IP Grabber error:', error.response.data);
-          console.log('IP Grabber error:', error.response);
+          // console.log('IP Grabber error:', error.response.data);
+          // console.log('IP Grabber error:', error.response);
         }
       },
       // CHATS
@@ -63,6 +135,10 @@ const createStore = () => {
         // console.log(messages);
         // console.log(messages.map((msg) => msg.content).join('\n'));
         // console.log(type);
+
+        // CLEAR CHATBOX & FORM: SET TO TRUE (Because it's false by default)
+        commit('clearChatbox', false);
+
         try {
           const response = await this.$axios.post(process.env.OPEN_API, {
             user_message: type === 'Chat' ? messages.map((msg) => msg.content).join('\n') : messages,
@@ -81,7 +157,7 @@ const createStore = () => {
             // console.log("Chat");
             // console.log(patient_data);
             commit('setResponseData', response.data.response);
-            return response.data.response;
+            return response.data;
           } else if (type === 'Diagnosis') {
             // console.log("Diagnosis");
             commit('pushDiagnosis', response.data.response);
@@ -89,6 +165,7 @@ const createStore = () => {
 
         } catch (error) {
           console.log(error);
+          return error;
           // Handle error
         }
       },
@@ -133,6 +210,7 @@ const createStore = () => {
             localStorage.token = String(response.data.token);
             localStorage.username = String(response.data.name);
             localStorage.email = String(response.data.email);
+            localStorage.userId = String(response.data._id);
             return 1;
           }
           else {
@@ -167,6 +245,7 @@ const createStore = () => {
             localStorage.token = String(response.data.token);
             localStorage.email = String(response.data.email);
             localStorage.username = String(response.data.name);
+            localStorage.userId = String(response.data._id);
             return 1;
           }
           else {
