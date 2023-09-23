@@ -220,10 +220,17 @@ export default {
         { setting: 'Plan', id: 'setting3', icon: 'life-ring'},
         { setting: 'Help & FAQs', id: 'setting4', icon: 'circle-info'},
         { setting: 'Logout', id: 'setting5', icon: 'right-from-bracket'},
-      ]
+      ],
+      current_consultation_id: '',
     }
   },
   mounted() {
+    // GET CONSULTATION ID
+    if (localStorage.consultationID) {
+      this.current_consultation_id = String(localStorage.consultationID);
+      this.$store.commit('setCurrentConsultation', this.current_consultation_id);
+    }
+
     // DEAFULT STATE OF SIDEBAR
     const sidebar = this.$refs.side_bar;
     sidebar.classList.remove('hide_sidebar_style');
@@ -267,7 +274,8 @@ export default {
           const randomPart = Math.floor(Math.random() * 10000);
           const timestamp = new Date().getTime();
           const uniqueID = `${timestamp}-${randomPart}`;
-          alert(uniqueID);
+          localStorage.setItem("consultationID", uniqueID);
+          this.$store.commit('setCurrentConsultation', uniqueID);
         }
         else if(clicked == "Folders") {
           alert("My Folders");

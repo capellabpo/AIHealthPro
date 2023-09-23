@@ -5,7 +5,7 @@
         <!-- Basic Information -->
         <div class="card_form">
             <div class="card_title">Basic Information</div>
-            <div class="card_desc">Provide your personal and medical details to receive results that are better suited to your interest and needs.</div>
+            <div class="card_desc">Provide your personal and medical details to receive results that are better suited to your interest and needs. <br> {{ current_consultation_id }}</div>
             <div class="card_col_sec">
                 <div class="card_col">
                     <div class="input_container">
@@ -395,6 +395,7 @@
             ldl: "",
             egfr: "",
             patient_form: [],
+            current_consultation_id: "",
             sex: [
                 { name: 'Male', id: 'sex_male', icon: 'mars'},
                 { name: 'Female', id: 'sex_female', icon: 'venus'},
@@ -418,23 +419,23 @@
         // console.log(this.patient_form[this.patient_form.length - 1]);
         var form = this.patient_form[this.patient_form.length - 1];
         this.age = form.age;
-        this.height = parseFloat(form.height);
-        this.unit_height = form.height.split(" ")[1];
+        this.height = form.height ? parseFloat(form.height) : "";
+        this.unit_height = form.height ? form.height.split(" ")[1] : "";
         this.gender = form.gender;
-        this.weight = parseFloat(form.weight);
-        this.weight = form.weight.split(" ")[1];
+        this.weight = form.weight ? parseFloat(form.weight) : "";
+        this.unit_weight = form.weight ? form.weight.split(" ")[1] : "";
         this.symptoms = form.symptoms;
         this.current_condition = form.current_condition;
         this.surgery = form.surgery;
         this.allergies = form.allergies;
         this.medications = form.medications;
         this.hereditary = form.hereditary;
-        this.temperaturethis = parseFloat(form.temperature);
-        this.respiratory_rate = parseFloat(form.respiratory_rate);
-        this.waistline = parseFloat(form.waistline);
+        this.temperaturethis = form.temperature ? parseFloat(form.temperature) : "";
+        this.respiratory_rate = form.respiratory_rate ? parseFloat(form.respiratory_rate) : "";
+        this.waistline = form.waistline ? parseFloat(form.waistline) : "";
         this.heart_rate = form.heart_rate;
         this.oxygen_saturation = form.oxygen_saturation;
-        this.hip_line = parseFloat(form.hip_line);
+        this.hip_line = form.hip_line ? parseFloat(form.hip_line) : "";
         this.diastolic_bp = form.diastolic_bp;
         this.albumin = form.albumin;
         this.ast = form.ast;
@@ -453,9 +454,15 @@
       }
     },
     watch: {
+        // GET PATIENT FORM
         patient_form(patient_data) {
             localStorage.patient_form = JSON.stringify(patient_data);
-        }
+        },
+
+        // CURRENT CONSULTATION ID
+        '$store.state.current_consultation':function(newVal, oldVal) {
+            this.current_consultation_id = newVal;
+        },
     },
     methods: {
         change_height_unit(unit) {

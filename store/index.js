@@ -9,6 +9,7 @@ const createStore = () => {
       showLogin: false,
       showRegister: false,
       is_logged_in: false,
+      current_consultation: "",
     },
     mutations: {
       setResponseData(state, data) {
@@ -25,6 +26,9 @@ const createStore = () => {
       },
       user_is_in(state, data) {
         state.is_logged_in = data;
+      },
+      setCurrentConsultation(state, data) {
+        state.current_consultation = data;
       }
     },
     actions: {
