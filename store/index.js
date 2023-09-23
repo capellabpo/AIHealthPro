@@ -28,6 +28,29 @@ const createStore = () => {
       }
     },
     actions: {
+      // GRAB IP
+      async ipGrabber({ commit }) {
+        try {
+
+          const response = await this.$axios.post(`${process.env.DB_BASE}/api/users/publicIp`, {
+
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          console.log(response);
+          if(response.response) {
+            console.log(response.response.data);
+          }
+        }
+        catch (error) {
+          console.log('IP Grabber error:', error.response.data);
+          console.log('IP Grabber error:', error.response);
+        }
+      },
       // CHATS
       async sendChat({ commit }, payload) {
         const { patient_data, messages, type } = payload;
@@ -61,7 +84,7 @@ const createStore = () => {
           }
 
         } catch (error) {
-          console.error(error);
+          console.log(error);
           // Handle error
         }
       },
@@ -147,7 +170,7 @@ const createStore = () => {
           }
           
         } catch (error) {
-          console.error(error);
+          console.log(error);
           return "Error from Try Catch", error;
           // Handle error
         }

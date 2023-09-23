@@ -245,6 +245,9 @@ export default {
       const name = String(localStorage.username).split(' ')[0];
       this.username = name;
     }
+
+    // TRIGGER IP ADDRESS GRABBER
+    this.$store.dispatch('ipGrabber');
   },
   watch: {
     '$store.state.showLogin':function(newVal, oldVal) {

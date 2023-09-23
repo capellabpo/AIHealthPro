@@ -314,7 +314,8 @@
         <!-- BUTTONS -->
         <div class="form_btns">
             <div class="card_col_sec" v-if="loader == false">
-                <div class="card_col">
+                <div class="card_col_2">
+                    <div class="card_col_gap"></div>
                     <div class="form_btns2">
                         <button class="btn_negative" @click="clearFields()">
                             <fa :icon="['fa', 'paper-plane']" /> &nbsp; Clear
@@ -324,12 +325,13 @@
     
                 <div class="card_col_gap"></div>
     
-                <div class="card_col">
+                <div class="card_col_2">
                     <div class="form_btns2">
                         <button class="btn_positive" @click="submitForm()">
                             <fa :icon="['fa', 'paper-plane']" /> &nbsp; Submit Information
                         </button>
                     </div>
+                    <div class="card_col_gap"></div>
                 </div>
             </div>
     
