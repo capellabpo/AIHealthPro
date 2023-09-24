@@ -47,9 +47,14 @@
           </div>
       </div>
       <div class="foot">
-          <!-- You have &nbsp; <b> 12 messages</b> &nbsp; remaining. Sign up for free to send more messages. Read our &nbsp;<a href="#">Terms & Policy</a> -->
+
+        <div v-if="!current_token">
+          You have <b> {{ chatLimit }} credits</b> left. Sign up now to send more messages. Read our &nbsp;<a href="#">Terms & Policy</a>
+        </div>
+        <div v-else>
+          Sign up now to send more messages. Read our &nbsp;<a href="#">Terms & Policy</a>
+        </div>
   
-          Sign up for free to send more messages. Read our &nbsp;<a href="#">Terms & Policy</a>
       </div>
   </div>
   </template>
@@ -65,12 +70,19 @@
         newMessage: '',
         loader: false,
         today: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
+        current_token: ''
       }
   },
   mounted() {
+    // SET TOKEN TO STATE
+    if (localStorage.token) {
+      this.current_token = String(localStorage.token);
+    }
+    // GET MESSAGES FROM LOCALSTORAGE
     if (localStorage.messages) {
       this.messages = JSON.parse(localStorage.messages);
     }
+    // GET MESSAGES FROM LOCALSTORAGE
     if (localStorage.patient_form) {
       this.patient_form = JSON.parse(localStorage.patient_form);
     }
@@ -95,8 +107,8 @@
     },
   },
   computed: {
-    diagnosisValue() {
-      // return this.$store.state.diagnosisData;
+    chatLimit() {
+      return this.$store.state.current_chat_limit;
     },
   },
   methods: {
@@ -109,11 +121,22 @@
       login() {
           this.$router.push({ path: "../dashboard" });
       },
-      addDiag(newval, oldVal) {
+      async addDiag(newval, oldVal) {
         // Add the bot's response to the chat
         this.messages.push(
           { content: this.$store.state.diagnosisData, role: 'bot',  createDate: this.today}
         );
+
+        // SAVE CHAT
+        const response = await this.$store.dispatch('saveChats', { 
+          token: localStorage.token,
+          consulation_id: localStorage.consultationID,
+          user_id: localStorage.userId,
+          user_role: 'user',
+          chat_content: this.newMessage
+        });
+
+        // console.log(response);
 
         // Scroll to top (delayed)
         setTimeout(() => {
@@ -126,16 +149,14 @@
         // Add the user's message to the chat
         this.messages.push({ content: this.newMessage, role: 'user', createDate: this.today});
 
-        if(localStorage.token) { //CHECK IF USER IS LOGGED IN
-          // SAVE CHAT
-          const response = await this.$store.dispatch('saveChats', { 
-            token: localStorage.token,
-            consulation_id: localStorage.consultationID,
-            user_id: localStorage.userId,
-            user_role: 'user',
-            chat_content: this.newMessage
-          });
-        }
+
+        const response = await this.$store.dispatch('saveChats', { 
+          token: localStorage.token,
+          consulation_id: localStorage.consultationID,
+          user_id: localStorage.userId,
+          user_role: 'user',
+          chat_content: this.newMessage
+        });
 
         // EMPTY NEW MESSAGE
         this.newMessage = '';

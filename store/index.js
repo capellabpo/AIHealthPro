@@ -10,7 +10,9 @@ const createStore = () => {
       showRegister: false,
       is_logged_in: false,
       current_consultation: "",
-      clearAll: false
+      clearAll: false,
+      current_chat_limit: 0,
+      current_token: "",
     },
     mutations: {
       setResponseData(state, data) {
@@ -33,6 +35,12 @@ const createStore = () => {
       },
       clearChatbox(state, data) {
         state.clearAll = data;
+      },
+      setChatLimit(state, data) {
+        state.current_chat_limit = data;
+      },
+      setToken(state, data) {
+        state.current_token = data;
       }
     },
     actions: {
@@ -40,7 +48,7 @@ const createStore = () => {
       async saveChats({ commit }, payload) {
 
         const { token, consulation_id, user_id, user_role, chat_content } = payload;
-        console.log(payload);
+        // console.log(payload);
         try {
           const response = await this.$axios.post(`${process.env.DB_BASE}/api/chatbot/consulation`, {
             token: token,
@@ -55,8 +63,16 @@ const createStore = () => {
             },
           });
 
-          console.log(response);
           // REPONSE SHOULD CONTAIN THE CHAT LIMIT
+          console.log(response);
+          if(parseInt(response.data) > 0) {
+            console.log(response.data);
+            localStorage.chatLimit = response.data;
+
+            // SET STATE: CHAT LIMIT
+            commit('setChatLimit', response.data);
+          }
+
           if(response.status === 200) {
             return 1;
           }
@@ -117,7 +133,11 @@ const createStore = () => {
             },
           });
 
-          // console.log(response);
+          // console.log(response.data);
+          localStorage.chatLimit = response.data;
+          // SET STATE: CHAT LIMIT
+          commit('setChatLimit', response.data);
+
           // if(response.response) {
           //   console.log(response.response.data);
           // }
@@ -211,6 +231,8 @@ const createStore = () => {
             localStorage.username = String(response.data.name);
             localStorage.email = String(response.data.email);
             localStorage.userId = String(response.data._id);
+
+            commit('setToken', response.data.token);
             return 1;
           }
           else {
@@ -246,6 +268,8 @@ const createStore = () => {
             localStorage.email = String(response.data.email);
             localStorage.username = String(response.data.name);
             localStorage.userId = String(response.data._id);
+
+            commit('setToken', response.data.token);
             return 1;
           }
           else {
