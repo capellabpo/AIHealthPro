@@ -35,7 +35,7 @@
             <div class="history_title" @click="openHistory(his.consulationId)">{{his.conversationTitle}}</div>
         </div>
     </div>
-    <div class="notice_container" v-else>
+    <div class="notice_container" v-else-if="token && history.length <= 0">
         <div class="notice_img"></div>
         <div class="notice_title">No History</div>
         <div class="notice_sub">All your consultations will appear here.</div>
