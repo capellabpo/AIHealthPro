@@ -1,4 +1,5 @@
 import Vuex from 'vuex';
+import axios from "axios";
 
 // Create a Vuex store instance
 const createStore = () => {
@@ -44,6 +45,60 @@ const createStore = () => {
       }
     },
     actions: {
+      // GET CONSULTATION HISTORY
+      async getHIstory({ commit }, payload) {
+
+        const { user_id, date_from, date_to } = payload;
+
+        try {
+          // const response = await this.$axios.get(`${process.env.DB_BASE}/api/chatbot/history/${user_id}`, {
+          //   params: {
+          //     dateFrom: "Sep 25, 2023",
+          //     dateTo: "Sep 25, 2023",
+          //   },
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //   },
+          // });
+
+          // REPONSE SHOULD CONTAIN THE CHAT LIMIT
+          // console.log(response);
+          // console.log(payload);
+
+          await axios({
+            method: "GET",
+            url: `${process.env.DB_BASE}/api/chatbot/history/${user_id}`,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            params: {
+              dateFrom: "Sep 25, 2023",
+              dateTo: "Sep 25, 2023",
+            }
+          })
+          .then(
+            res => {
+              console.log(res);
+              localStorage.history = JSON.stringify(res.data);
+            },
+            error => {
+              console.log(error);
+            }
+          );
+
+          // if(response.status === 200) {
+          //   return 1;
+          // }
+          // else {
+          //   return 0;
+          // }
+
+        } catch (error) {
+          console.log("Fetching History: ",error);
+          return 0;
+        }
+
+      },
       // SAVE CHATS
       async saveChats({ commit }, payload) {
 

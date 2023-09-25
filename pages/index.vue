@@ -180,15 +180,15 @@
 </template>
 
 <script>
-import Chats from "../components/chatbox.vue";
-import Form from "../components/patientForm.vue";
-import History from "../components/history.vue";
-import SideMenu from "../components/sidemenu.vue";
-import Login from "../pages/login.vue";
-import Register from "../pages/register.vue";
-import Plan from "../components/plans.vue";
-import Profile from "../components/profile.vue";
-import Settings from "../components/settings.vue";
+import Chats from "../components/chatbox";
+import Form from "../components/patientForm";
+import History from "../components/history";
+import SideMenu from "../components/sidemenu";
+import Login from "../pages/login";
+import Register from "../pages/register";
+import Plan from "../components/plans";
+import Profile from "../components/profile";
+import Settings from "../components/settings";
 export default {
   name: 'IndexPage',
   components: {
@@ -326,6 +326,7 @@ export default {
         localStorage.removeItem("email");
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
+        localStorage.removeItem("history");
         
         window.location.reload();
 

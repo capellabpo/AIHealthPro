@@ -88,6 +88,7 @@ $col7: #EEEEEE;
 $col8: #868686;
 
 $border: #D0D5DD;
+$border2: #E4F4F3;
 
 $colError: #FF6161;
 $colError2: #bd4747;
@@ -291,6 +292,9 @@ $colError2: #bd4747;
 .foot a {
     text-decoration: underline;
     font-family: font_M;
+    color: $col5;
+}
+.foot div b {
     color: $col5;
 }
 .msg_user, .msg_ai {
@@ -1322,4 +1326,53 @@ $colError2: #bd4747;
     width: 100%;
     text-align: center;
     margin-top: 10px;
+}
+
+// HISTORY
+.history_container {
+    width: 100%;
+    padding: 5px;
+    height: calc(100vh - 243px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.history_card {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    // background-color: white;
+    // border-radius: 10px;
+    // box-shadow: 0px 0px 10px 0px #00000028;
+    margin-bottom: 5px;
+}
+.history_datetime {
+    width: 100px;
+    margin-right: 10px;
+}
+.history_date, .history_time {
+    display: block;
+    font-size: 11px;
+    font-family: font_M;
+    color: $col3;
+    white-space: nowrap;
+}
+.history_title {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    font-family: font_M;
+    padding: 10px 15px;
+    background-color: $border2;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    &:hover {
+        transition: 0.3s;
+        background-color: $col1;
+        color: white;
+    }
 }

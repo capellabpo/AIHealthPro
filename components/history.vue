@@ -20,10 +20,25 @@
         </div>
     </div>
 
-    <div class="notice_container">
+    <!-- <div class="notice_container" v-if="history.lenth <= 0"> -->
+    <div class="notice_container" v-if="!token">
         <div class="notice_img"></div>
         <div class="notice_title">No History</div>
         <div class="notice_sub">Sign up now to record every consultations!</div>
+    </div>
+    <div class="history_container" v-if="token && history.length > 0">
+        <div class="history_card" v-for="(his, x) in history" :key="'his'+x">
+            <div class="history_datetime">
+                <div class="history_date">{{dateFormat(his.createdAt)}}</div>
+                <div class="history_time">{{timeFormat(his.createdAt)}}</div>
+            </div>
+            <div class="history_title" @click="openHistory(his.consulationId)">{{his.conversationTitle}}</div>
+        </div>
+    </div>
+    <div class="notice_container" v-else>
+        <div class="notice_img"></div>
+        <div class="notice_title">No History</div>
+        <div class="notice_sub">All your consultations will appear here.</div>
     </div>
 
 </div>
@@ -46,6 +61,8 @@ data() {
         date_from: moment().format('MMM D, YYYY'),
         date_to: moment().format('MMM D, YYYY'),
         showOption: false,
+        history: [],
+        token: '',
     }
 },
 mounted() {
@@ -57,6 +74,14 @@ mounted() {
     }
     if (localStorage.date_to) {
         this.date_to = JSON.parse(localStorage.date_to);
+    }
+    // GET HISTORY FROM LOCALSTORAGE
+    if(localStorage.userId) {
+        this.getHistpry();
+    }
+    // GET TOKEN
+    if(localStorage.token) {
+        this.token = localStorage.token;
     }
 },
 watch: {
@@ -71,6 +96,30 @@ watch: {
     },
 },
 methods: {
+    openHistory(id) {
+        alert(id);
+    },
+    dateFormat(date) {
+        if(date) {
+            return moment(date).format('MMM D, YYYY');
+        }
+    },
+    timeFormat(time) {
+        if(time) {
+            return moment(time).format('hh:mm A');
+        }
+    },
+    async getHistpry() {
+        // FETCH FROM FB
+        const response = await this.$store.dispatch('getHIstory', { 
+            user_id: localStorage.userId,
+            date_from: moment().format('MMM D, YYYY'),
+            date_to: moment().format('MMM D, YYYY')
+        });
+
+        // STORE IN LOCALSTORAGE
+        this.history = JSON.parse(localStorage.history);
+    },
     select_date_range(val) {
         this.selected_date = val.name;
 
