@@ -118,7 +118,12 @@ methods: {
         });
 
         // STORE IN LOCALSTORAGE
-        this.history = JSON.parse(localStorage.history);
+        if(localStorage.history) {
+            this.history = JSON.parse(localStorage.history);
+        }
+        else {
+            console.log("No history found from LocalStorage");
+        }
     },
     select_date_range(val) {
         this.selected_date = val.name;

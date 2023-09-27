@@ -51,47 +51,28 @@ const createStore = () => {
         const { user_id, date_from, date_to } = payload;
 
         try {
-          // const response = await this.$axios.get(`${process.env.DB_BASE}/api/chatbot/history/${user_id}`, {
-          //   params: {
-          //     dateFrom: "Sep 25, 2023",
-          //     dateTo: "Sep 25, 2023",
-          //   },
-          //   headers: {
-          //     'Content-Type': 'application/json',
-          //   },
-          // });
 
-          // REPONSE SHOULD CONTAIN THE CHAT LIMIT
-          // console.log(response);
-          // console.log(payload);
-
-          await axios({
-            method: "GET",
-            url: `${process.env.DB_BASE}/api/chatbot/history/${user_id}`,
+          const response = await this.$axios.post(`${process.env.DB_BASE}/api/chatbot/history/${user_id}`, {
+            dateFrom: "Sep 25, 2023",
+            dateTo: "Sep 25, 2023",
+          },
+          {
             headers: {
               'Content-Type': 'application/json',
             },
-            params: {
-              dateFrom: "Sep 25, 2023",
-              dateTo: "Sep 25, 2023",
-            }
-          })
-          .then(
-            res => {
-              console.log(res);
-              localStorage.history = JSON.stringify(res.data);
-            },
-            error => {
-              console.log(error);
-            }
-          );
+          });
 
-          // if(response.status === 200) {
-          //   return 1;
-          // }
-          // else {
-          //   return 0;
-          // }
+          // REPONSE SHOULD CONTAIN THE CHAT LIMIT
+          console.log(response);
+          console.log(payload);
+
+          if(response.status === 200) {
+            localStorage.history = JSON.stringify(response.data);
+            return 1;
+          }
+          else {
+            return 0;
+          }
 
         } catch (error) {
           console.log("Fetching History: ",error);
@@ -218,7 +199,7 @@ const createStore = () => {
           const response = await this.$axios.post(process.env.OPEN_API, {
             user_message: type === 'Chat' ? messages.map((msg) => msg.content).join('\n') : messages,
             system_message: 'You are a helpful medical assistant. You will not answer anything outside medical topics. This is my information as a patient, ' + patient_data,
-            message_history: []
+            message_history: messages,
           },
           {
             headers: {
@@ -227,7 +208,7 @@ const createStore = () => {
             },
           });
 
-          // console.log(response.data.response);
+          console.log(response);
           if (type === 'Chat') {
             // console.log("Chat");
             // console.log(patient_data);

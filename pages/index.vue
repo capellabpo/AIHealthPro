@@ -50,12 +50,12 @@
             <button class="head_btn_menu" @click="header_buttons('New')">
                 <fa :icon="['fa', 'circle-plus']" /> &nbsp; New Consulation
             </button>
-            <button class="head_btn_menu" @click="header_buttons('Folders')">
+            <!-- <button class="head_btn_menu" @click="header_buttons('Folders')">
                 <fa :icon="['fa', 'folder']" /> &nbsp; My Folders
             </button>
             <button class="head_btn_menu" @click="header_buttons('Articles')">
                 <fa :icon="['fa', 'newspaper']" /> &nbsp; Articles
-            </button>
+            </button> -->
             <button class="head_btn_menu" @click="header_buttons('Trash')">
                 <fa :icon="['fa', 'trash']" /> &nbsp; Trash
             </button>
@@ -292,12 +292,12 @@ export default {
           // CLEAR CHATBOX & FORM
           this.$store.commit('clearChatbox', true);
         }
-        else if(clicked == "Folders") {
-          alert("My Folders");
-        }
-        else if(clicked == "Articles") {
-          alert("Articles");
-        }
+        // else if(clicked == "Folders") {
+        //   alert("My Folders");
+        // }
+        // else if(clicked == "Articles") {
+        //   alert("Articles");
+        // }
         else if(clicked == "Trash") {
           alert("Trash");
         }

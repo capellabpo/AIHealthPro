@@ -13,7 +13,7 @@
                   {{ message.content }}
                 </div>
               </div>
-              <div class="msg_ai" v-else-if="message.role === 'bot'">
+              <div class="msg_ai" v-else-if="message.role === 'system'">
                 <div class="ai_img">
                   <div class="ai_icon"></div>
                 </div>
@@ -52,7 +52,7 @@
           You have <b> {{ chatLimit }} credits</b> left. Sign up now to send more messages. Read our &nbsp;<a href="#">Terms & Policy</a>
         </div>
         <div v-else>
-          Sign up now to send more messages. Read our &nbsp;<a href="#">Terms & Policy</a>
+          You have <b> {{ chatLimit }} credits</b> left. Increase your credits <b>NOW!</b>
         </div>
   
       </div>
@@ -124,7 +124,7 @@
       async addDiag(newval, oldVal) {
         // Add the bot's response to the chat
         this.messages.push(
-          { content: this.$store.state.diagnosisData, role: 'bot',  createDate: this.today}
+          { content: this.$store.state.diagnosisData, role: 'system',  createDate: this.today}
         );
 
         // SAVE CHAT
@@ -149,7 +149,7 @@
         // Add the user's message to the chat
         this.messages.push({ content: this.newMessage, role: 'user', createDate: this.today});
 
-
+        // SAVE CHAT 
         const response = await this.$store.dispatch('saveChats', { 
           token: localStorage.token,
           consulation_id: localStorage.consultationID,
@@ -189,9 +189,9 @@
           // console.log(response);
           // console.log(response.data);
           var reply = response.response;
-          this.messages.push({ content: reply, role: 'bot',  createDate: this.today});
+          this.messages.push({ content: reply, role: 'system',  createDate: this.today});
           if(localStorage.token) { //CHECK IF USER IS LOGGED IN
-          // SAVE CHAT
+          // SAVE RESPONSE
           const response = await this.$store.dispatch('saveChats', { 
             token: localStorage.token,
             consulation_id: localStorage.consultationID,
