@@ -16,12 +16,14 @@
     <!-- ACCOUNT MEMBERS -->
     <div class="note_line"></div>
     <div class="card_title">Members</div>
-    <div class="card_desc">List of members in this account</div>
+    <div class="card_desc">List of members {{ members.length > 0 ? 'in this account':'will appear here'}}</div>
 
     <div class="member_main">
         <div class="member_container" v-for="(mem, m) in members" :key="'mem'+m">
             <div class="member_circle">{{ nameFormat(mem.name) }}</div>
-            <div class="member_Name">{{ mem.name }}</div>
+            <div class="member_Name" v-if="mem.name == username">{{ mem.name }} (You)</div>
+            <div class="member_Name" v-else>{{ mem.name }}</div>
+
         </div>
     </div>
 
@@ -105,11 +107,15 @@ export default {
         if (localStorage.email) {
             this.email = localStorage.email
         }
-        // GET MEMBERS
+        // GET MEMBERS FROM LOCAL STORAGE
         if(localStorage.members) {
             // I USE STATE TO REACTIVELY DISPLAY MEMBERS IN THE ACCOUNT
             this.$store.commit('setMembers', JSON.parse(localStorage.members));
-        } 
+        }
+        // GET MEMBERS FROM DB
+        this.$store.dispatch('getMembers', {
+            user_id: localStorage.userId
+        });
     },
     computed: {
         members() {

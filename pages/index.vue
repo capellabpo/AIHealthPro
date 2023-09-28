@@ -210,7 +210,7 @@ export default {
       show_register: false,
       loggedIn: false,
       username: '',
-      show_settings: true,
+      show_settings: false,
       show_setting_selection: false,
       user_token: '',
       selected_setting: {},
@@ -247,8 +247,8 @@ export default {
     const settings = this.$refs.settings_bar;
     settings.classList.remove('hide_settings_style');
     this.selected_setting = {
-      setting: 'Plan',
-      id: 'setting3'
+      setting: 'Profile',
+      id: 'setting1'
     };
 
     // GET TOKEN FROM LOCAL STORAGE
@@ -329,6 +329,11 @@ export default {
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
         localStorage.removeItem("history");
+        localStorage.removeItem("chatLimit");
+        localStorage.removeItem("selectedPlan");
+        localStorage.removeItem("paymentDetails");
+        localStorage.removeItem("paymentHistory");
+        localStorage.removeItem("members");
         
         window.location.reload();
 

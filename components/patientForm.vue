@@ -8,7 +8,7 @@
             <div class="card_desc">Provide your personal and medical details to receive results that are better suited to your interest and needs. 
                 <!-- <br> {{ current_consultation_id }} -->
             </div>
-            <div class="card_col">
+            <div class="card_col" v-show="current_user_id">
                 <div class="input_container">
 
                     <div class="input_label">Name</div>
@@ -475,9 +475,20 @@
     },
     mounted() {
         // GET MEMBERS
-        if(localStorage.members) {
+        if(localStorage.members && JSON.parse(localStorage.members).length > 0) {
             this.account_members = JSON.parse(localStorage.members);
-        } 
+        }
+        else {
+            if(localStorage.username) {
+                this.account_members.push({ name: localStorage.username});
+                localStorage.members = JSON.stringify(this.account_members);
+
+                const response = this.$store.dispatch('saveMembers', { 
+                    user_id: localStorage.userId,
+                    name: localStorage.username,
+                });
+            }
+        }
 
         //GET USER ID
         if (localStorage.userId) {
@@ -571,7 +582,7 @@
     },
     methods: {
         chooseMember(member) {
-            // DELAY BEFORE HIDDING MEMBERS
+            // DELAY BEFORE HIDDING MEMBER SELECTION
             setTimeout(() => {
                 this.show_members = false;
             }, 100);
@@ -588,8 +599,13 @@
             }
             localStorage.members = JSON.stringify(this.account_members);
             this.show_members = false;
-
             this.$store.commit('setMembers', this.account_members);
+
+            // SAVE TO DB
+            const response = await this.$store.dispatch('saveMembers', { 
+                user_id: localStorage.userId,
+                name: this.patient_name,
+            });
 
             // console.log(this.patient_name);
             // console.log(this.account_members);

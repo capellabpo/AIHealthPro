@@ -49,10 +49,67 @@ const createStore = () => {
       }
     },
     actions: {
+      // GET MEMBERS
+      async getMembers({ commit, dispatch }, user_id) {
+
+        // console.log("Get Members List: ", user_id);
+        const userid = user_id.user_id;
+        try {
+          const response = await this.$axios.get(`${process.env.DB_BASE}/api/chatbot/accountmemberslist/${userid}`, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          console.log(response.data);
+          if(response.data.length > 0) {
+
+            // TRANSFER LIST
+            var temp = [];
+            for(var i=0; i<response.data.length; i++) {
+              temp.push({name: response.data[i].name});
+            }
+
+            // SEE IF USERNAME EXISTS IN THE LIST AND IF NOT, ADD IT
+            for(var c=0; c<response.data.length; c++) {
+              if(response.data[c].name === localStorage.username) {
+                break;
+              }
+              else {
+                // console.log("Adding Username to Members List");
+                await dispatch('saveMembers', {
+                  user_id: localStorage.userId,
+                  name: localStorage.username
+                });
+
+                break;
+              }
+            }
+            // GET UNIQUE NAMES
+            const uniqueNames = {};
+            const filteredTemp = temp.filter(item => {
+              const key = item.name;
+              if (!uniqueNames[key]) {
+                uniqueNames[key] = true;
+                return true;
+              }
+              return false;
+            });
+
+            // PUT TO LOCALSTORAGE
+            localStorage.members = JSON.stringify(filteredTemp);  
+            commit('setMembers', filteredTemp);
+            // console.log("Members List: ", filteredTemp);
+          }
+
+        } catch (error) {
+          console.log("Fetching Payment History: ",error);
+          return 0;
+        }
+      },
       // GET PAYMENT HISTPRY
       async getPaymentHistory({ commit }, payload) {
         const { user_id, date_from, date_to } = payload;
-        console.log("Get Payment History: ", payload);
+        // console.log("Get Payment History: ", payload);
         try {
 
           const response = await this.$axios.post(`${process.env.DB_BASE}/api/payment/history/list`, {
@@ -67,8 +124,8 @@ const createStore = () => {
             },
           });
 
-          console.log(response);
-          console.log(response.data);
+          // console.log(response);
+          // console.log(response.data);
           if(response.status === 200) {
             localStorage.paymentHistory = JSON.stringify(response.data);
             return 1;
@@ -113,6 +170,29 @@ const createStore = () => {
           return 0;
         }
 
+      },
+      // SAVE MEMBERS
+      async saveMembers({ commit }, payload) {
+        const { user_id, name } = payload;
+        // console.log("Save Member: ", payload);
+        try {
+
+          const response = await this.$axios.post(`${process.env.DB_BASE}/api/chatbot/accountmember`, {
+            userId: user_id,
+            name: name,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          // NO NEED FOR RESPONSE, ADDED MEMBERS ARE ALREADY IN LOCALSTORAGE
+
+        } catch (error) {
+          console.log("Save Member: ",error);
+          return 0;
+        }
       },
       // SAVE CHATS
       async saveChats({ commit }, payload) {
