@@ -26,7 +26,7 @@
         <div class="notice_title">No History</div>
         <div class="notice_sub">Sign up now to record every consultations!</div>
     </div>
-    <div class="history_container">
+    <!-- <div class="history_container">
         <div class="history_card">
             <div class="history_datetime">
                 <div class="history_date">Sep 23, 2023 </div>
@@ -34,7 +34,7 @@
             </div>
             <div class="history_title">Sample consultation history that has long string for a title to test how long strings will apear in the design.</div>
         </div>
-    </div>
+    </div> -->
     <div class="history_container" v-if="token && history.length > 0">
         <div class="history_card" v-for="(his, x) in history" :key="'his'+x">
             <div class="history_datetime">

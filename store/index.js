@@ -14,6 +14,7 @@ const createStore = () => {
       clearAll: false,
       current_chat_limit: 0,
       current_token: "",
+      members: [],
     },
     mutations: {
       setResponseData(state, data) {
@@ -42,6 +43,9 @@ const createStore = () => {
       },
       setToken(state, data) {
         state.current_token = data;
+      },
+      setMembers(state, data) {
+        state.members = data;
       }
     },
     actions: {

@@ -19,7 +19,7 @@
     <div class="card_desc">List of members in this account</div>
 
     <div class="member_main">
-        <div class="member_container" v-for="(mem, m) in account_members" :key="'mem'+m">
+        <div class="member_container" v-for="(mem, m) in members" :key="'mem'+m">
             <div class="member_circle">{{ nameFormat(mem.name) }}</div>
             <div class="member_Name">{{ mem.name }}</div>
         </div>
@@ -107,8 +107,14 @@ export default {
         }
         // GET MEMBERS
         if(localStorage.members) {
-            this.account_members = JSON.parse(localStorage.members);
+            // I USE STATE TO REACTIVELY DISPLAY MEMBERS IN THE ACCOUNT
+            this.$store.commit('setMembers', JSON.parse(localStorage.members));
         } 
+    },
+    computed: {
+        members() {
+            return this.$store.state.members;
+        }
     },
     methods: {
         nameFormat(name) {

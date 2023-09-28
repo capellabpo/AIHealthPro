@@ -589,6 +589,8 @@
             localStorage.members = JSON.stringify(this.account_members);
             this.show_members = false;
 
+            this.$store.commit('setMembers', this.account_members);
+
             // console.log(this.patient_name);
             // console.log(this.account_members);
         },
