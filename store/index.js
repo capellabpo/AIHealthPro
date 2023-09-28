@@ -63,8 +63,8 @@ const createStore = () => {
           });
 
           // REPONSE SHOULD CONTAIN THE CHAT LIMIT
-          console.log(response);
-          console.log(payload);
+          // console.log(response);
+          // console.log(payload);
 
           if(response.status === 200) {
             localStorage.history = JSON.stringify(response.data);
@@ -245,10 +245,11 @@ const createStore = () => {
       async registerNewUser({commit}, registrationData) {
         const { user_name, user_email, user_password } = registrationData;
 
-        console.log(`${process.env.DB_BASE}/api/users/signup`);
-        console.log(user_name);
-        console.log(user_email);
-        console.log(user_password);
+        // console.log(`${process.env.DB_BASE}/api/users/signup`);
+        // console.log(user_name);
+        // console.log(user_email);
+        // console.log(user_password);
+        var account_members = [];
 
         try {
           const response = await this.$axios.post(`${process.env.DB_BASE}/api/users/signup`, {
@@ -268,6 +269,14 @@ const createStore = () => {
             localStorage.email = String(response.data.email);
             localStorage.userId = String(response.data._id);
 
+            // ADD USERNAME AS MEMBER
+            await new Promise((resolve) => {
+              account_members.push({ name: response.data.name });
+              resolve();
+            });
+
+            localStorage.members = JSON.stringify(account_members);
+
             commit('setToken', response.data.token);
             return 1;
           }
@@ -285,8 +294,9 @@ const createStore = () => {
       async loginUser({commit}, loginUser) {
         const { user_email, user_password } = loginUser;
 
-        console.log(user_email);
-        console.log(user_password);
+        // console.log(user_email);
+        // console.log(user_password);
+        var account_members = [];
 
         try {
           const response = await this.$axios.post(`${process.env.DB_BASE}/api/users/signin`, {
@@ -304,6 +314,14 @@ const createStore = () => {
             localStorage.email = String(response.data.email);
             localStorage.username = String(response.data.name);
             localStorage.userId = String(response.data._id);
+
+            // ADD USERNAME AS MEMBER
+            await new Promise((resolve) => {
+                account_members.push({ name: response.data.name });
+                resolve();
+            });
+
+            localStorage.members = JSON.stringify(account_members);
 
             commit('setToken', response.data.token);
             return 1;

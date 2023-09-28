@@ -8,6 +8,41 @@
             <div class="card_desc">Provide your personal and medical details to receive results that are better suited to your interest and needs. 
                 <!-- <br> {{ current_consultation_id }} -->
             </div>
+            <div class="card_col">
+                <div class="input_container">
+
+                    <div class="input_label">Name</div>
+                    <div class="input_border">
+                        <input class="input_custom" type="text" placeholder="Patient's name"  v-model="patient_name">
+                    </div>
+
+                    <!-- SELECT MEMBERS -->
+                    <div class="select_settings_container_3">
+
+                        <div class="select_settings" v-show="patient_name">
+                            <div class="options_container_3">
+                                <div class="settings_options" 
+                                v-for="(members, x) in acct_members" 
+                                :key="x+members.name" 
+                                @click="chooseMember(members)" 
+                                v-show="show_members">
+
+                                {{ members.name }}
+
+                                </div>
+                                <div class="settings_options" v-show="acct_members.length <= 0">
+                                    <button class="select_button"  @click="add_member()">
+                                        <fa :icon="['fa', 'circle-plus']" /> &nbsp;
+                                        Add Member
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
             <div class="card_col_sec">
                 <div class="card_col">
                     <div class="input_container">
@@ -56,10 +91,23 @@
             </div>
             <div class="card_col">
                 <div class="input_container">
-                    <div class="input_label">Height</div>
-                    <div class="input_border">
-                        <input class="input_custom" type="number" :placeholder="unit_height" v-model="height">
+                    <div class="card_col_sec">
+
+                        <div class="card_col">
+                            <div class="input_label">Height ({{unit_height}})</div>
+                            <div class="input_border">
+                                <input class="input_custom" type="number" :placeholder="unit_height" v-model="height">
+                            </div>
+                        </div>
+                        <div class="card_col_gap" v-show="unit_height == 'ft'"></div>
+                        <div class="card_col" v-show="unit_height == 'ft'">
+                            <div class="input_border">
+                                <input class="input_custom" type="number" placeholder="in" v-model="height_in">
+                            </div>
+                        </div>
+
                     </div>
+
                     <div class="input_unit_choices">
                         <button type="button" 
                         :class="`unit_choice ${unit_height == 'ft' ? 'unit_choice_actv' : ''}`"
@@ -84,7 +132,7 @@
                     </div>
                 </div>
                 <div class="input_container">
-                    <div class="input_label">Weight</div>
+                    <div class="input_label">Weight ({{unit_weight}})</div>
                     <div class="input_border">
                         <input class="input_custom" type="number" :placeholder="unit_weight" v-model="weight">
                     </div>
@@ -365,6 +413,7 @@
         return {
             age: "",
             height: "",
+            height_in: 0,
             gender: "Select",
             weight: "",
             unit_height: "ft",
@@ -397,6 +446,14 @@
             ldl: "",
             egfr: "",
             patient_form: [],
+            patient_name: "",
+            // account_members: [
+            //     {name: "Member 1"},
+            //     {name: "Member 2"},
+            //     {name: "Member 3"},
+            // ],
+            account_members: [],
+            show_members: false,
             current_consultation_id: "",
             current_user_id: "",
             sex: [
@@ -417,18 +474,41 @@
         }
     },
     mounted() {
-        //GET USER ID
-        if (localStorage.user_id) {
-            this.current_user_id = localStorage.user_id;
+        // GET MEMBERS
+        if(localStorage.members) {
+            this.account_members = JSON.parse(localStorage.members);
         } 
 
+        //GET USER ID
+        if (localStorage.userId) {
+            this.current_user_id = localStorage.userId;
+        } 
+
+        // SET USER NAME AS DEFAULR PATIENT NAME
+        if (localStorage.username) {
+            this.patient_name = localStorage.username;
+            // DELAY BEFORE HIDDING MEMBERS
+            setTimeout(() => {
+                this.show_members = false;
+            }, 100);
+        }
+
         // GET PATIENT FORM DATA
-         if (localStorage.patient_form) {
+        if (localStorage.patient_form) {
             this.patient_form = JSON.parse(localStorage.patient_form);
             // console.log(this.patient_form[this.patient_form.length - 1]);
             var form = this.patient_form[this.patient_form.length - 1];
+
             this.age = form.age;
-            this.height = form.height ? parseFloat(form.height) : "";
+            this.patient_name = form.patient_name;
+            // HEIGHT INCH IF HEIGHT IF IN FT
+            if(form.height && form.height.split(" ")[1] == "ft") {
+                this.height = form.height.split("'")[0];
+                this.height_in = form.height.split("'")[1].split(" ")[0];
+            }
+            else {
+                this.height = form.height ? parseFloat(form.height) : "";
+            }
             this.unit_height = form.height ? form.height.split(" ")[1] : "";
             this.gender = form.gender;
             this.weight = form.weight ? parseFloat(form.weight) : "";
@@ -473,13 +553,45 @@
         },
         // CLEAR ALL AFTER CLICKING NEW CONSULATION
         '$store.state.clearAll':function(newValue, oldValue) {
-        // console.log('Watcher triggered:', newValue, oldValue);
-        if(newValue == true) {
-            this.clearFields();
+            // console.log('Watcher triggered:', newValue, oldValue);
+            if(newValue == true) {
+                this.clearFields();
+            }
+        },
+    },
+    computed: {
+        acct_members() {
+            this.show_members = true;
+            if(this.account_members) {
+                return this.account_members.filter((member) => {
+                    return member.name.toLowerCase().includes(this.patient_name.toLowerCase().trim());
+                });
+            }
         }
     },
-    },
     methods: {
+        chooseMember(member) {
+            // DELAY BEFORE HIDDING MEMBERS
+            setTimeout(() => {
+                this.show_members = false;
+            }, 100);
+            this.patient_name = member.name;
+        },
+        async add_member() {
+            try {
+                await new Promise((resolve) => {
+                    this.account_members.push({ name: this.patient_name});
+                    resolve();
+                });
+            } catch (error) {
+                console.error(error);
+            }
+            localStorage.members = JSON.stringify(this.account_members);
+            this.show_members = false;
+
+            // console.log(this.patient_name);
+            // console.log(this.account_members);
+        },
         change_height_unit(unit) {
             this.unit_height = unit;
         },
@@ -493,12 +605,22 @@
         },
         async submitForm() {
             // Loader
-            this.loader = true;
+            // this.loader = true;
+
+            // FORMAT HEIGHT
+            if(this.unit_height == "ft") {
+                this.height = `${this.height}'${this.height_in} ${this.unit_height}`;
+
+            }
+            else{
+                this.height = this.height ? this.height+" "+this.unit_height : "";
+            }
     
             // Push Patient Information to Array
             this.patient_form.push({ 
                 age: this.age ? this.age : "",
-                height: this.height ? this.height+" "+this.unit_height : "",
+                patient_name: this.patient_name ? this.patient_name : "",
+                height: this.height,
                 gender: this.gender? this.gender : "",
                 weight: this.weight? this.weight+" "+this.unit_weight : "",
                 symptoms: this.symptoms? this.symptoms : "",
@@ -533,39 +655,41 @@
     
             var form = JSON.stringify(this.patient_form[this.patient_form.length - 1]);
             
-            // SEND PATIENT INFO TO CHATBOT
-            await this.$store.dispatch('sendChat', { 
-                patient_data: form, 
-                messages: this.command,
-                type: "Diagnosis"
-            });
+            // // SEND PATIENT INFO TO CHATBOT
+            // await this.$store.dispatch('sendChat', { 
+            //     patient_data: form, 
+            //     messages: this.command,
+            //     type: "Diagnosis"
+            // });
 
-            if(localStorage.userId) { //CHECK IF USER IS LOGGED IN
-                this.notify();
-                // SAVE PATIENT FORM IF LOGGED IN
-                const res = await this.$store.dispatch('savePatientData', { 
-                    patient_data: this.patient_form[this.patient_form.length - 1], 
-                    consultation_id: this.current_consultation_id,
-                    user_id: "Diagnosis"
-                });
+            // if(localStorage.userId) { //CHECK IF USER IS LOGGED IN
+            //     this.notify();
+            //     // SAVE PATIENT FORM IF LOGGED IN
+            //     const res = await this.$store.dispatch('savePatientData', { 
+            //         patient_data: this.patient_form[this.patient_form.length - 1], 
+            //         consultation_id: this.current_consultation_id,
+            //         user_id: "Diagnosis"
+            //     });
 
-                // RESPONSES
-                if(res == 1) {
-                    if(localStorage.userId) { //CHECK IF USER IS LOGGED IN
-                        this.notify();
-                    }
-                }
-                else {
-                    this.notifyError();
-                }
-            }
+            //     // RESPONSES
+            //     if(res == 1) {
+            //         if(localStorage.userId) { //CHECK IF USER IS LOGGED IN
+            //             this.notify();
+            //         }
+            //     }
+            //     else {
+            //         this.notifyError();
+            //     }
+            // }
 
             
         },
         clearFields() {
             var form = "";
+            this.patient_name = "";
             this.age = "";
             this.height = "";
+            this.height_in = ""
             this.unit_height = "ft";
             this.gender = "Select";
             this.weight = "";
