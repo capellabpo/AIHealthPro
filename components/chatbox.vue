@@ -149,15 +149,6 @@
         // Add the user's message to the chat
         this.messages.push({ content: this.newMessage, role: 'user', createDate: this.today});
 
-        // SAVE CHAT 
-        const response = await this.$store.dispatch('saveChats', { 
-          token: localStorage.token,
-          consulation_id: localStorage.consultationID,
-          user_id: localStorage.userId,
-          user_role: 'user',
-          chat_content: this.newMessage
-        });
-
         // EMPTY NEW MESSAGE
         this.newMessage = '';
   
@@ -169,6 +160,15 @@
         setTimeout(() => {
           this.scrollToBottom();
         }, 100);
+
+        // SAVE CHAT 
+        const response = await this.$store.dispatch('saveChats', { 
+          token: localStorage.token,
+          consulation_id: localStorage.consultationID,
+          user_id: localStorage.userId,
+          user_role: 'user',
+          chat_content: this.newMessage
+        });
         
         try {
           var patient_data = JSON.stringify(this.patient_form[this.patient_form.length - 1]);
@@ -191,25 +191,20 @@
           var reply = response.response;
           this.messages.push({ content: reply, role: 'system',  createDate: this.today});
           if(localStorage.token) { //CHECK IF USER IS LOGGED IN
-          // SAVE RESPONSE
-          const response = await this.$store.dispatch('saveChats', { 
-            token: localStorage.token,
-            consulation_id: localStorage.consultationID,
-            user_id: localStorage.userId,
-            user_role: 'bot',
-            chat_content: reply
-          });
-        }
-
-          
-  
+          // SAVE RESPONSE TO DB
+            const response = await this.$store.dispatch('saveChats', { 
+              token: localStorage.token,
+              consulation_id: localStorage.consultationID,
+              user_id: localStorage.userId,
+              user_role: 'bot',
+              chat_content: reply
+            });
+          }
           setTimeout(() => {
             this.scrollToBottom();
           }, 100);
           // Loader should stop here
           this.loader = false;
-  
-          // SEND CHATS TO DB
   
         } catch (error) {
           console.error('Error sending message to ChatGPT:', error);

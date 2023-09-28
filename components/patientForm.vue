@@ -657,32 +657,32 @@
     
             var form = JSON.stringify(this.patient_form[this.patient_form.length - 1]);
             
-            // // SEND PATIENT INFO TO CHATBOT
-            // await this.$store.dispatch('sendChat', { 
-            //     patient_data: form, 
-            //     messages: this.command,
-            //     type: "Diagnosis"
-            // });
+            // SEND PATIENT INFO TO CHATBOT
+            await this.$store.dispatch('sendChat', { 
+                patient_data: form, 
+                messages: this.command,
+                type: "Diagnosis"
+            });
 
-            // if(localStorage.userId) { //CHECK IF USER IS LOGGED IN
-            //     this.notify();
-            //     // SAVE PATIENT FORM IF LOGGED IN
-            //     const res = await this.$store.dispatch('savePatientData', { 
-            //         patient_data: this.patient_form[this.patient_form.length - 1], 
-            //         consultation_id: this.current_consultation_id,
-            //         user_id: "Diagnosis"
-            //     });
+            if(localStorage.userId) { //CHECK IF USER IS LOGGED IN
+                this.notify();
+                // SAVE PATIENT FORM IF LOGGED IN
+                const res = await this.$store.dispatch('savePatientData', { 
+                    patient_data: this.patient_form[this.patient_form.length - 1], 
+                    consultation_id: this.current_consultation_id,
+                    user_id: "Diagnosis"
+                });
 
-            //     // RESPONSES
-            //     if(res == 1) {
-            //         if(localStorage.userId) { //CHECK IF USER IS LOGGED IN
-            //             this.notify();
-            //         }
-            //     }
-            //     else {
-            //         this.notifyError();
-            //     }
-            // }
+                // RESPONSES
+                if(res == 1) {
+                    if(localStorage.userId) { //CHECK IF USER IS LOGGED IN
+                        this.notify();
+                    }
+                }
+                else {
+                    this.notifyError();
+                }
+            }
 
             
         },

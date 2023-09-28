@@ -262,7 +262,9 @@ export default {
     }
 
     // TRIGGER IP ADDRESS GRABBER
-    this.$store.dispatch('ipGrabber');
+    if(localStorage.token) {
+      this.$store.dispatch('ipGrabber');
+    }
   },
   watch: {
     '$store.state.showLogin':function(newVal, oldVal) {

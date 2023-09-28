@@ -55,6 +55,7 @@
 
 <script>
 import moment from 'moment';
+import { set } from 'vue';
 
 export default {
 data() {
@@ -119,14 +120,14 @@ methods: {
         }
     },
     async getHistpry() {
-        // FETCH FROM FB
+        // FETCH FROM DB
         const response = await this.$store.dispatch('getHIstory', { 
             user_id: localStorage.userId,
-            date_from: moment().format('MMM D, YYYY'),
-            date_to: moment().format('MMM D, YYYY')
+            date_from: this.date_from,
+            date_to: this.date_to
         });
 
-        // STORE IN LOCALSTORAGE
+        // STORE LOCALLY
         if(localStorage.history) {
             this.history = JSON.parse(localStorage.history);
         }
@@ -157,6 +158,10 @@ methods: {
             this.date_from = moment().startOf('month').format('MMM D, YYYY');
             this.date_to = moment().endOf('month').format('MMM D, YYYY');
         }
+
+        setTimeout(() => {
+            this.getHistpry();
+        }, 100);
 
         this.showOption = false;
     },

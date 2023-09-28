@@ -49,16 +49,17 @@ const createStore = () => {
       }
     },
     actions: {
-      // GET CONSULTATION HISTORY
-      async getHIstory({ commit }, payload) {
-
+      // GET PAYMENT HISTPRY
+      async getPaymentHistory({ commit }, payload) {
         const { user_id, date_from, date_to } = payload;
-
+        console.log("Get Payment History: ", payload);
         try {
 
-          const response = await this.$axios.post(`${process.env.DB_BASE}/api/chatbot/history/${user_id}`, {
-            dateFrom: "Sep 25, 2023",
-            dateTo: "Sep 25, 2023",
+          const response = await this.$axios.post(`${process.env.DB_BASE}/api/payment/history/list`, {
+            // userId: user_id,
+            userId: user_id,
+            dateFrom: date_from,
+            dateTo: date_to,
           },
           {
             headers: {
@@ -66,10 +67,39 @@ const createStore = () => {
             },
           });
 
-          // REPONSE SHOULD CONTAIN THE CHAT LIMIT
-          // console.log(response);
-          // console.log(payload);
+          console.log(response);
+          console.log(response.data);
+          if(response.status === 200) {
+            localStorage.paymentHistory = JSON.stringify(response.data);
+            return 1;
+          }
+          else {
+            return 0;
+          }
 
+        } catch (error) {
+          console.log("Fetching Payment History: ",error);
+          return 0;
+        }
+      },
+      // GET CONSULTATION HISTORY
+      async getHIstory({ commit }, payload) {
+
+        const { user_id, date_from, date_to } = payload;
+        // console.log("Get Consultation History: ", payload);
+        try {
+
+          const response = await this.$axios.post(`${process.env.DB_BASE}/api/chatbot/history/${user_id}`, {
+            dateFrom: date_from,
+            dateTo: date_to,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          // console.log(response.data);
           if(response.status === 200) {
             localStorage.history = JSON.stringify(response.data);
             return 1;
@@ -88,7 +118,7 @@ const createStore = () => {
       async saveChats({ commit }, payload) {
 
         const { token, consulation_id, user_id, user_role, chat_content } = payload;
-        // console.log(payload);
+        console.log(payload);
         try {
           const response = await this.$axios.post(`${process.env.DB_BASE}/api/chatbot/consulation`, {
             token: token,
@@ -106,7 +136,7 @@ const createStore = () => {
           // REPONSE SHOULD CONTAIN THE CHAT LIMIT
           console.log(response);
           if(parseInt(response.data) > 0) {
-            console.log(response.data);
+            // console.log(response.data);
             localStorage.chatLimit = response.data;
 
             // SET STATE: CHAT LIMIT
@@ -212,10 +242,11 @@ const createStore = () => {
             },
           });
 
-          console.log(response);
+          // console.log(response);
           if (type === 'Chat') {
             // console.log("Chat");
             // console.log(patient_data);
+            console.log('Chat Cost: ',response.data.completion_tokens);
             commit('setResponseData', response.data.response);
             return response.data;
           } else if (type === 'Diagnosis') {
