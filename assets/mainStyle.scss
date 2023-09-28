@@ -86,6 +86,7 @@ $col5: #CAF0C1;
 $col6: #F2FBFA;
 $col7: #EEEEEE;
 $col8: #868686;
+$col9: #E4F4F3;
 
 $border: #D0D5DD;
 $border2: #E4F4F3;
@@ -1434,11 +1435,125 @@ $colError2: #bd4747;
     }
 }
 
-
+// PLANS
+.offer_card_container  {
+    margin-bottom: 10px;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    background-color: $col9;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    &:hover {
+        transition: 0.3s;
+        background-color: $col1;
+        color: white;
+        .offer_title, .offer_credit, .offer_price, .offer_price_per_credit {
+            color: white;
+        }
+    }
+}
+.offer_card_row {
+    display: flex;
+    align-items: center;
+    color: $col2;
+}
+.offer_title, .offer_credit {
+    font-size: 16px;
+    font-family: font_M;
+}
+.offer_price {
+    font-size: 18px;
+    font-family: font_SB;
+}
+.offer_credit {
+    justify-content: flex-end;
+}
+.offer_price_per_credit {
+    font-size: 12px;
+    font-family: font_SB;
+    justify-content: flex-end;
+}
+#plan_ulimate {
+    background-color: $col2;
+    transition: 0.3s;
+    .offer_title, .offer_credit, .offer_price, .offer_price_per_credit {
+        color: white;
+    }
+    &:hover {
+        transition: 0.3s;
+        background-color: $col1;
+    }
+}
 
 // PAYMENT PAGE
 .payment_bg {
     background-color: $col1;
     height: 100vh;
     width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.payment_bot {
+    background-image: url("../assets/svg/happy_bot.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 500px;
+    height: 500px;
+}
+.content_holder  {
+    width: 500px;
+    margin-left: 50px;
+}
+.payment_title {
+    font-size: 30px;
+    font-family: font_R;
+    color: white;
+}
+.payment_sub {
+    width: 80%;
+    margin-top: 10px;
+    font-size: 16px;
+    font-family: font_R;
+    color: white;
+}
+.payment_code_container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+.payment_code {
+    background-color: white;
+    padding: 15px 20px;
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    border-radius: 10px 0 0 10px;
+}
+.payment_copy_code {
+    background-color: $col2;
+    color: white;
+    padding: 9px 16px;
+    font-size: 20px;
+    border-radius: 0 10px 10px 0;
+    transition: 0.3s;
+    &:hover{
+        background-color: $col5;
+        color: $col2;
+    }
+}
+.small_label {
+    margin-top: 5px;
+    font-size: 12px;
+    color: white;
+    width: 100%;
+    text-align: center;
+    height: 20px;
 }

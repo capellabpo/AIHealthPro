@@ -52,7 +52,7 @@
           You have <b> {{ chatLimit }} credits</b> left. Sign up now to send more messages. Read our &nbsp;<a href="#">Terms & Policy</a>
         </div>
         <div v-else>
-          You have <b> {{ chatLimit }} credits</b> left. Increase your credits <b>NOW!</b>
+          You have <b> {{ chatLimit }} credits</b> left. Get more credits <b>NOW!</b>
         </div>
   
       </div>

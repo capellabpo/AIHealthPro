@@ -62,7 +62,9 @@ export default {
         "faMars",
         "faVenus",
         "faTransgender",
-        "faEraser"
+        "faEraser",
+        "faClipboard",
+        "faCopy"
       ],
       brands: [
         "faGoogle",
@@ -89,6 +91,7 @@ export default {
   env: {
     OPEN_API: "https://api-aihealthpros.azurewebsites.net/chat/",
     DB_BASE: "https://api-node-aihealthpros.azurewebsites.net",
+    STRIPE: "https://buy.stripe.com/",
     // OPEN_API_KEY: process.env.OPEN_API_KEY,
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build

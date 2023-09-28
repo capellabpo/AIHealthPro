@@ -210,7 +210,7 @@ export default {
       show_register: false,
       loggedIn: false,
       username: '',
-      show_settings: false,
+      show_settings: true,
       show_setting_selection: false,
       user_token: '',
       selected_setting: {},
@@ -247,8 +247,8 @@ export default {
     const settings = this.$refs.settings_bar;
     settings.classList.remove('hide_settings_style');
     this.selected_setting = {
-      setting: 'Profile',
-      id: 'setting1'
+      setting: 'Plan',
+      id: 'setting3'
     };
 
     // GET TOKEN FROM LOCAL STORAGE
