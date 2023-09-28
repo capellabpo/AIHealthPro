@@ -1389,27 +1389,27 @@ $colError2: #bd4747;
 .history_container {
     width: 100%;
     padding: 5px;
-    height: calc(100vh - 243px);
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 .history_card {
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background-color: white;
     padding: 10px;
-    // background-color: white;
-    // border-radius: 10px;
-    // box-shadow: 0px 0px 10px 0px #00000028;
-    margin-bottom: 5px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px #00000028
 }
 .history_datetime {
-    width: 100px;
-    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 5px;
 }
-.history_date, .history_time {
-    display: block;
+.history_date {
+    font-size: 14px;
+    font-family: font_M;
+    color: $col3;
+    white-space: nowrap;
+}
+.history_time {
     font-size: 11px;
     font-family: font_M;
     color: $col3;
@@ -1433,6 +1433,8 @@ $colError2: #bd4747;
         color: white;
     }
 }
+
+
 
 // PAYMENT PAGE
 .payment_bg {
