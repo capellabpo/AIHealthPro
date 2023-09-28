@@ -1,6 +1,7 @@
 <template>
-<div>
-Thank you very much for puchasing {{ utm_content }} credits with our {{ utm_source }} Plan
+<div class="payment_bg">
+<!-- Thank you very much for puchasing {{ utm_content }} credits with our {{ utm_source }} Plan -->\
+
 </div>
 </template>
 

@@ -1354,6 +1354,36 @@ $colError2: #bd4747;
     text-align: center;
     margin-top: 10px;
 }
+.member_main {
+    width: 100%;
+    height: fit-content;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.member_container {
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.member_circle  {
+    min-width: 30px;
+    min-height: 30px;
+    border-radius: 100px;
+    margin-right: 10px;
+    background-color: $col1;
+    color: white;
+    font-size: 16px;
+    font-family: font_M;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.member_Name {
+    font-size: 14px;
+    font-family: font_R;
+}
 
 // HISTORY
 .history_container {
@@ -1402,4 +1432,11 @@ $colError2: #bd4747;
         background-color: $col1;
         color: white;
     }
+}
+
+// PAYMENT PAGE
+.payment_bg {
+    background-color: $col1;
+    height: 100vh;
+    width: 100vw;
 }

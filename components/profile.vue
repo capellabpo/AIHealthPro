@@ -1,6 +1,7 @@
 <template>
 <div class="settings_content">
-    <div class="card_title">Personal Info</div>
+    <!-- ACCOUNT INFO -->
+    <div class="card_title">Account Info</div>
     <div class="card_desc">Update your profile here.</div>
 
     <div class="input_container">
@@ -12,7 +13,19 @@
         <input type="text" class="input_custom2" placeholder="Email" :value=email disabled>
     </div>
 
-    
+    <!-- ACCOUNT MEMBERS -->
+    <div class="note_line"></div>
+    <div class="card_title">Members</div>
+    <div class="card_desc">List of members in this account</div>
+
+    <div class="member_main">
+        <div class="member_container" v-for="(mem, m) in account_members" :key="'mem'+m">
+            <div class="member_circle">{{ nameFormat(mem.name) }}</div>
+            <div class="member_Name">{{ mem.name }}</div>
+        </div>
+    </div>
+
+    <!-- PASSWORDS -->
     <div class="note_line"></div>
     <div class="card_title2">Password</div>
     <div class="card_desc">Please enter your current password to change your password.</div>
@@ -75,6 +88,7 @@ export default {
             current_password: '',
             new_password: '',
             confirm_password: '',
+            account_members: [],
             show_current_pass: false,
             show_new_pass: false,
             show_confirm_pass: false,
@@ -91,8 +105,17 @@ export default {
         if (localStorage.email) {
             this.email = localStorage.email
         }
+        // GET MEMBERS
+        if(localStorage.members) {
+            this.account_members = JSON.parse(localStorage.members);
+        } 
     },
     methods: {
+        nameFormat(name) {
+            if(name) {
+                return name.charAt(0).toUpperCase();
+            }
+        },
         changePassword() {
             if(this.current_password) {
                 this.changePass = true;
