@@ -18,18 +18,20 @@
     <div class="card_title">Payment History</div>
 
     <!-- DATE RANGE -->
-    <div class="dateRange">
-        <button class="selected" @click="showOption = !showOption">
-            <!-- {{selected_date+''+showOption}} -->
-            {{selected_date}}
-        </button>
-        <div class="selection" v-show="showOption">
-            <div class="select" v-for="(range, id) in dateRange" :key="id" :id="id" @click="select_date_range(range)">
-            {{range.name}}
+    <div class="input_container">
+        <div class="dateRange">
+            <button class="selected" @click="showOption = !showOption">
+                <!-- {{selected_date+''+showOption}} -->
+                {{selected_date}}
+            </button>
+            <div class="selection" v-show="showOption">
+                <div class="select" v-for="(range, id) in dateRange" :key="id" :id="id" @click="select_date_range(range)">
+                {{range.name}}
+                </div>
             </div>
-        </div>
-        <div class="dates">
-            {{ date_from }} - {{ date_to }}
+            <div class="dates">
+                {{ date_from }} - {{ date_to }}
+            </div>
         </div>
     </div>
 
