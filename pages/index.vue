@@ -327,11 +327,15 @@ export default {
       localStorage.removeItem("token");
       localStorage.removeItem("userId");
       localStorage.removeItem("history");
-      localStorage.removeItem("chatLimit");
       localStorage.removeItem("selectedPlan");
       localStorage.removeItem("paymentDetails");
       localStorage.removeItem("paymentHistory");
       localStorage.removeItem("members");
+      localStorage.removeItem("completionToken");
+      localStorage.removeItem("consultationID");
+      localStorage.removeItem("messages");
+      localStorage.removeItem("patient_form");
+      localStorage.removeItem("chatLimit");
     },
     chooseSetting(val) {
       this.show_setting_selection = false;

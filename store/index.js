@@ -205,7 +205,8 @@ const createStore = () => {
             consulationId: consulation_id,
             userId: user_id,
             role: user_role,
-            content: chat_content
+            content: chat_content,
+            completionToken: localStorage.completionToken,
           },
           {
             headers: {
@@ -325,14 +326,20 @@ const createStore = () => {
 
           // console.log(response);
           if (type === 'Chat') {
-            // console.log("Chat");
-            // console.log(patient_data);
-            console.log('Chat Cost: ',response.data.completion_tokens);
+
+            // STORE COMPLETION TOKEN TO LOCALSTORAGE
+            localStorage.completionToken = response.data.completion_tokens;
+
+            // COMMIT CHAT to STATE setResponseData
             commit('setResponseData', response.data.response);
             return response.data;
+
           } else if (type === 'Diagnosis') {
-            // console.log("Diagnosis");
-            console.log('Chat Cost: ',response.data.completion_tokens);
+
+            // STORE COMPLETION TOKEN TO LOCALSTORAGE
+            localStorage.completionToken = response.data.completion_tokens;
+
+            // COMMIT DIAGNOSIS to STATE setResponseData
             commit('pushDiagnosis', response.data.response);
           }
 

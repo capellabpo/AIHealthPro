@@ -178,7 +178,12 @@
         }
         
         try {
-          var patient_data = JSON.stringify(this.patient_form[this.patient_form.length - 1]);
+          if(this.patient_form.length <= 0) {
+            var patient_data = JSON.stringify(this.patient_form[this.patient_form.length - 1]);
+          }
+          else {
+            patient_data = [];
+          }
   
           // SEND CHAT TO CHATGPT
           const response = await this.$store.dispatch('sendChat', { 

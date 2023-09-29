@@ -446,7 +446,8 @@ $colError2: #bd4747;
     padding: 20px;
     margin: 5px;
     border-radius: 10px;
-    box-shadow: 0px 0px 10px 0px #00000028;
+    border: 1px solid $border2;
+    // box-shadow: 0px 0px 10px 0px #00000028;
 }
 .card_title {
     font-family: font_M;

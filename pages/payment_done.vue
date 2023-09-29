@@ -75,7 +75,8 @@ methods: {
                             user_id: localStorage.userId,
                             checkout_session_id: this.$route.query.checkout_session_id,
                             purchased_plan: this.selected_plan.title,
-                            purchased_credits: this.selected_plan.credit
+                            purchased_credits: this.selected_plan.credit,
+                            purchase_amount: this.selected_plan.price,
                         }
                     ]);
                 }
