@@ -56,9 +56,9 @@
             <button class="head_btn_menu" @click="header_buttons('Articles')">
                 <fa :icon="['fa', 'newspaper']" /> &nbsp; Articles
             </button> -->
-            <button class="head_btn_menu" @click="header_buttons('Trash')">
+            <!-- <button class="head_btn_menu" @click="header_buttons('Trash')">
                 <fa :icon="['fa', 'trash']" /> &nbsp; Trash
-            </button>
+            </button> -->
         </div>
         <div class="header_right">
           <div class="head_profile" v-if="!user_token">
@@ -300,9 +300,9 @@ export default {
         // else if(clicked == "Articles") {
         //   alert("Articles");
         // }
-        else if(clicked == "Trash") {
-          alert("Trash");
-        }
+        // else if(clicked == "Trash") {
+        //   alert("Trash");
+        // }
       }
       else {
         this.$store.dispatch('openRegister');
@@ -321,19 +321,22 @@ export default {
     closeModals() {
       this.$store.dispatch('closeModals');
     },
+    clearLocalStorage() {
+      localStorage.removeItem("username");
+      localStorage.removeItem("email");
+      localStorage.removeItem("token");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("history");
+      localStorage.removeItem("chatLimit");
+      localStorage.removeItem("selectedPlan");
+      localStorage.removeItem("paymentDetails");
+      localStorage.removeItem("paymentHistory");
+      localStorage.removeItem("members");
+    },
     chooseSetting(val) {
       this.show_setting_selection = false;
       if(val.id == 'setting5') {
-        localStorage.removeItem("username");
-        localStorage.removeItem("email");
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId");
-        localStorage.removeItem("history");
-        localStorage.removeItem("chatLimit");
-        localStorage.removeItem("selectedPlan");
-        localStorage.removeItem("paymentDetails");
-        localStorage.removeItem("paymentHistory");
-        localStorage.removeItem("members");
+        this.clearLocalStorage();
         
         window.location.reload();
 

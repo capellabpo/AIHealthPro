@@ -151,6 +151,9 @@
         // Add the user's message to the chat
         this.messages.push({ content: this.newMessage, role: 'user', createDate: this.today});
 
+        // TEMPORARY MESSAGE HOLDER - THIS WILL SAVE THE USER"S MESSAGE
+        var temp_message = this.newMessage;
+
         // EMPTY NEW MESSAGE
         this.newMessage = '';
   
@@ -170,7 +173,7 @@
             consulation_id: localStorage.consultationID,
             user_id: localStorage.userId,
             user_role: 'user',
-            chat_content: this.newMessage
+            chat_content: temp_message
           });
         }
         

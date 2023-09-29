@@ -81,6 +81,11 @@ methods: {
     openRegister() {
         this.$store.dispatch('openRegister');
     },
+    clearLocalStorage() {
+        localStorage.removeItem("consultationID");
+        localStorage.removeItem("messages");
+        localStorage.removeItem("patient_form");
+    },
     async openDashboard() {
         this.loader = true;
         this.showError = '';
@@ -91,6 +96,8 @@ methods: {
 
         // console.log(response);
         if(response == 1) {
+            // Clear local storage
+            this.clearLocalStorage();
             // SUCCESS
             window.location.reload();
         }

@@ -378,7 +378,8 @@
                 <div class="card_col_2">
                     <div class="form_btns2">
                         <button class="btn_positive" @click="submitForm()">
-                            <fa :icon="['fa', 'paper-plane']" /> &nbsp; Submit Information
+                            <fa :icon="['fa', 'paper-plane']" /> &nbsp; 
+                            {{ copy_patient_form.length <= 0 ? 'Submit Form':'Resubmit Form' }}
                         </button>
                     </div>
                     <div class="card_col_gap"></div>
@@ -446,6 +447,7 @@
             ldl: "",
             egfr: "",
             patient_form: [],
+            copy_patient_form: [],
             patient_name: "",
             // account_members: [
             //     {name: "Member 1"},
@@ -469,7 +471,7 @@
                 icon: "circle-check",
                 content: "Sample Content"
             },
-            command: "Please summarize my information and tell me what you think I need to do base on my symtoms. My information is in the 'content' section",
+            command: "Please summarize my information and tell me what you think I need to do base on my symptoms. My information is in the 'content' section",
             loader: false,
         }
     },
@@ -507,7 +509,7 @@
         // GET PATIENT FORM DATA
         if (localStorage.patient_form) {
             this.patient_form = JSON.parse(localStorage.patient_form);
-            // console.log(this.patient_form[this.patient_form.length - 1]);
+            this.copy_patient_form = JSON.parse(localStorage.patient_form);
             var form = this.patient_form[this.patient_form.length - 1];
 
             this.age = form.age;
@@ -623,7 +625,7 @@
         },
         async submitForm() {
             // Loader
-            // this.loader = true;
+            this.loader = true;
 
             // FORMAT HEIGHT
             var temp_height = "";
@@ -673,6 +675,9 @@
             });
     
             var form = JSON.stringify(this.patient_form[this.patient_form.length - 1]);
+
+            // COPY OF PATIENT FORM
+            this.copy_patient_form = this.patient_form;
             
             // SEND PATIENT INFO TO CHATBOT
             await this.$store.dispatch('sendChat', { 
@@ -700,11 +705,14 @@
                     this.notifyError();
                 }
             }
+            else {
+                this.loader = false;
+            }
 
             
         },
         clearFields() {
-            var form = "";
+            this.copy_patient_form = [];
             this.patient_name = "";
             this.age = "";
             this.height = "";

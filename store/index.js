@@ -303,6 +303,7 @@ const createStore = () => {
 
         // console.log(patient_data);
         // console.log(messages);
+        // console.log(JSON.parse(localStorage.messages));
         // console.log(messages.map((msg) => msg.content).join('\n'));
         // console.log(type);
 
@@ -313,7 +314,7 @@ const createStore = () => {
           const response = await this.$axios.post(process.env.OPEN_API, {
             user_message: type === 'Chat' ? messages.map((msg) => msg.content).join('\n') : messages,
             system_message: 'You are a helpful medical assistant. You will not answer anything outside medical topics. This is my information as a patient, ' + patient_data,
-            message_history: messages,
+            message_history: JSON.parse(localStorage.messages),
           },
           {
             headers: {
@@ -331,6 +332,7 @@ const createStore = () => {
             return response.data;
           } else if (type === 'Diagnosis') {
             // console.log("Diagnosis");
+            console.log('Chat Cost: ',response.data.completion_tokens);
             commit('pushDiagnosis', response.data.response);
           }
 
