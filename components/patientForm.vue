@@ -626,19 +626,20 @@
             // this.loader = true;
 
             // FORMAT HEIGHT
+            var temp_height = "";
             if(this.unit_height == "ft") {
-                this.height = `${this.height}'${this.height_in} ${this.unit_height}`;
+                temp_height= `${this.height}'${this.height_in} ${this.unit_height}`;
 
             }
             else{
-                this.height = this.height ? this.height+" "+this.unit_height : "";
+                temp_height = this.height ? this.height+" "+this.unit_height : "";
             }
     
             // Push Patient Information to Array
             this.patient_form.push({ 
                 age: this.age ? this.age : "",
                 patient_name: this.patient_name ? this.patient_name : "",
-                height: this.height,
+                height: temp_height,
                 gender: this.gender? this.gender : "",
                 weight: this.weight? this.weight+" "+this.unit_weight : "",
                 symptoms: this.symptoms? this.symptoms : "",

@@ -60,7 +60,7 @@ const createStore = () => {
               'Content-Type': 'application/json',
             },
           });
-          console.log(response.data);
+          // console.log(response.data);
           if(response.data.length > 0) {
 
             // TRANSFER LIST
@@ -231,7 +231,7 @@ const createStore = () => {
           }
 
         } catch (error) {
-          console.log("Saving Patient Form Error:",error);
+          console.log("Saving Chat Error:",error);
           return 0;
         }
 

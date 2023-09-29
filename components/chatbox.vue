@@ -128,13 +128,15 @@
         );
 
         // SAVE CHAT
-        const response = await this.$store.dispatch('saveChats', { 
-          token: localStorage.token,
-          consulation_id: localStorage.consultationID,
-          user_id: localStorage.userId,
-          user_role: 'user',
-          chat_content: this.newMessage
-        });
+        if(localStorage.token) {
+          const response = await this.$store.dispatch('saveChats', { 
+            token: localStorage.token,
+            consulation_id: localStorage.consultationID,
+            user_id: localStorage.userId,
+            user_role: 'user',
+            chat_content: this.newMessage
+          });
+        }
 
         // console.log(response);
 
@@ -162,20 +164,20 @@
         }, 100);
 
         // SAVE CHAT 
-        const response = await this.$store.dispatch('saveChats', { 
-          token: localStorage.token,
-          consulation_id: localStorage.consultationID,
-          user_id: localStorage.userId,
-          user_role: 'user',
-          chat_content: this.newMessage
-        });
+        if(localStorage.token) {
+          const response = await this.$store.dispatch('saveChats', { 
+            token: localStorage.token,
+            consulation_id: localStorage.consultationID,
+            user_id: localStorage.userId,
+            user_role: 'user',
+            chat_content: this.newMessage
+          });
+        }
         
         try {
           var patient_data = JSON.stringify(this.patient_form[this.patient_form.length - 1]);
   
-          // console.log(patient_data);
-          // console.log(this.messages);
-  
+          // SEND CHAT TO CHATGPT
           const response = await this.$store.dispatch('sendChat', { 
             patient_data, 
             messages: this.messages,
@@ -187,9 +189,17 @@
   
           // Add the bot's response to the chat
           // console.log(response);
-          // console.log(response.data);
-          var reply = response.response;
-          this.messages.push({ content: reply, role: 'system',  createDate: this.today});
+          // console.log(response.response);
+          // DETECT IF REPLY IS OBJECT
+          if(response.response.data) {
+            var reply = `Server Status: ${response.response.status} - ${response.response.data.detail}`;
+            this.messages.push({ content: reply, role: 'system',  createDate: this.today});
+          }
+          else {
+            var reply = response.response;
+            this.messages.push({ content: reply, role: 'system',  createDate: this.today});
+          }
+          
           if(localStorage.token) { //CHECK IF USER IS LOGGED IN
           // SAVE RESPONSE TO DB
             const response = await this.$store.dispatch('saveChats', { 
