@@ -198,7 +198,8 @@ const createStore = () => {
       async saveChats({ commit }, payload) {
 
         const { token, consulation_id, user_id, user_role, chat_content } = payload;
-        console.log(payload);
+        // console.log(payload);
+        console.log("STEP 2: SAVE CHAT & RESPONSE TO DB", payload);
         try {
           const response = await this.$axios.post(`${process.env.DB_BASE}/api/chatbot/consulation`, {
             token: token,
@@ -206,7 +207,7 @@ const createStore = () => {
             userId: user_id,
             role: user_role,
             content: chat_content,
-            completionToken: localStorage.completionToken,
+            completionToken: parseInt(localStorage.completionToken),
           },
           {
             headers: {
@@ -215,13 +216,14 @@ const createStore = () => {
           });
 
           // REPONSE SHOULD CONTAIN THE CHAT LIMIT
-          console.log(response);
-          if(parseInt(response.data) > 0) {
+          // console.log(response);
+          console.log("STEP 2 Response: ", response);
+          if(response.data.left) {
             // console.log(response.data);
-            localStorage.chatLimit = response.data;
+            localStorage.chatLimit = response.data.left;
 
             // SET STATE: CHAT LIMIT
-            commit('setChatLimit', response.data);
+            commit('setChatLimit', response.data.left);
           }
 
           if(response.status === 200) {
@@ -244,6 +246,7 @@ const createStore = () => {
         // console.log(patient_data);
         // console.log(consultation_id);
         // console.log(user_id);
+        console.log("STEP 3: SAVE PATIENT FORM DATA TO DB", payload);
         try {
           const response = await this.$axios.post(`${process.env.DB_BASE}/api/chatbot/patientForm`, {
             consultationId: consultation_id,
@@ -298,7 +301,7 @@ const createStore = () => {
           // console.log('IP Grabber error:', error.response);
         }
       },
-      // CHATS
+      // SEND CHATS
       async sendChat({ commit }, payload) {
         const { patient_data, messages, type } = payload;
 
@@ -307,6 +310,7 @@ const createStore = () => {
         // console.log(JSON.parse(localStorage.messages));
         // console.log(messages.map((msg) => msg.content).join('\n'));
         // console.log(type);
+        console.log("STEP 1: SEND USER CHAT TO  CHAT GPT");
 
         // CLEAR CHATBOX & FORM: SET TO TRUE (Because it's false by default)
         commit('clearChatbox', false);
@@ -315,7 +319,7 @@ const createStore = () => {
           const response = await this.$axios.post(process.env.OPEN_API, {
             user_message: type === 'Chat' ? messages.map((msg) => msg.content).join('\n') : messages,
             system_message: 'You are a helpful medical assistant. You will not answer anything outside medical topics. This is my information as a patient, ' + patient_data,
-            message_history: JSON.parse(localStorage.messages),
+            message_history: localStorage.messages ? JSON.parse(localStorage.messages) : [],
           },
           {
             headers: {
@@ -325,6 +329,7 @@ const createStore = () => {
           });
 
           // console.log(response);
+          console.log("STEP 1 Response: ", response.data);
           if (type === 'Chat') {
 
             // STORE COMPLETION TOKEN TO LOCALSTORAGE
@@ -350,12 +355,12 @@ const createStore = () => {
         }
       },
 
-      // LOGIN
+      // OPEN LOGIN MODAL
       openLogin({commit}) {
         commit('setLogin', true);
         commit('setRegister', false);
       },
-      // REGISTER
+      // OPEN REGISTER MODAL
       async openRegister({commit}, registrationData) {
         commit('setLogin', false);
         commit('setRegister', true);
@@ -392,6 +397,7 @@ const createStore = () => {
             localStorage.username = String(response.data.name);
             localStorage.email = String(response.data.email);
             localStorage.userId = String(response.data._id);
+            localStorage.chatLimit = response.data.limit;
 
             // ADD USERNAME AS MEMBER
             await new Promise((resolve) => {
@@ -401,7 +407,10 @@ const createStore = () => {
 
             localStorage.members = JSON.stringify(account_members);
 
-            commit('setToken', response.data.token);
+            // // SET STATE: CHAT LIMIT
+            // commit('setChatLimit', response.data.limit);
+            // // SET THE TOKEN TO STATE
+            // commit('setToken', response.data.token);
             return 1;
           }
           else {
@@ -438,6 +447,7 @@ const createStore = () => {
             localStorage.email = String(response.data.email);
             localStorage.username = String(response.data.name);
             localStorage.userId = String(response.data._id);
+            localStorage.chatLimit = response.data.limit;
 
             // ADD USERNAME AS MEMBER
             await new Promise((resolve) => {
@@ -446,8 +456,6 @@ const createStore = () => {
             });
 
             localStorage.members = JSON.stringify(account_members);
-
-            commit('setToken', response.data.token);
             return 1;
           }
           else {

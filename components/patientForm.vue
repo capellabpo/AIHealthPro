@@ -475,17 +475,25 @@
             loader: false,
         }
     },
-    mounted() {
+    async mounted() {
         // GET MEMBERS
         if(localStorage.members && JSON.parse(localStorage.members).length > 0) {
+            console.log("With members from localStorage");
             this.account_members = JSON.parse(localStorage.members);
         }
         else {
+            console.log("Without members from localStorage");
             if(localStorage.username) {
                 this.account_members.push({ name: localStorage.username});
                 localStorage.members = JSON.stringify(this.account_members);
 
-                const response = this.$store.dispatch('saveMembers', { 
+                // GET MEMBERS FROM DB AND SEE IF CURRENT USERNAME IS ALREADY A MEMBER
+                const members = await this.$store.dispatch('getMembers', {
+                    user_id: localStorage.userId
+                });
+
+                // SAVE MEMBER TO DB
+                const response = await this.$store.dispatch('saveMembers', { 
                     user_id: localStorage.userId,
                     name: localStorage.username,
                 });
@@ -513,7 +521,7 @@
             var form = this.patient_form[this.patient_form.length - 1];
 
             this.age = form.age;
-            this.patient_name = form.patient_name;
+            this.patient_name = form.patientName ? form.patientName : "";
             // HEIGHT INCH IF HEIGHT IF IN FT
             if(form.height && form.height.split(" ")[1] == "ft") {
                 this.height = form.height.split("'")[0];
@@ -640,7 +648,7 @@
             // Push Patient Information to Array
             this.patient_form.push({ 
                 age: this.age ? this.age : "",
-                patient_name: this.patient_name ? this.patient_name : "",
+                patientName: this.patient_name ? this.patient_name : "",
                 height: temp_height,
                 gender: this.gender? this.gender : "",
                 weight: this.weight? this.weight+" "+this.unit_weight : "",
@@ -686,12 +694,23 @@
                 type: "Diagnosis"
             });
 
-            if(localStorage.userId) { //CHECK IF USER IS LOGGED IN
+            // SAVE PATIENT FORM CHAT
+            if(localStorage.token) { //CHECK IF USER IS LOGGED IN
+
+                // TRIGGER SAVE CHAT JUST TO SEND THE COMPLETION TOKEN AND GET THE CALCULATED CREDIT
+                await this.$store.dispatch('saveChats', { 
+                    token: localStorage.token,
+                    consulation_id: localStorage.consultationID,
+                    user_id: localStorage.userId,
+                    user_role: 'user',
+                    chat_content: "Patient Form Submitted"
+                });
+
                 this.notify();
                 // SAVE PATIENT FORM IF LOGGED IN
                 const res = await this.$store.dispatch('savePatientData', { 
                     patient_data: this.patient_form[this.patient_form.length - 1], 
-                    consultation_id: this.current_consultation_id,
+                    consultation_id: localStorage.consultationID,
                     user_id: "Diagnosis"
                 });
 

@@ -8,7 +8,7 @@
             <div class="message" v-for="(message, id) in messages" :key="id" :id="id">
               
               <div class="msg_user" v-if="message.role === 'user'">
-                <div class="msg_box_user">
+                <div class="msg_box_user" v-show="message.content !== 'Patient Form Submitted'">
                   <!-- {{ id+" - "+ message.text}} -->
                   {{ message.content }}
                 </div>
@@ -86,8 +86,15 @@
     if (localStorage.patient_form) {
       this.patient_form = JSON.parse(localStorage.patient_form);
     }
-    // Scroll to top (delayed)
+    // Scroll to top (delayed) && ChatLimit to set in Store
     setTimeout(() => {
+
+      // SET CHAT LIMIT TO STORE DELAY
+      if(localStorage.chatLimit) {
+        this.$store.commit('setChatLimit', parseInt(localStorage.chatLimit));
+      }
+
+      // SCROLL DELAY
       this.scrollToBottom();
     }, 100);
   
@@ -127,14 +134,14 @@
           { content: this.$store.state.diagnosisData, role: 'system',  createDate: this.today}
         );
 
-        // SAVE CHAT
+        // SAVE PATIENT FORM CHAT
         if(localStorage.token) {
           const response = await this.$store.dispatch('saveChats', { 
             token: localStorage.token,
             consulation_id: localStorage.consultationID,
             user_id: localStorage.userId,
-            user_role: 'user',
-            chat_content: this.newMessage
+            user_role: 'system',
+            chat_content: this.$store.state.diagnosisData
           });
         }
 
@@ -165,17 +172,6 @@
         setTimeout(() => {
           this.scrollToBottom();
         }, 100);
-
-        // SAVE CHAT 
-        if(localStorage.token) {
-          const response = await this.$store.dispatch('saveChats', { 
-            token: localStorage.token,
-            consulation_id: localStorage.consultationID,
-            user_id: localStorage.userId,
-            user_role: 'user',
-            chat_content: temp_message
-          });
-        }
         
         try {
           if(this.patient_form.length <= 0) {
@@ -185,12 +181,23 @@
             patient_data = [];
           }
   
-          // SEND CHAT TO CHATGPT
+          // SEND USER CHAT TO CHATGPT
           const response = await this.$store.dispatch('sendChat', { 
             patient_data, 
             messages: this.messages,
             type: "Chat"
           });
+
+          // SAVE USER CHAT 
+          // if(localStorage.token) {
+            await this.$store.dispatch('saveChats', { 
+              token: localStorage.token,
+              consulation_id: localStorage.consultationID,
+              user_id: localStorage.userId,
+              user_role: 'user',
+              chat_content: temp_message
+            });
+          // }
 
           // EMPTY MESSAGE
           // this.newMessage = '';
@@ -208,16 +215,16 @@
             this.messages.push({ content: reply, role: 'system',  createDate: this.today});
           }
           
-          if(localStorage.token) { //CHECK IF USER IS LOGGED IN
-          // SAVE RESPONSE TO DB
-            const response = await this.$store.dispatch('saveChats', { 
+          // SAVE SYSTEM RESPONSE TO DB
+          // if(localStorage.token) {
+            await this.$store.dispatch('saveChats', { 
               token: localStorage.token,
               consulation_id: localStorage.consultationID,
               user_id: localStorage.userId,
-              user_role: 'bot',
+              user_role: 'system',
               chat_content: reply
             });
-          }
+          // }
           setTimeout(() => {
             this.scrollToBottom();
           }, 100);
