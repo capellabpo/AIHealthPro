@@ -12,11 +12,15 @@ const createStore = () => {
       is_logged_in: false,
       current_consultation: "",
       clearAll: false,
+      limitReached: false,
       current_chat_limit: 0,
       current_token: "",
       members: [],
     },
     mutations: {
+      setUsedLimit(state, data) {
+        state.limitReached = data;
+      },
       setResponseData(state, data) {
         state.responseData = data;
       },
@@ -52,10 +56,10 @@ const createStore = () => {
       // IP BASED USAGE
       async ipBasedUsage({ commit }, payload) {
 
-        const { completionToken, role } = payload;
-        console.log(completionToken);
+        const { completionToken, role, chatLimit } = payload;
+        // console.log(payload);
         console.log("IP BASED USAGE: UPDATE LIMIT", payload);
-        if(role === 'user') {
+        if(role === 'user' && chatLimit > 0) {
           try {
             const response = await this.$axios.post(`${process.env.DB_BASE}/api/users/ipBasedLimit`, {
               completionToken: completionToken
@@ -66,13 +70,14 @@ const createStore = () => {
               },
             });
 
-            console.log("IP BASED USAGE Response: ", response);
+            // console.log("IP BASED USAGE Response: ", response);
             if(response.data) {
               // console.log(response.data);
               // localStorage.chatLimit = response.data.left;
 
               // SET STATE: CHAT LIMIT
               commit('setChatLimit', response.data);
+              localStorage.chatLimit = response.data;
             }
           } catch (error) {
             console.log("IP BASED USAGE Error:",error);
@@ -80,6 +85,10 @@ const createStore = () => {
         }
         else {
           // SYSTEM  RESPONSE SHOULD  NOT BE CALCULATED AGAIN
+          if(chatLimit <= 0) {
+            // TELL THE USER
+            commit('setUsedLimit', true);
+          }
         }
 
       },
@@ -322,9 +331,17 @@ const createStore = () => {
           });
 
           // console.log(response.data);
-          localStorage.chatLimit = response.data;
-          // SET STATE: CHAT LIMIT
-          commit('setChatLimit', response.data);
+          if(response.data && response.data > 0) {
+            // SET STATE: CHAT LIMIT
+            localStorage.chatLimit = response.data;
+            commit('setChatLimit', response.data);
+          }
+          else {
+            // TELL THE USER THAT THE LIMIT IS REACHED
+            commit('setUsedLimit', true);
+            localStorage.chatLimit = response.data;
+            commit('setChatLimit', response.data);
+          }
 
           // if(response.response) {
           //   console.log(response.response.data);
@@ -339,11 +356,6 @@ const createStore = () => {
       async sendChat({ commit }, payload) {
         const { patient_data, messages, type } = payload;
 
-        // console.log(patient_data);
-        // console.log(messages);
-        // console.log(JSON.parse(localStorage.messages));
-        // console.log(messages.map((msg) => msg.content).join('\n'));
-        // console.log(type);
         console.log("STEP 1: SEND USER CHAT TO  CHAT GPT");
 
         // CLEAR CHATBOX & FORM: SET TO TRUE (Because it's false by default)

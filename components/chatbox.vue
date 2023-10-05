@@ -49,10 +49,10 @@
       <div class="foot">
 
         <div v-if="!current_token">
-          You have <b> {{ chatLimit }} credits</b> left. Sign up now to send more messages. Read our &nbsp;<a href="#">Terms & Policy</a>
+          You have <b> {{ formatCredit(chatLimit) }} credits</b> left. Sign up now to send more messages. Read our &nbsp;<a href="#">Terms & Policy</a>
         </div>
         <div v-else>
-          You have <b> {{ chatLimit }} credits</b> left. Get more credits <b>NOW!</b>
+          You have <b> {{ formatCredit(chatLimit) }} credits</b> left. Get more credits <b>NOW!</b>
         </div>
   
       </div>
@@ -112,6 +112,15 @@
         this.messages = [];
       }
     },
+    '$store.state.limitReached':function(newValue, oldValue) {
+      if(newValue == true) {
+        // alert(newValue);
+        this.LimitReached();
+      }
+    },
+    '$store.state.showRegister':function(newVal, oldVal) {
+      this.newMessage = '';
+    },
   },
   computed: {
     chatLimit() {
@@ -119,16 +128,24 @@
     },
   },
   methods: {
-      formattedString(str) {
-        if (str) {
-          return str.replace(/\n/g, "<br>");
-        }
-        return ""; // Return an empty string if str is undefined or null
-      },
-      login() {
-          this.$router.push({ path: "../dashboard" });
-      },
-      async addDiag(newval, oldVal) {
+    formatCredit(limit) {
+      return limit.toLocaleString("en-US")
+    },
+    formattedString(str) {
+      if (str) {
+        return str.replace(/\n/g, "<br>");
+      }
+      return ""; // Return an empty string if str is undefined or null
+    },
+    login() {
+        this.$router.push({ path: "../dashboard" });
+    },
+    LimitReached() {
+      // Add warning to message
+      console.log('Limit Reached');
+    },
+    async addDiag(newval, oldVal) {
+      if(parseInt(localStorage.chatLimit) > 0) { // CHECK IF CHAT LIMIT IS MORE THAT 0
         // Add the bot's response to the chat
         this.messages.push(
           { content: this.$store.state.diagnosisData, role: 'system',  createDate: this.today}
@@ -148,7 +165,8 @@
           // UPDATE THE IP's LIMIT
           await this.$store.dispatch('ipBasedUsage', { 
             completionToken: parseInt(localStorage.completionToken),
-            role: 'system'
+            role: 'system',
+            chatLimit: parseInt(localStorage.chatLimit)
           });
         }
 
@@ -158,8 +176,10 @@
         setTimeout(() => {
           this.scrollToBottom();
         }, 100);
-      },
-      async sendMessage() {
+      }
+    },
+    async sendMessage() {
+      if(parseInt(localStorage.chatLimit) > 0) { // CHECK IF CHAT LIMIT IS MORE THAT 0
         if (this.newMessage.trim() === '') return;
 
         // Add the user's message to the chat
@@ -209,7 +229,8 @@
             // UPDATE THE IP's LIMIT
             await this.$store.dispatch('ipBasedUsage', { 
               completionToken: parseInt(localStorage.completionToken),
-              role: 'user'
+              role: 'user',
+              chatLimit: parseInt(localStorage.chatLimit)
             });
           }
 
@@ -243,7 +264,8 @@
             // UPDATE THE IP's LIMIT
             await this.$store.dispatch('ipBasedUsage', { 
               completionToken: parseInt(localStorage.completionToken),
-              role: 'system'
+              role: 'system',
+              chatLimit: parseInt(localStorage.chatLimit)
             });
           }
 
@@ -256,16 +278,21 @@
         } catch (error) {
           console.error('Error sending message to ChatGPT:', error);
         }
-        
-      },
-      scrollToBottom() {
-        // Get a reference to the container
-        const container = this.$refs.container;
-        // Calculate the maximum scroll position
-        var maxScrollPosition = container.scrollHeight - container.clientHeight;
-        // Scroll to the maximum position
-        container.scrollTop = maxScrollPosition;
-      },
+    }
+    else {
+      // OPEN SIGN UP MODAL
+      this.$store.dispatch('openRegister');
+    }
+      
+    },
+    scrollToBottom() {
+      // Get a reference to the container
+      const container = this.$refs.container;
+      // Calculate the maximum scroll position
+      var maxScrollPosition = container.scrollHeight - container.clientHeight;
+      // Scroll to the maximum position
+      container.scrollTop = maxScrollPosition;
+    },
   },
   }
   </script>

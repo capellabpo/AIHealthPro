@@ -10,7 +10,7 @@
         <span style="color: #00B8A8; font-weight: bold;">Sign Up</span> &nbsp; a new account
     </div>
     <div class="sign_label">
-        <div class="sign_label_small" style="text-align: center;">To get started, please create an account so you can access exclusive content and personalized recommendations.</div>
+        <div class="sign_label_small" style="text-align: center;">{{ signUptext }}</div>
     </div>
     <div class="login_inputs">
         <span class="sign_label_small">Name</span>
@@ -66,8 +66,17 @@
             newEmail: '',
             newPassword: '',
 
+            signUptext: 'To get started, please create an account so you can access exclusive content and personalized recommendations.',
+
             loader: false,
             showError: '',
+        }
+    },
+    watch: {
+        '$store.state.limitReached':function(newVal, oldVal) {
+            if(newVal == true) {
+                this.signUptext = 'Seems like you have reached your credit limit. Sign up now and upgrade your experience!';
+            }
         }
     },
     methods: {
