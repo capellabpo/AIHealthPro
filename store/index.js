@@ -53,6 +53,33 @@ const createStore = () => {
       }
     },
     actions: {
+      // SAVE PAYMENT DETAILS
+      async savePayment({ commit }, payload) {
+        const { userId, checkoutSessionId, purchasedPlan, purchasedCredits, purchasedAmount } = payload;
+        console.log("Save Payment: ", payload);
+        try {
+
+          const response = await this.$axios.post(`${process.env.DB_BASE}/api/payment/history/save`, {
+            userId: userId,
+            checkoutSessionId: checkoutSessionId,
+            purchasedPlan: purchasedPlan,
+            purchasedCredits: purchasedCredits,
+            purchasedAmount: purchasedAmount
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          // NO NEED FOR RESPONSE, JUST UPDATE THE CHAT LIMIT IN LOCALSTORAGE
+          localStorage.chatLimit = response.data;
+
+        } catch (error) {
+          console.log("Save Member: ",error);
+          return 0;
+        }
+      },
       // IP BASED USAGE
       async ipBasedUsage({ commit }, payload) {
 

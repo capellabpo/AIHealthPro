@@ -10,7 +10,7 @@
     </div>
     <div class="login_inputs">
         <span class="sign_label_small">Email</span>
-        <input type="text" class="login_username" placeholder="Email" v-model="user_email">
+        <input type="text" class="login_username" placeholder="Email" v-model="user_email" autocomplete="username">
     </div>
     <div class="login_inputs">
         <span class="sign_label_small">Password</span>
@@ -23,17 +23,17 @@
     </div>
     <div class="login_inputs">
         <div class="login_row">
-            <div class="input_half_1">
+            <!-- <div class="input_half_1">
                 <div class="checkbox_layout" @click="rememberMe()">
                     <div :class="`check_box ${remember ? 'check_box_act' : ''}`">
                         <fa :icon="['fa', 'check']" v-show="remember"/>
                     </div>
                     <div class="sign_label_small">Remember Me</div>
                 </div>
-            </div>
-            <div class="input_half_2">
+            </div> -->
+            <!-- <div class="input_half_2"> -->
                 <div class="sign_label_small forgot_pass">Forgot Password</div>
-            </div>
+            <!-- </div> -->
         </div>
     </div>
     <div class="login_inputs">
