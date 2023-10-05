@@ -144,6 +144,13 @@
             chat_content: this.$store.state.diagnosisData
           });
         }
+        else {
+          // UPDATE THE IP's LIMIT
+          await this.$store.dispatch('ipBasedUsage', { 
+            completionToken: parseInt(localStorage.completionToken),
+            role: 'system'
+          });
+        }
 
         // console.log(response);
 
@@ -189,7 +196,7 @@
           });
 
           // SAVE USER CHAT 
-          // if(localStorage.token) {
+          if(localStorage.token) {
             await this.$store.dispatch('saveChats', { 
               token: localStorage.token,
               consulation_id: localStorage.consultationID,
@@ -197,7 +204,14 @@
               user_role: 'user',
               chat_content: temp_message
             });
-          // }
+          }
+          else {
+            // UPDATE THE IP's LIMIT
+            await this.$store.dispatch('ipBasedUsage', { 
+              completionToken: parseInt(localStorage.completionToken),
+              role: 'user'
+            });
+          }
 
           // EMPTY MESSAGE
           // this.newMessage = '';
@@ -216,7 +230,7 @@
           }
           
           // SAVE SYSTEM RESPONSE TO DB
-          // if(localStorage.token) {
+          if(localStorage.token) {
             await this.$store.dispatch('saveChats', { 
               token: localStorage.token,
               consulation_id: localStorage.consultationID,
@@ -224,7 +238,15 @@
               user_role: 'system',
               chat_content: reply
             });
-          // }
+          }
+          else {
+            // UPDATE THE IP's LIMIT
+            await this.$store.dispatch('ipBasedUsage', { 
+              completionToken: parseInt(localStorage.completionToken),
+              role: 'system'
+            });
+          }
+
           setTimeout(() => {
             this.scrollToBottom();
           }, 100);

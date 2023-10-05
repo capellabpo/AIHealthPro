@@ -29,10 +29,10 @@
     <div class="page_header">
       <div class="header">
         <div class="header_left">
-            <button class="icon_btn" @click="show_sidebar = !show_sidebar">
+            <!-- <button class="icon_btn" @click="show_sidebar = !show_sidebar">
                 <fa :icon="['fa', 'bars']" />
             </button>
-            &ensp; 
+            &ensp;  -->
             <div class="header_logo">
                 <span style="color: white">AIHealth</span>Pro
             </div>

@@ -49,6 +49,40 @@ const createStore = () => {
       }
     },
     actions: {
+      // IP BASED USAGE
+      async ipBasedUsage({ commit }, payload) {
+
+        const { completionToken, role } = payload;
+        console.log(completionToken);
+        console.log("IP BASED USAGE: UPDATE LIMIT", payload);
+        if(role === 'user') {
+          try {
+            const response = await this.$axios.post(`${process.env.DB_BASE}/api/users/ipBasedLimit`, {
+              completionToken: completionToken
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+
+            console.log("IP BASED USAGE Response: ", response);
+            if(response.data) {
+              // console.log(response.data);
+              // localStorage.chatLimit = response.data.left;
+
+              // SET STATE: CHAT LIMIT
+              commit('setChatLimit', response.data);
+            }
+          } catch (error) {
+            console.log("IP BASED USAGE Error:",error);
+          }
+        }
+        else {
+          // SYSTEM  RESPONSE SHOULD  NOT BE CALCULATED AGAIN
+        }
+
+      },
       // GET MEMBERS
       async getMembers({ commit, dispatch }, user_id) {
 
