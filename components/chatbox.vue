@@ -127,10 +127,12 @@
           // GET MESSAGES FROM LOCALSTORAGE
           this.messages = JSON.parse(localStorage.messages);
           console.log(this.messages);
+        }, 100);
 
+        setTimeout(() => {
           // SCROLL DELAY
           this.scrollToBottom();
-        }, 100);
+        }, 200);
       }
     },
   },
