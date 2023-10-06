@@ -38,12 +38,18 @@
     <div class="history_container" v-if="token && history.length > 0">
         <div class="history_card" v-for="(his, x) in history" :key="'his'+x">
             <div class="history_datetime">
-                <div class="history_date">{{dateFormat(his.createdAt)}}</div>
-                <div class="history_time">&nbsp;-&nbsp;{{timeFormat(his.createdAt)}}</div>
+                <div class="datetime_wrap">
+                    <div class="history_date">{{dateFormat(his.createdAt)}}</div>
+                    <div class="history_time">{{timeFormat(his.createdAt)}}</div>
+                </div>
+                <div :class="`history_title ${current_consultation_id == his.consulationId ? 'history_clicked' : ''}`" 
+                @click="openHistory(his.consulationId)">
+                    {{his.conversationTitle}}
+                </div>
             </div>
-            <div class="history_title" @click="openHistory(his.consulationId)">{{his.conversationTitle}}</div>
         </div>
     </div>
+
     <div class="notice_container" v-else-if="token && history.length <= 0">
         <div class="notice_img"></div>
         <div class="notice_title">No History</div>
@@ -72,7 +78,9 @@ data() {
         date_to: this.date_to = moment().endOf('month').format('MMM D, YYYY'),
         showOption: false,
         history: [],
+        consultationHistory: [],
         token: '',
+        current_consultation_id: '',
     }
 },
 mounted() {
@@ -92,6 +100,10 @@ mounted() {
     // GET TOKEN
     if(localStorage.token) {
         this.token = localStorage.token;
+    } 
+    // GET CONSULTATION ID
+    if(localStorage.consultationID) {
+        this.current_consultation_id = localStorage.consultationID;
     }
 },
 watch: {
@@ -104,10 +116,55 @@ watch: {
     date_to(val) {
         localStorage.date_to = JSON.stringify(val);
     },
+    '$store.state.current_consultation':function(newVal, oldVal) {
+        this.current_consultation_id = newVal;
+    },
 },
 methods: {
-    openHistory(id) {
-        alert(id);
+    async openHistory(id) {
+
+        // REUSE CONSULTATION HISTORY'S CONSULTATION ID 
+        localStorage.consultationID = id;
+        this.$store.commit('setCurrentConsultation', id);
+
+        console.log("openHistory methdod id:", id);
+        const res = await this.$store.dispatch('getConsultationHistoryById', {
+            consulationId: id
+        });
+
+        try {
+            // console.log(res);
+            if(res >= 200 && res < 299) {
+                // GET CONSULTATION HISTORY FROM LOCALSTORAGE
+                this.consultationHistory = JSON.parse(localStorage.consultationHistory);
+
+                // GET ONLY THE PATIENT FORMS
+                var temp = [];
+                temp = this.consultationHistory.patient_form;
+                var temp2 = [];
+                
+                for(var x=0; x < temp.length; x++ ) {
+                    console.log(temp[x].patientInfo[0]);
+                    temp2.push(temp[x].patientInfo[0]);   
+                }
+                // console.log(temp2);
+
+                // SET NAME TO BE USED
+                localStorage.patientName = localStorage.username;   
+
+                // STORE TO LOCAL STORAGE
+                localStorage.patient_form = JSON.stringify(temp2);
+                
+                // TRIGGER THE getPatientForm() METHOD THROUGH STATE
+                this.$store.commit('triggerGetPatientForm', true);
+            }
+            else {
+                console.log("openHistory methdod status code:", res);
+            }
+
+        } catch (error) {
+            console.log("openHistory methdod error:", error);
+        }
     },
     dateFormat(date) {
         if(date) {

@@ -16,8 +16,12 @@ const createStore = () => {
       current_chat_limit: 0,
       current_token: "",
       members: [],
+      triggerGetPatientFormMethod: false,
     },
     mutations: {
+      triggerGetPatientForm(state, data) {
+        state.triggerGetPatientFormMethod = data; 
+      },
       setUsedLimit(state, data) {
         state.limitReached = data;
       },
@@ -53,6 +57,33 @@ const createStore = () => {
       }
     },
     actions: {
+      // GET CONSULTATION HISTORY BY ID
+      async getConsultationHistoryById({ commit }, payload) {
+        const { consulationId } = payload;
+        // console.log("Get Consultation History By ID: ", payload);
+        try {
+
+          const response = await this.$axios.get(`${process.env.DB_BASE}/api/chatbot/viewhistory/${consulationId}`, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          // console.log(response.data);
+          // SAVE TO LOCAL STORAGE
+          if(response.status >= 200 && response.status < 299) {
+            localStorage.consultationHistory = JSON.stringify(response.data);
+            return response.status;
+          }
+          else {
+            return response.status;
+          }
+
+        } catch (error) {
+          console.log("Fetching Consultation History by ID: ",error);
+          return 0;
+        }
+      },
       // SAVE PAYMENT DETAILS
       async savePayment({ commit }, payload) {
         const { userId, checkoutSessionId, purchasedPlan, purchasedCredits, purchasedAmount } = payload;

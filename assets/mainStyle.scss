@@ -1420,8 +1420,12 @@ $colError2: #bd4747;
     color: $col3;
     white-space: nowrap;
 }
+.datetime_wrap {
+
+}
 .history_title {
     width: 100%;
+    margin-left: 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1437,6 +1441,11 @@ $colError2: #bd4747;
         background-color: $col1;
         color: white;
     }
+}
+.history_clicked {
+    transition: 0.3s;
+    background-color: $col1;
+    color: white;
 }
 .history_title2 {
     width: 100%;

@@ -506,8 +506,16 @@
         } 
 
         // SET USER NAME AS DEFAULR PATIENT NAME
-        if (localStorage.username) {
+        if(localStorage.patientName) {
+            this.patient_name = localStorage.patientName;
+            // DELAY BEFORE HIDDING MEMBERS
+            setTimeout(() => {
+                this.show_members = false;
+            }, 100);
+        }
+        else if (localStorage.username) {
             this.patient_name = localStorage.username;
+            localStorage.patientName = localStorage.username;
             // DELAY BEFORE HIDDING MEMBERS
             setTimeout(() => {
                 this.show_members = false;
@@ -515,53 +523,7 @@
         }
 
         // GET PATIENT FORM DATA
-        if (localStorage.patient_form) {
-            this.patient_form = JSON.parse(localStorage.patient_form);
-            this.copy_patient_form = JSON.parse(localStorage.patient_form);
-            var form = this.patient_form[this.patient_form.length - 1];
-
-            this.age = form.age;
-            this.patient_name = form.patientName ? form.patientName : "";
-            // HEIGHT INCH IF HEIGHT IF IN FT
-            if(form.height && form.height.split(" ")[1] == "ft") {
-                this.height = form.height.split("'")[0];
-                this.height_in = form.height.split("'")[1].split(" ")[0];
-            }
-            else {
-                this.height = form.height ? parseFloat(form.height) : "";
-            }
-            this.unit_height = form.height ? form.height.split(" ")[1] : "";
-            this.gender = form.gender;
-            this.weight = form.weight ? parseFloat(form.weight) : "";
-            this.unit_weight = form.weight ? form.weight.split(" ")[1] : "";
-            this.symptoms = form.symptoms;
-            this.current_condition = form.current_condition;
-            this.surgery = form.surgery;
-            this.allergies = form.allergies;
-            this.medications = form.medications;
-            this.hereditary = form.hereditary;
-            this.temperaturethis = form.temperature ? parseFloat(form.temperature) : "";
-            this.respiratory_rate = form.respiratory_rate ? parseFloat(form.respiratory_rate) : "";
-            this.waistline = form.waistline ? parseFloat(form.waistline) : "";
-            this.heart_rate = form.heart_rate;
-            this.oxygen_saturation = form.oxygen_saturation;
-            this.hip_line = form.hip_line ? parseFloat(form.hip_line) : "";
-            this.diastolic_bp = form.diastolic_bp;
-            this.albumin = form.albumin;
-            this.ast = form.ast;
-            this.calcium = form.calcium;
-            this.glucose = form.glucose;
-            this.potassium = form.potassium;
-            this.triglycerides = form.triglycerides;
-            this.hdl = form.hdl;
-            this.alt = form.alt;
-            this.bun = form.bun;
-            this.creatinine = form.creatinine;
-            this.hba1c = form.hba1c;
-            this.sodium = form.sodium;
-            this.ldl = form.ldl;
-            this.egfr = form.egfr;
-        }
+        this.getPatientForm();
     },
     watch: {
         // GET PATIENT FORM
@@ -579,6 +541,14 @@
                 this.clearFields();
             }
         },
+        '$store.state.triggerGetPatientFormMethod':function(newValue, oldValue) {
+            // console.log('Watcher triggered:', newValue, oldValue);
+            if(newValue == true) {
+                setTimeout(() => {
+                    this.getPatientForm();
+                }, 100);
+            }
+        },
     },
     computed: {
         acct_members() {
@@ -591,12 +561,96 @@
         }
     },
     methods: {
+        getPatientForm() {
+            if (localStorage.patient_form) {
+                // GET PATIENT FORM FROM LOCALSTORAGE
+                this.patient_form = JSON.parse(localStorage.patient_form);
+
+                // COPY LAST PATIENT FORM
+                // this.copy_patient_form = JSON.parse(localStorage.patient_form);
+
+                // GET LAST PATIENT FORM BY NAME
+                if(localStorage.patientName) {
+                    var patient = localStorage.patientName;
+                    const patientFrom = this.patient_form.filter((members) => {
+                        return members.patientName.toLowerCase().includes(patient.toLowerCase().trim());
+                    });
+
+                    // console.log(patientFrom[0]);
+
+                    if(patientFrom[0]) {   
+                        var form = patientFrom[0];
+
+                        this.age = form.age;
+                        this.patient_name = form.patientName ? form.patientName : "";
+                        // HEIGHT INCH IF HEIGHT IF IN FT
+                        if(form.height && form.height.split(" ")[1] == "ft") {
+                            this.height = form.height.split("'")[0];
+                            this.height_in = form.height.split("'")[1].split(" ")[0];
+                        }
+                        else {
+                            this.height = form.height ? parseFloat(form.height) : "";
+                        }
+                        this.unit_height = form.height ? form.height.split(" ")[1] : "";
+                        this.gender = form.gender;
+                        this.weight = form.weight ? parseFloat(form.weight) : "";
+                        this.unit_weight = form.weight ? form.weight.split(" ")[1] : "kg";
+                        this.symptoms = form.symptoms;
+                        this.current_condition = form.current_condition;
+                        this.surgery = form.surgery;
+                        this.allergies = form.allergies;
+                        this.medications = form.medications;
+                        this.hereditary = form.hereditary;
+                        this.temperaturethis = form.temperature ? parseFloat(form.temperature) : "";
+                        this.respiratory_rate = form.respiratory_rate ? parseFloat(form.respiratory_rate) : "";
+                        this.waistline = form.waistline ? parseFloat(form.waistline) : "";
+                        this.heart_rate = form.heart_rate;
+                        this.oxygen_saturation = form.oxygen_saturation;
+                        this.hip_line = form.hip_line ? parseFloat(form.hip_line) : "";
+                        this.diastolic_bp = form.diastolic_bp;
+                        this.albumin = form.albumin;
+                        this.ast = form.ast;
+                        this.calcium = form.calcium;
+                        this.glucose = form.glucose;
+                        this.potassium = form.potassium;
+                        this.triglycerides = form.triglycerides;
+                        this.hdl = form.hdl;
+                        this.alt = form.alt;
+                        this.bun = form.bun;
+                        this.creatinine = form.creatinine;
+                        this.hba1c = form.hba1c;
+                        this.sodium = form.sodium;
+                        this.ldl = form.ldl;
+                        this.egfr = form.egfr;
+                        
+                    }
+                    else {
+                        // GET LAST PATIENT FORM
+                        console.log("Username not found in any of the patient forms");
+                        this.clearFields();
+                    }
+                    
+                }
+            }
+
+            // TRIGGER THE getPatientForm() METHOD THROUGH STATE
+            this.$store.commit('triggerGetPatientForm', false);
+        },
         chooseMember(member) {
             // DELAY BEFORE HIDDING MEMBER SELECTION
             setTimeout(() => {
                 this.show_members = false;
             }, 100);
+
+            // SET PATIENT NAME
             this.patient_name = member.name;
+
+            // SET NAME TO BE USED
+            localStorage.patientName = member.name; 
+
+            // TRIGGER THE getPatientForm() METHOD THROUGH STATE
+            this.$store.commit('triggerGetPatientForm', true);
+
         },
         async add_member() {
             try {
@@ -616,6 +670,12 @@
                 user_id: localStorage.userId,
                 name: this.patient_name,
             });
+
+            // SET NAME TO BE USED
+            localStorage.patientName = this.patient_name; 
+
+            // TRIGGER THE getPatientForm() METHOD THROUGH STATE
+            this.$store.commit('triggerGetPatientForm', true);
 
             // console.log(this.patient_name);
             // console.log(this.account_members);
@@ -732,7 +792,6 @@
         },
         clearFields() {
             this.copy_patient_form = [];
-            this.patient_name = "";
             this.age = "";
             this.height = "";
             this.height_in = ""
