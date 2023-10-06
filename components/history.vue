@@ -125,7 +125,6 @@ methods: {
 
         // REUSE CONSULTATION HISTORY'S CONSULTATION ID 
         localStorage.consultationID = id;
-        this.$store.commit('setCurrentConsultation', id);
 
         console.log("openHistory methdod id:", id);
         const res = await this.$store.dispatch('getConsultationHistoryById', {
@@ -138,19 +137,24 @@ methods: {
                 // GET CONSULTATION HISTORY FROM LOCALSTORAGE
                 this.consultationHistory = JSON.parse(localStorage.consultationHistory);
 
+                //  GET MESSAGES
+                localStorage.messages = JSON.stringify(this.consultationHistory.messages);
+
                 // GET ONLY THE PATIENT FORMS
                 var temp = [];
                 temp = this.consultationHistory.patient_form;
                 var temp2 = [];
                 
                 for(var x=0; x < temp.length; x++ ) {
-                    console.log(temp[x].patientInfo[0]);
+                    // console.log(temp[x].patientInfo[0]);
                     temp2.push(temp[x].patientInfo[0]);   
                 }
                 // console.log(temp2);
 
-                // SET NAME TO BE USED
-                localStorage.patientName = localStorage.username;   
+                // SET NAME TO BE USED (note: USELESS)
+                // if(!ocalStorage.patientName) {
+                //     localStorage.patientName = localStorage.username;   
+                // }
 
                 // STORE TO LOCAL STORAGE
                 localStorage.patient_form = JSON.stringify(temp2);

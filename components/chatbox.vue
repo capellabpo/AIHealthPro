@@ -121,6 +121,18 @@
     '$store.state.showRegister':function(newVal, oldVal) {
       this.newMessage = '';
     },
+    '$store.state.current_consultation':function(newVal, oldVal) {
+      if(newVal != oldVal) {
+        setTimeout(() => {
+          // GET MESSAGES FROM LOCALSTORAGE
+          this.messages = JSON.parse(localStorage.messages);
+          console.log(this.messages);
+
+          // SCROLL DELAY
+          this.scrollToBottom();
+        }, 100);
+      }
+    },
   },
   computed: {
     chatLimit() {

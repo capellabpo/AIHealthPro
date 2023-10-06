@@ -73,6 +73,8 @@ const createStore = () => {
           // SAVE TO LOCAL STORAGE
           if(response.status >= 200 && response.status < 299) {
             localStorage.consultationHistory = JSON.stringify(response.data);
+
+            commit('setCurrentConsultation', consulationId);
             return response.status;
           }
           else {
