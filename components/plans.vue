@@ -43,7 +43,7 @@
                     <div class="history_date">{{dateFormat(his.createdAt)}}</div>
                     <div class="history_time">&nbsp;-&nbsp;{{timeFormat(his.createdAt)}}</div>
                 </div>
-                <div class="history_title2">{{his.purchasedPlan}} • {{ his.purchasedCredits }} credits • $20</div>
+                <div class="history_title2">{{his.purchasedPlan}} • {{ his.purchasedCredits }} credits • ${{his.purchasedAmount}}</div>
             </div>
         </div>
     </div>
