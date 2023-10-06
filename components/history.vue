@@ -67,9 +67,9 @@ data() {
             {id: 4, name: '30 Days Ago'},
             {id: 5, name: 'This Month'}
         ],
-        selected_date: "Today",
-        date_from: moment().format('MMM D, YYYY'),
-        date_to: moment().format('MMM D, YYYY'),
+        selected_date: "This Month",
+        date_from: this.date_from = moment().startOf('month').format('MMM D, YYYY'),
+        date_to: this.date_to = moment().endOf('month').format('MMM D, YYYY'),
         showOption: false,
         history: [],
         token: '',
